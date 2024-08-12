@@ -1,0 +1,38 @@
+body{
+    background-color: black;
+    color: white;
+}
+
+h1{
+    text-align: center;
+    font-size: 30px;
+}
+
+h2{
+    font-size: 15px;
+}
+
+.data{
+    font-size: 40px;
+    color: white;
+    margin-left: 30%;
+    margin-top: 20%;
+}
+
+label{
+    margin: 20px;
+}
+input{
+    margin: 20px;
+}
+
+a{
+    margin: 40px;
+    font-size: 20px;
+    color: white;
+}
+
+button{
+    left: 80px;
+    height: 50px;
+}
