@@ -9,10 +9,10 @@
     <body>
         <div class="delete">
             <h1>Delete Profile</h1><br>
-            <h2>username = {{data.u_name}}</h2>
-            <h2>username = {{data.u_password}}</h2>
+            <h2>Username = {{data.u_name}}</h2>
+            <h2>Password = {{data.u_password}}</h2>
         </div>
-        <button onclick="delete_profile('{{data.u_name}}')">delete account</button>
+        <button onclick="delete_profile('{{data.id}}')">delete account</button>
         <script src="{{url_for('static', filename='index.js')}}"></script>
     </body>
 </html>
