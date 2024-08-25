@@ -1,5 +1,6 @@
 from flask import Flask, jsonify,render_template,flash,request,redirect,session, url_for
 from Database import Database
+from watchlist import watchlist
 from flask_cors import CORS
 
 d = {
@@ -10,7 +11,9 @@ d = {
 app = Flask(__name__)
 CORS(app)
 app.secret_key = "Aru.8967"
+
 db = Database()     
+watch = watchlist()
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -20,23 +23,28 @@ def login():
         row_data = db.get_user(name)
         user_data = row_data['data'][0]
         session["user_data"] = user_data
+        print(user_data)
         if row_data["status"] == 200:
             if user_data['u_password'] == password:
                 print("user login successfull")
-                return redirect(f'/home/{name}')
+                return redirect(f'/home/{user_data["id"]}')
             else:
                 print("Password is incurrect", 'danger')
         else:
             print(row_data['data'])
     return render_template("login.html")
 
-@app.route('/home/<u_name>')
-def home(u_name):
+@app.route('/home/<int:id>')
+def home(id):
     user_data = session.get("user_data")
-    print(u_name)
-    print(user_data)
+    watchlist_data = watch.get_data_by_userID(id)['data']
+    data = {
+        'user':user_data,
+        'watchlist' : watchlist_data
+    }
+    print(data['watchlist'])
     if user_data:
-        return render_template("home.html", data=user_data)
+        return render_template("home.html", data=data)
     else:
         print("Please login...")
         return redirect("/login")
@@ -56,45 +64,54 @@ def signup():
                 }
                 new_user = db.set_user(data)
                 if new_user['status'] == 200:
-                    flash(new_user['data'])
+                    print(new_user['data'])
                     return redirect('/login')
                 else:
-                    flash(new_user['data'])
+                    print(new_user['data'])
             else:
-                flash("password is incurrect")
+                print("password is incurrect", " | ", pass1, " | ",pass2)
                 return redirect('/signup')
         else:
             print("user already present please login")
             return redirect('/login')
     return render_template("signup.html")
 
-@app.route('/home/<username>/delete_account')
-def delete_account(username):
-    print(username)
-    userdata = db.get_user(username)["data"][0]
+@app.route('/home/<int:id>/delete_account')
+def delete_account(id):
+    print(id)
+    userdata = db.get_userid(id)["data"][0]
     return render_template('delete_profile.html', data=userdata)
 
-@app.route('/home/<username>/delete_account', methods=['DELETE'])
-def delete_acc(username):
-    responce = db.delete_user(username)
-    print(responce["data"])
+@app.route('/home/<int:id>/delete_account', methods=['DELETE'])
+def delete_acc(id):
+    responce = db.delete_user(id)
     return jsonify(responce)
 
-@app.route('/<username>/profile')
-def profile(username):
-    data = db.get_user(username)["data"][0]
+@app.route('/<int:id>/profile')
+def profile(id):
+    data = db.get_userid(id)["data"][0]
     return render_template("profile.html", data=data)
 
-@app.route('/<username>/profile', methods=['POST'])
-def profile_update(username):
+@app.route('/<int:id>/profile', methods=['POST'])
+def profile_update(id):
     if request.method == 'POST':
         name = request.form['u_name']
         password = request.form['u_password']
-        print(username, name, password)
-        data = db.get_user(username)['data'][0]
+        # print(id, name, password)
+        data = db.get_userid(id)['data'][0]
         responce = db.update_user(data["id"], name, password)
         print(responce)
     return redirect('profile')
+
+@app.route('/home/<int:user_id>/<company_name>')
+def add_company(user_id, company_name):
+    data = {
+        'c_name':company_name,
+        'u_id':user_id
+    }
+    add_c = watch.add_company(data)
+    return jsonify(data)
+
 
 @app.route('/test')
 def test():

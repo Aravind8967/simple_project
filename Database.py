@@ -29,6 +29,24 @@ class Database:
         else:
             return {"status":db["status"], "data":db["data"]}
     
+    def get_userid(self, id):
+        db = self.db_connection()
+        if db['status'] == 200:
+            try:
+                con = db['connection']
+                q = "SELECT * FROM USERS WHERE ID = %s;"
+                cursor = con.cursor(dictionary=True)
+                cursor.execute(q, (id,))
+                data = cursor.fetchall()
+                if data:
+                    return {'status':200, 'data':data}
+                else:
+                    return {'status':404, 'data':'user not found'}
+            except:
+                return {'status':404, 'data':'user not found'}
+        else:
+            return {'status':404, 'data':'user not found'}
+
     def get_user(self, name):
         db = self.db_connection()
         if db['status'] == 200:
@@ -81,13 +99,13 @@ class Database:
         else:
             return {'status':db['status'], 'data':db['data']}
     
-    def delete_user(self, u_name):
+    def delete_user(self, id):
         db = self.db_connection()
         if db['status'] == 200:
             con = db['connection']
             cursor = con.cursor()
-            q = "DELETE FROM USERS WHERE U_NAME = %s"
-            cursor.execute(q, (u_name,))
+            q = "DELETE FROM USERS WHERE ID = %s"
+            cursor.execute(q, (id,))
             con.commit()
             return {'status':200, 'data':'User account deleted'}
         else:
@@ -98,7 +116,7 @@ class Database:
         if db["status"] == 200:
             con = db["connection"]
             cursor = con.cursor()
-            q = "UPDATE USERS SET U_NAME = %s, U_PASSWORD = %s WHERE id = %s"
+            q = "UPDATE USERS SET U_NAME = %s, U_PASSWORD = %s WHERE ID = %s"
             cursor.execute(q, (u_name, u_password, id))
             con.commit()
             return {'status':200, 'data':'User account updated'}
@@ -124,6 +142,4 @@ if __name__ == '__main__':
         'u_password':'Varu.8967'
     }
     # print(db.delete_user("Aravind"))
-    print(db.truncate_table())
-    get_all_user = db.get_all_data()
-    print(get_all_user['data'])
+    print(db.delete_user(8))

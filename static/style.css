@@ -16,7 +16,7 @@ h2{
     font-size: 40px;
     color: white;
     margin-left: 30%;
-    margin-top: 20%;
+    margin-top: 5%;
 }
 
 label{
@@ -36,3 +36,35 @@ button{
     left: 80px;
     height: 50px;
 }
+
+button:hover{
+    background-color: gray;
+}
+
+.watchlist{
+    font-size: 40px;
+    color: white;
+    margin-left: 30%;
+    margin-top: 5%;
+}
+
+.watchlist button{
+    font-size: 20px;
+    margin-left: 1em;
+}
+
+.watchlist button:hover{
+    background-color: gray;
+}
+
+.watchlist #search_name{
+    font-size: 30px;
+
+}
+
+/* input:valid{
+    outline-color: var(--clr-success);
+}
+input:invalid{
+    outline-color: var(--clr-error);
+} */
