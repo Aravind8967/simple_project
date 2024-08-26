@@ -1,43 +1,36 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>welcome {{data.user.u_name}}</title>
-        <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
-    </head>
-    <body>
-        <h1>Home page</h1>
-        <div class="data">
-            <p>{{data.user.id}}</p>
-            <p>{{data.user.u_name}}</p>
-            <p>{{data.user.u_password}}</p>
-            <button type="button" onclick="logout()">logout</button>
-            <a href="{{data.user.id}}/delete_account">delete account page</a>
-            <a href="/{{data.user.id}}/profile">Profile</a>
-        </div>
-        <div class="watchlist">
-            <h4>watchlist</h4>
-            <input type="text" name="company_name" required id="search_name">
-            <button type="button" onclick="add_company('{{data.user.id}}')">Add</button>
-            {% if data.watchlist|length > 0 %}
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th scope="col">Sl NO</th>
-                            <th scope="col">Company Name</th>
-                            <th scope="col">Share Price</th>
-                            <th scope="col">Action</th>
-                        </tr>
-                    </thead>
-                </table>
-                {% for company in data.watchlist %}
-                    <p>{{company.c_name}}</p>
-                {% endfor %}
-            {% else %}
-                <p>add company</p>
-            {% endif %}
-        </div>
-        <script src="{{url_for('static', filename='index.js')}}"></script>
-    </body>
-</html>
+{% extends 'base.html' %}
+{% block title %} welcome {{data.user.u_name}} {% endblock title%}
+
+{% block body %}
+    <h1>Home page</h1>
+    <div class="data">
+        <p>{{data.user.id}}</p>
+        <p>{{data.user.u_name}}</p>
+        <p>{{data.user.u_password}}</p>
+        <button type="button" onclick="logout()">logout</button>
+        <a href="{{data.user.id}}/delete_account">delete account page</a>
+        <a href="/{{data.user.id}}/profile">Profile</a>
+    </div>
+    <div class="watchlist">
+        <h4>watchlist</h4>
+        <input type="text" name="company_name" required id="search_name">
+        <button type="button" onclick="add_company('{{data.user.id}}')">Add</button>
+        {% if data.watchlist|length > 0 %}
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Sl NO</th>
+                        <th scope="col">Company Name</th>
+                        <th scope="col">Share Price</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                </thead>
+            </table>
+            {% for company in data.watchlist %}
+                <p>{{company.c_name}}</p>
+            {% endfor %}
+        {% else %}
+            <p>add company</p>
+        {% endif %}
+    </div>
+{% endblock body %}

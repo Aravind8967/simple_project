@@ -100,6 +100,18 @@ class watchlist:
         else:
             return {'status':404, 'data':'database connection error'}
 
+    def get_data_by_cname(self, c_name, u_id):
+        db = self.db_connection()
+        if db['status'] == 200:
+            con = db['connection']
+            q = "SELECT * FROM WATCHLIST WHERE C_NAME = %s AND U_ID = %s"
+            cursor = con.cursor(dictionary=True)
+            cursor.execute(q,(c_name,u_id))
+            data = cursor.fetchall()
+            return {'status':200, 'data':data}
+        else:
+            return {'status':404, 'data':'database connection error'}
+
     def update_u_id(self,name, id):
         db = self.db_connection()
         try:
@@ -151,5 +163,10 @@ def get_by_id(id):
     for i in data:
         print(i)
 
+def get_by_name(name, id):
+    watch = watchlist()
+    data = watch.get_data_by_cname(name, id)['data']
+    print(data)
+
 if __name__ == '__main__':
-    get_by_id(1)
+    get_by_name("PFC", 7)

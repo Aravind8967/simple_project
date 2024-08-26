@@ -105,11 +105,13 @@ def profile_update(id):
 
 @app.route('/home/<int:user_id>/<company_name>')
 def add_company(user_id, company_name):
-    data = {
+    input_data = {
         'c_name':company_name,
         'u_id':user_id
     }
-    add_c = watch.add_company(data)
+    watch.add_company(input_data)
+    data = watch.get_data_by_cname(company_name, user_id)['data'][0]
+    print(data)
     return jsonify(data)
 
 
