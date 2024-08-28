@@ -1,23 +1,16 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>profile</title>
-        <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
-    </head>
-    <body>
-        <h1>User Profile</h1>
-        <div>
-            <form method="POST">
-                <label for="username">Username</label>
-                <input type="text" name="u_name" value="{{data.u_name}}"><br>
-                <label for="password">password</label>
-                <input type="text" name="u_password" value="{{data.u_password}}"><br>
-                <button type="submit">Update</button>
-            </form>
-        </div>
-        <button type="button" onclick="home('{{data.id}}')">home</button>
-        <script src="{{url_for('static', filename='index.js')}}"></script>
-    </body>
-</html>
+{% extends 'base.html' %}
+{% block title %} User Profile {% endblock title%}
+
+{% block body %}
+    <h1>User Profile</h1>
+    <div>
+        <form method="POST">
+            <label for="username">Username</label>
+            <input type="text" name="u_name" value="{{data.u_name}}"><br>
+            <label for="password">password</label>
+            <input type="text" name="u_password" value="{{data.u_password}}"><br>
+            <button type="submit">Update</button>
+        </form>
+    </div>
+    <button type="button" onclick="home('{{data.id}}')">home</button>
+{% endblock body %}
