@@ -114,13 +114,6 @@ def add_company(user_id, company_name):
     print(data)
     return jsonify(data)
 
-
-@app.route('/test')
-def test():
-    db = Database()
-    fun = db.get_user("Varsha")
-    return fun
-
 @app.route('/truncate', methods=['GET'])
 def truncate():
     db = Database()
@@ -137,6 +130,10 @@ def logout():
 def get_all_data():
     data = db.get_all_data()['data']
     return render_template('all_user.html', data=data)
+
+@app.route('/test')
+def test():
+    return render_template('test.html')
 
 if __name__ == '__main__':
     app.run(debug=True, port=300)
