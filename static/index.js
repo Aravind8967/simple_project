@@ -26,31 +26,14 @@ async function logout() {
     }
 }
 
-async function add_company_test(user_id) {
-    let company_name = document.getElementById('search_name').value
-    let url = `http://127.0.0.1:300/home/${user_id}/${company_name}`
-    let responce = await fetch(url)
-    if (responce.ok){
-        let res = await responce.json()
-        let p = document.createElement('p')
-        p.textContent = res.data
-        document.querySelector('.watchlist-content').appendChild(p)
-        document.getElementById('search_name').value = ''
-        console.log("data updated")
-    }
-    else{
-        console.log(responce.json())
-    }
-}
-
 async function add_company(user_id) {
-    let company_name = document.getElementById("search_name").value
+    let company_name = document.getElementById("search-box").value
     let url = `http://127.0.0.1:300/home/${user_id}/${company_name}`
     let responce = await fetch(url)
     console.log(responce)
     if (responce.ok){
         let db_data = await responce.json()
-        let table = document.querySelector(".watchlist-content")
+        let table = document.querySelector("table")
         let sl_no = table.rows.length + 1
         let new_row = document.createElement('tr')
         console.log(db_data)
@@ -70,6 +53,56 @@ async function add_company(user_id) {
         console.log("unknown error")
     }
 }
+
+function handleSearchInput() {
+    let query = $('#search-box').val();
+    if (query.length > 1) {
+        $.ajax({
+            url: '/search',
+            data: { query: query },
+            success: function(data) {
+                $('#suggestions').empty(); // Clear previous suggestions
+
+                if (data.length > 0) {
+                    data.forEach(function(item) {
+                        // Append each suggestion as a clickable list item
+                        const suggestionItem = $('<li></li>').text(item);
+                        suggestionItem.on('click', function() {
+                            $('#search-box').val(item); // Set input value to clicked suggestion
+                            $('#suggestions').empty(); // Clear suggestions
+                            $('#suggestions').hide(); // Hide the dropdown
+                        });
+                        $('#suggestions').append(suggestionItem);
+                    });
+                    // Show the dropdown if there are suggestions
+                    $('#suggestions').show();
+                } else {
+                    // Hide the dropdown if no suggestions
+                    $('#suggestions').hide();
+                }
+            },
+            error: function() {
+                // Handle errors if necessary
+                $('#suggestions').empty();
+                $('#suggestions').hide();
+            }
+        });
+    } else {
+        $('#suggestions').empty(); // Clear suggestions if input is too short
+        $('#suggestions').hide(); // Hide the dropdown
+    }
+}
+
+$(document).ready(function(){
+    $('#search-box').on('input', handleSearchInput);
+    // Hide suggestions when clicking outside the search box
+    $(document).on('click', function(e) {
+        if (!$(e.target).closest('.search-container').length) {
+            $('#suggestions').hide();
+        }
+    });
+});
+
 
 async function get_all_data() {
     let url = "http://127.0.0.1:300/get_all_data"

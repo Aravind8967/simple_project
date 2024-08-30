@@ -13,24 +13,30 @@
     </div>
     <div class="watchlist">
         <h4>watchlist</h4>
-        <input type="text" name="company_name" required id="search_name">
-        <button type="button" onclick="add_company('{{data.user.id}}')">Add</button>
-        {% if data.watchlist|length > 0 %}
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th scope="col">Sl NO</th>
-                        <th scope="col">Company Name</th>
-                        <th scope="col">Share Price</th>
-                        <th scope="col">Action</th>
-                    </tr>
-                </thead>
-            </table>
-            {% for company in data.watchlist %}
-                <p>{{company.c_name}}</p>
-            {% endfor %}
-        {% else %}
-            <p>add company</p>
-        {% endif %}
+        <div>
+            <h1>Company Search</h1>
+            <input type="text" id="search-box" placeholder="Search for a company...">
+            <ol type="A" id="suggestions"></ol>
+            <button type="button" onclick="add_company('{{data.user.id}}')">Add</button>
+        </div>
+        <div class="watchlist-content">
+            {% if data.watchlist|length > 0 %}
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Sl NO</th>
+                            <th scope="col">Company Name</th>
+                            <th scope="col">Share Price</th>
+                            <th scope="col">Action</th>
+                        </tr>
+                    </thead>
+                </table>
+                {% for company in data.watchlist %}
+                    <p>{{company.c_name}}</p>
+                {% endfor %}
+            {% else %}
+                <p>add company</p>
+            {% endif %}
+        </div>
     </div>
 {% endblock body %}

@@ -3,15 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Search Bar with Categorized Suggestions</title>
+    <title>Search Bar with Dropdown Suggestions</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
-        /* Basic styles for the search bar and suggestion box */
         .search-container {
             position: relative;
             width: 300px;
+            margin-top: 20px;
         }
         
-        .suggestions {
+        #suggestions {
             position: absolute;
             background-color: white;
             border: 1px solid #ccc;
@@ -21,24 +22,18 @@
             width: 100%;
             z-index: 1000;
             padding: 0;
+            list-style: none;
             box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            display: none; /* Hidden initially */
         }
 
-        .suggestions .category {
-            background-color: #f0f0f0;
-            font-weight: bold;
-            padding: 8px 10px;
-            border-bottom: 1px solid #ccc;
-        }
-
-        .suggestions p {
-            margin: 0;
+        #suggestions li {
             padding: 10px;
             cursor: pointer;
         }
 
-        .suggestions p:hover {
-            background-color: #e0e0e0;
+        #suggestions li:hover {
+            background-color: #f0f0f0;
         }
 
         .search-container input {
@@ -50,56 +45,68 @@
 </head>
 <body>
 
-<div class="search-container">
-    <input type="text" id="search" placeholder="Search for a company...">
-    <div id="suggestions" class="suggestions"></div>
-</div>
+    <div class="search-container">
+        <h1>Company Search</h1>
+        <input type="text" id="search-box" placeholder="Search for a company...">
+        <ul id="suggestions"></ul>
+    </div> 
+    <div>
+        <h1>Company Search</h1>
+        <input type="text" id="search-box" placeholder="Search for a company...">
+        <ol type="A" id="suggestions"></ol>
+    </div>
+    <a href="/logout">logout</a>
+    <script>
+        function handleSearchInput() {
+            let query = $('#search-box').val();
+            if (query.length > 1) {
+                $.ajax({
+                    url: '/search',
+                    data: { query: query },
+                    success: function(data) {
+                        $('#suggestions').empty(); // Clear previous suggestions
 
-<script>
-    // Categorized suggestions
-    const suggestions = {
-        "Banking": ["State Bank of India", "HDFC Bank", "ICICI Bank"],
-        "Pharmaceuticals": ["Sun Pharmaceuticals Industries Ltd", "Dr. Reddy's Laboratories Ltd"],
-        "Technology": ["Infosys Ltd", "Tata Consultancy Services Ltd"],
-        "Energy": ["Reliance Industries Ltd", "Suzlon Energy Ltd"]
-    };
-
-    const searchInput = document.getElementById('search');
-    const suggestionsContainer = document.getElementById('suggestions');
-
-    searchInput.addEventListener('input', function() {
-        const query = this.value.toLowerCase();
-        suggestionsContainer.innerHTML = '';
-
-        if (query) {
-            for (const category in suggestions) {
-                const filteredSuggestions = suggestions[category].filter(item => item.toLowerCase().includes(query));
-                if (filteredSuggestions.length > 0) {
-                    const categoryDiv = document.createElement('div');
-                    categoryDiv.className = 'category';
-                    categoryDiv.textContent = category;
-                    suggestionsContainer.appendChild(categoryDiv);
-
-                    filteredSuggestions.slice(0, 5).forEach(item => {
-                        const suggestion = document.createElement('p');
-                        suggestion.textContent = item;
-                        suggestion.addEventListener('click', function() {
-                            searchInput.value = item;
-                            suggestionsContainer.innerHTML = '';
-                        });
-                        suggestionsContainer.appendChild(suggestion);
-                    });
-                }
+                        if (data.length > 0) {
+                            data.forEach(function(item) {
+                                // Append each suggestion as a clickable list item
+                                const suggestionItem = $('<li></li>').text(item);
+                                suggestionItem.on('click', function() {
+                                    $('#search-box').val(item); // Set input value to clicked suggestion
+                                    $('#suggestions').empty(); // Clear suggestions
+                                    $('#suggestions').hide(); // Hide the dropdown
+                                });
+                                $('#suggestions').append(suggestionItem);
+                            });
+                            // Show the dropdown if there are suggestions
+                            $('#suggestions').show();
+                        } else {
+                            // Hide the dropdown if no suggestions
+                            $('#suggestions').hide();
+                        }
+                    },
+                    error: function() {
+                        // Handle errors if necessary
+                        $('#suggestions').empty();
+                        $('#suggestions').hide();
+                    }
+                });
+            } else {
+                $('#suggestions').empty(); // Clear suggestions if input is too short
+                $('#suggestions').hide(); // Hide the dropdown
             }
         }
-    });
 
-    document.addEventListener('click', function(e) {
-        if (!document.querySelector('.search-container').contains(e.target)) {
-            suggestionsContainer.innerHTML = '';
-        }
-    });
-</script>
+        $(document).ready(function(){
+            $('#search-box').on('input', handleSearchInput);
+            // Hide suggestions when clicking outside the search box
+            $(document).on('click', function(e) {
+                if (!$(e.target).closest('.search-container').length) {
+                    $('#suggestions').hide();
+                }
+            });
+        });
+
+    </script>
 
 </body>
 </html>

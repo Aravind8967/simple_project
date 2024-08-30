@@ -135,6 +135,26 @@ def get_all_data():
 def test():
     return render_template('test.html')
 
+@app.route('/search')
+def search():
+    query = request.args.get('query', '').strip()
+    db = watch.db_connection()
+    if db['status'] == 200:
+        connection = db['connection']
+        cursor = connection.cursor()
+
+        if query:
+            q = "SELECT c_name FROM companies WHERE c_name or c_symbol LIKE %s LIMIT 5"
+            cursor.execute(q, (f'%{query}%', )) 
+            result = cursor.fetchall()
+        else:
+            result = []
+           
+        suggestions = [row[0] for row in result]
+        return jsonify(suggestions)
+    else:
+        print("database connection error")
+
 if __name__ == '__main__':
     app.run(debug=True, port=300)
     # print(login_test('Varsha'))
