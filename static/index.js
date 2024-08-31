@@ -30,27 +30,47 @@ async function add_company(user_id) {
     let company_name = document.getElementById("search-box").value
     let url = `http://127.0.0.1:300/home/${user_id}/${company_name}`
     let responce = await fetch(url)
-    console.log(responce)
     if (responce.ok){
         let db_data = await responce.json()
-        let table = document.querySelector("table")
-        let sl_no = table.rows.length + 1
-        let new_row = document.createElement('tr')
-        console.log(db_data)
-        new_row.innerHTML = `
-            <th scope='row'>${sl_no}</th>
-            <td>${db_data.c_name}</td>
-            <td>${db_data.share_price}</td>
-            <td>
-                <button class="btn btn-danger">Remove</button>
-            </td>
-        `
-        table.appendChild(new_row)
-        console.log(new_row)
-        document.getElementById('search_name').value = ''
+        let table_body = document.getElementById('watchlist-table-body')
+        table_body.innerHTML = ''
+        if (db_data.watchlist.length > 0){
+            db_data.watchlist.forEach((company, index) => {
+                let row = document.createElement('tr')
+                row.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td>${company.c_name}</td>
+                    <td>${company.c_symbol}</td>
+                    <td>${company.share_price !== null ? company.share_price : 'not found'}</td>
+                    
+                `
+                table_body.appendChild(row)
+            })
+        }
+        else{
+            const emptyRow = document.createElement('tr');
+            emptyRow.innerHTML = `<td colspan="4" class="text-center">Add company</td>`;
+            table_body.appendChild(emptyRow);
+        }
     }
     else{
-        console.log("unknown error")
+        console.log("Unknown error")
+    }
+}
+
+async function clear_watchlist(u_id){
+    let url = `/delete_alldata_by_user/${u_id}`
+    let responce = await fetch(url)
+    if (responce.ok){
+        data = await responce.json()
+        let table_body = document.getElementById('watchlist-table-body')
+        table_body.innerHTML = ''
+        const emptyRow = document.createElement('tr');
+        emptyRow.innerHTML = `<td colspan="4" class="text-center">Add company</td>`;
+        table_body.appendChild(emptyRow);
+    }
+    else{
+        console.log(responce.json())
     }
 }
 

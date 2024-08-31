@@ -1,6 +1,7 @@
 from flask import Flask, jsonify,render_template,flash,request,redirect,session, url_for
-from Database import Database
-from watchlist import watchlist
+from db_files.Database import Database
+from db_files.watchlist import watchlist
+from db_files.companies import companies
 from flask_cors import CORS
 
 d = {
@@ -14,6 +15,7 @@ app.secret_key = "Aru.8967"
 
 db = Database()     
 watch = watchlist()
+company = companies()
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -23,7 +25,6 @@ def login():
         row_data = db.get_user(name)
         user_data = row_data['data'][0]
         session["user_data"] = user_data
-        print(user_data)
         if row_data["status"] == 200:
             if user_data['u_password'] == password:
                 print("user login successfull")
@@ -42,11 +43,9 @@ def home(id):
         'user':user_data,
         'watchlist' : watchlist_data
     }
-    print(data['watchlist'])
     if user_data:
         return render_template("home.html", data=data)
     else:
-        print("Please login...")
         return redirect("/login")
 
 @app.route('/signup', methods=['GET', 'POST'])
@@ -78,7 +77,6 @@ def signup():
 
 @app.route('/home/<int:id>/delete_account')
 def delete_account(id):
-    print(id)
     userdata = db.get_userid(id)["data"][0]
     return render_template('delete_profile.html', data=userdata)
 
@@ -97,28 +95,27 @@ def profile_update(id):
     if request.method == 'POST':
         name = request.form['u_name']
         password = request.form['u_password']
-        # print(id, name, password)
         data = db.get_userid(id)['data'][0]
         responce = db.update_user(data["id"], name, password)
-        print(responce)
     return redirect('profile')
 
 @app.route('/home/<int:user_id>/<company_name>')
-def add_company(user_id, company_name):
+def add_company_to_db(user_id, company_name):
+    company_data = company.search_by_name(company_name)['data'][0]
     input_data = {
-        'c_name':company_name,
-        'u_id':user_id
+        'u_id':user_id,
+        'c_name':company_data['c_name'],
+        'share_price':None,
+        'c_symbol':company_data['c_symbol']
     }
     watch.add_company(input_data)
-    data = watch.get_data_by_cname(company_name, user_id)['data'][0]
-    print(data)
-    return jsonify(data)
+    data = watch.get_data_by_userID(user_id)['data']
+    return ({'watchlist':data})
 
 @app.route('/truncate', methods=['GET'])
 def truncate():
     db = Database()
     fun = db.truncate_table()
-    print(fun['status'], fun['data'])
     return jsonify(fun)
 
 @app.route('/logout')
@@ -131,6 +128,11 @@ def get_all_data():
     data = db.get_all_data()['data']
     return render_template('all_user.html', data=data)
 
+@app.route('/delete_alldata_by_user/<int:u_id>')
+def delete_alldata_by_user(u_id):
+    data = watch.delete_all_data_by_user(u_id)
+    return jsonify(data)
+
 @app.route('/test')
 def test():
     return render_template('test.html')
@@ -142,10 +144,9 @@ def search():
     if db['status'] == 200:
         connection = db['connection']
         cursor = connection.cursor()
-
         if query:
-            q = "SELECT c_name FROM companies WHERE c_name or c_symbol LIKE %s LIMIT 5"
-            cursor.execute(q, (f'%{query}%', )) 
+            q = "SELECT c_name FROM companies WHERE c_name LIKE %s OR c_symbol LIKE %s LIMIT 5"
+            cursor.execute(q, (f'%{query}%', f'%{query}%')) 
             result = cursor.fetchall()
         else:
             result = []

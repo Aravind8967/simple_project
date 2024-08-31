@@ -46,11 +46,10 @@ class watchlist:
         try:
             if db['status'] == 200:
                 con = db['connection']
-                # print(self.is_present(data['c_name'], data['u_id']))
                 if not self.is_present(data['c_name'], data['u_id']):
-                    q = "INSERT INTO WATCHLIST (C_NAME, U_ID) VALUES (%s, %s)"
+                    q = "INSERT INTO WATCHLIST (C_NAME, U_ID, share_price, c_symbol) VALUES (%s, %s,%s, %s)"
                     cursor = con.cursor(dictionary=True)
-                    cursor.execute(q, (data['c_name'], data['u_id']))
+                    cursor.execute(q, (data['c_name'], data['u_id'], data['share_price'],data['c_symbol']))
                     db['connection'].commit()
                     return {'status':200, 'data':'company added succesfully'}
                 else:
@@ -127,6 +126,22 @@ class watchlist:
         else:
             return {'status':404, 'data':'company name not found'}
 
+    def delete_all_data_by_user(self, u_id):
+        db = self.db_connection()
+        try:
+            if db['status'] == 200:
+                con = db['connection']
+                q = "DELETE FROM WATCHLIST WHERE U_ID = %s"
+                cursor = con.cursor(dictionary=True)
+                cursor.execute(q, (u_id,))
+                con.commit()
+                return {'status':200, 'data':'Watchlist cleared successfully'}
+        except:
+                return {'status':404, 'data':'something went wrong'}
+        else:
+            return {'status':404, 'data':'company name not found'}
+
+
 def add(name, id):
     watch = watchlist()
     data = {
@@ -169,4 +184,4 @@ def get_by_name(name, id):
     print(data)
 
 if __name__ == '__main__':
-    get_by_name("PFC", 7)
+    get_by_id(7)
