@@ -2,3 +2,4 @@ venv
 __pycache__
 simple_project
 simple_project.pub
+.env
