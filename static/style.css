@@ -1,6 +1,284 @@
+:root{
+    --default_color:rgb(29, 28, 28)
+}
+
+* {
+    font-family: "Times New Roman", Times, serif;
+}
+
 body{
     background-color: black;
     color: white;
+    overflow-x: hidden;
+}
+
+/* ====================== Nav bar ========================= */
+
+/* ===================================================================================================== */
+
+
+/* Common styles for suggestion boxes */
+.suggestions-list {
+    position: absolute; /* Position absolute to ensure it appears below the input */
+    z-index: 1000; /* High z-index to ensure it appears above other elements */
+    background-color: #fff; /* White background for better visibility */
+    border: 1px solid #ddd; /* Light border for separation */
+    border-radius: 4px; /* Rounded corners */
+    width: calc(100% - 20px); /* Adjust to match the input width */
+    max-height: 150px; /* Limit height */
+    overflow-y: auto; /* Add scroll if there are too many suggestions */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Slight shadow for depth */
+    list-style-type: none; /* Remove default list styling */
+    padding: 0; /* Remove padding */
+    margin: 0; /* Remove margin */
+    display: none;
+    color: black;
+    margin-top: 25px;
+    width: 400px;
+}
+
+/* Individual suggestion item styling */
+.suggestions-list li {
+    padding: 10px; /* Spacing inside each item */
+    cursor: pointer; /* Pointer cursor for interactivity */
+}
+
+/* Hover effect for better user interaction */
+.suggestions-list li:hover {
+    background-color: #f0f0f0; /* Light background on hover */
+}
+
+/* Positioning for watchlist suggestions box */
+#watchlist-suggestions {
+    top: 40px; /* Position it correctly below the input */
+    left: 10px; /* Adjust left position */
+}
+
+/* Positioning for navbar suggestions box */
+#navbar-suggestions {
+    top: 40px; /* Adjust if needed */
+    right: 10px; /* Adjust right position */
+}
+
+.input-group, .d-flex {
+    position: relative; 
+}
+
+.navbar-text {
+    font-weight: bold;
+}
+
+.navbar-brand {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.navbar {
+    margin-top:2px;
+    width: 100%;
+    height: 55px;
+    padding: 0.5rem 1rem;
+    position: fixed;
+    z-index: 1000;
+}
+
+.nav-item{
+    padding:2px;
+}
+
+.nav-link{
+    padding: 2rm;
+    margin: 2rm;
+}
+
+#logout_btn{
+    margin-left: -80%;
+    height: 40px;
+    width: 100px;
+}
+
+#username{
+    margin-left: -20%;
+    padding: 20px;
+    font-size: 30px;
+    color: black;
+}
+
+#search_btn{
+    margin-top: 20px !important;
+    height: 40px;
+    color: black;
+}
+
+#navbarNav a{
+    font-size: 20px;
+}
+
+/* ===================== watchlist ========================== */
+
+#watchlist_container {
+    margin-left: 2%;
+    margin-top: 3%;
+    padding: 10px;
+    border-radius: 8px;
+    color: #ddd;
+}
+
+#del_item{
+    color: white;
+    align-items: center;
+    background-color: transparent;
+    width: 12%;
+    height: 5%;
+    border: none;
+    display: none;
+    z-index: 1000;
+}
+
+#del_item:hover{
+    color: rgb(160, 27, 27);
+}
+
+.input-group {
+    position: relative;
+}
+
+#search-box {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+#watchlist_container #search_section{
+    margin: 0px;
+    width: 100%;
+    padding: 0%;
+    color: white;
+    border: none;
+    background-color: transparent;
+}
+
+#watchlist_container #search_section input{
+    width: 80%;
+}
+
+#watchlist_container #search_section button{
+    width: 5em;
+    height: 2.5em;
+    background-color: white;
+    border: none;
+    border-radius: 10px;
+}
+
+#watchlist_container #search_section button:hover{
+    background-color: gray;
+}
+
+#watchlist_header h2{
+    border: 1px solid white;
+    font-family: "Times New Roman", Times, serif;
+    padding: 10px;
+    font-size: 40px;
+    text-align: center;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    background-color: gray;
+    margin-bottom: 0%;
+
+}
+
+
+#watchlist{
+    height: 600px;
+    color: white;
+    border: 1px solid white;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    scroll-behavior: smooth;
+    overflow-y: auto;
+}
+
+.watchlist-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: large;
+    margin: 5px;
+    margin-left: 2px;
+    margin-right: 0px;
+    border: 1px solid #555;
+    border-radius: 15px;
+}
+
+.watchlist-row p {
+    font-size: 20px !important;
+}
+
+.watchlist-row:hover{
+    background-color: rgb(37, 37, 37);
+    border: 1px solid white;
+    border-radius: 10px;
+}
+
+#watchlist_container #watchlist #watchlist_items .company-name, .share-price, #del_item{
+    margin-left: 15px;
+    margin-top: 12px;
+    padding: 0%;
+}
+
+#watchlist::-webkit-scrollbar{
+    width: 2px;
+}
+
+#watchlist::-webkit-scrollbar-track{
+    background-color: transparent;
+}
+
+#watchlist::-webkit-scrollbar-thumb{
+    background-color: white;
+}
+
+.company-name{
+    text-align: left;
+} 
+
+.share-price {
+    text-align: right;
+}
+
+
+/* ==================== watchlist search ====================== */
+
+#watchlist_suggestions {
+    position: absolute;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-top: none;
+    max-height: 200px;
+    overflow-y: auto;
+    width: 40%;
+    z-index: 1000;
+    padding: 0;
+    list-style: none;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    display: none; /* Hidden initially */
+}
+
+#watchlist_suggestions li {
+    padding: 10px;
+    cursor: pointer;
+}
+
+#watchlist_suggestions li:hover {
+    background-color: #f0f0f0;
+}
+
+/* =========================================================== */
+
+.text-center {
+    text-align: center;
+    color: #888;
+    padding: 10px 0;
 }
 
 h1{
@@ -69,31 +347,99 @@ button:hover{
 }
 
 #suggestions {
-    position: absolute;
-    background-color: white;
-    border: 1px solid #ccc;
-    border-top: none;
-    max-height: 200px;
-    overflow-y: auto;
-    width: 40%;
-    z-index: 1000;
-    padding: 0;
-    list-style: none;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-    display: none; /* Hidden initially */
+    position: absolute; /* Position it absolutely within the input group */
+    margin-top: 0%;
+    top: 100%; /* Position it just below the input field */
+    left: 0;
+    right: 0;
+    background: gray; /* Light background for visibility */
+    border: 1px solid #ddd;
+    width: 100%;
+    font-size: 20px;
+    max-height: 300px; /* Limit the height */
+    overflow-y: auto; /* Add scrolling if too many suggestions */
+    margin: 0;
+    display: none;
+    border-radius: 10px;
+    padding: 5px;
+    list-style-type: none; /* Remove default list styling */
+    z-index: 1000; /* Ensure it appears above other elements */
 }
 
 #suggestions li {
-    padding: 10px;
+    padding: 5px 10px;
     cursor: pointer;
+    color: black;
 }
 
 #suggestions li:hover {
-    background-color: #f0f0f0;
+    background: #f0f0f0; /* Highlight on hover */
+}
+
+.watchlist-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 5px 0;
+    border-bottom: 1px solid #444;
 }
 
 .search-container input {
     padding: 8px 12px;
     width: 100%;
     box-sizing: border-box;
+}
+
+.company-name, .share-price {
+    flex: 1;
+    padding: 0 10px;
+    color: #ddd;
+}
+
+.text-center {
+    text-align: center;
+    color: #888;
+}
+
+#watchlist_container #watchlist_clear{
+    width: 60%;
+    margin-left: 20%;
+    color: white;
+    background-color: transparent;
+    border: 1px solid white;
+    border-radius: 20px;
+    margin-bottom: 10px;
+}
+
+#watchlist_container #watchlist_clear:hover{
+    background-color: gray;
+}
+
+
+
+/* ================= company_section =============== */
+
+#company_section{
+    border: 2px solid white;
+    margin-top: 1%;
+    border-radius: 20px;
+}
+
+#company_section #company_symbol{
+    text-align: left;
+    color: green;
+    font-size: 60px;
+    float: left;
+}
+#company_section #company_name{
+    margin-top: 20px;
+    color: green;
+    font-size: 30px;
+}
+#company_section #share_price{
+    color: green;
+}
+
+#company_section #company_button{
+    margin-bottom: 20px;
+    margin-top: 20px;
 }

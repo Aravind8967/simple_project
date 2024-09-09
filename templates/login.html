@@ -1,17 +1,20 @@
-{% extends 'base.html' %}
+{% extends 'base_reg.html' %}
 {% block title %} login {% endblock title %}
 
 {% block body %}
-    <h1>login page</h1>
-    <form method="POST">
-        <label for="name">Username</label>
-        <input type="text", name="name" required><br>
-        <label for="name">Password</label>
-        <input type="password", name="password" required><br>
-        <button type="submit">login</button>
-    </form>
-    <button type="button" onclick="truncate()">Truncate</button><br>
-    <a href="/home">click hear for home page</a><br>
-    <a href="/signup">click hear for signup</a><br>
-    <a href="/get_all_data">click hear for all user data page</a> 
+    <div class="login-container">
+        <h2>Customer Login</h2>
+        <form method="POST">
+            <label for="name">Username</label>
+            <input type="text", name="name" required><br>
+            <label for="name">Password</label>
+            <input type="password", name="password" required><br>
+            <button type="submit" class="login-btn">login</button>
+        </form>
+        <a href="/signup">click hear for signup</a><br>
+    </div>
+    <div class="additional-links">
+        <button type="button" onclick="truncate()">Truncate</button><br>
+        <a href="/get_all_data">click hear for all user data page</a>
+    </div>
 {% endblock body %}

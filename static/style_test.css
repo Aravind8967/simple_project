@@ -1,42 +1,118 @@
+:root{
+    --default_color:rgb(29, 28, 28)
+}
+
+* {
+    font-family: "Times New Roman", Times, serif;
+}
+
 body{
     background-color: black;
     color: white;
+    overflow-x: hidden;
 }
 
-h1{
-    text-align: center;
-    font-size: 30px;
+/* ====================== Nav bar ========================= */
+.navbar-text {
+    font-weight: bold;
 }
 
-h2{
-    font-size: 15px;
+.navbar-brand {
+    font-size: 1.5rem;
+    font-weight: bold;
 }
 
-.data{
-    font-size: 40px;
-    color: white;
-    margin-left: 30%;
-    margin-top: 20%;
+.navbar {
+    width: 100%;
+    height: 10vh;
+    padding: 0.5rem 1rem;
+    position: fixed;
+    z-index: 1000;
 }
 
-label{
-    margin: 20px;
-}
-input{
-    margin: 20px;
+.nav-item{
+    padding:2px;
 }
 
-a{
-    margin: 40px;
+.nav-link{
+    padding: 2rm;
+    margin: 2rm;
+}
+
+/* =============== watchlist ====================== */
+
+
+#watchlist_container {
+    margin-left: 2%;
+    margin-top: 5%;
+    padding: 10px;
+    border-radius: 8px;
+    color: #ddd;
+}
+
+.input-group {
+    position: relative; /* Make the input group relative for absolute positioning of suggestions */
+}
+
+#search-box {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+#suggestions {
+    position: absolute; /* Position it absolutely within the input group */
+    margin-top: 0%;
+    top: 100%; /* Position it just below the input field */
+    left: 0;
+    right: 0;
+    background: gray; /* Light background for visibility */
+    border: 1px solid #ddd;
+    width: 100%;
     font-size: 20px;
+    max-height: 300px; /* Limit the height */
+    overflow-y: auto; /* Add scrolling if too many suggestions */
+    margin: 0;
+    border-radius: 10px;
+    padding: 5px;
+    list-style-type: none; /* Remove default list styling */
+    z-index: 1000; /* Ensure it appears above other elements */
+}
+
+#suggestions li {
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+#suggestions li:hover {
+    background: #f0f0f0; /* Highlight on hover */
+}
+
+.watchlist-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 5px 0;
+    border-bottom: 1px solid #444;
+}
+
+.company-name, .share-price {
+    flex: 1;
+    padding: 0 10px;
+    color: #ddd;
+}
+
+.text-center {
+    text-align: center;
+    color: #888;
+}
+
+#watchlist_container #watchlist_clear{
+    width: 60%;
+    margin-left: 20%;
     color: white;
-}
-
-button{
-    left: 80px;
-    height: 50px;
-}
-
-li{
-    background-color: gray;
+    background-color: transparent;
+    border: 1px solid white;
+    border-radius: 20px;
+    margin-bottom: 10px;
 }

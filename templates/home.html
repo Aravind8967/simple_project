@@ -2,51 +2,96 @@
 {% block title %} welcome {{data.user.u_name}} {% endblock title%}
 
 {% block body %}
-    <h1>Home page</h1>
-    <div class="data">
-        <p>{{data.user.id}}</p>
-        <p>{{data.user.u_name}}</p>
-        <p>{{data.user.u_password}}</p>
-        <button type="button" onclick="logout()">logout</button>
-        <a href="{{data.user.id}}/delete_account">delete account page</a>
-        <a href="/{{data.user.id}}/profile">Profile</a>
-    </div>
-    <div class="watchlist">
-        <h4>watchlist</h4>
-        <div>
-            <h1>Company Search</h1>
-            <input type="text" id="search-box" placeholder="Search for a company...">
-            <ol type="A" id="suggestions"></ol>
-            <button type="button" onclick="add_company('{{data.user.id}}')">Add</button>
-            <button type="button" onclick="clear_watchlist('{{data.user.id}}')">Clear watchlist</button>
+<link rel="stylesheet" href="{{url_for('static', filename='chart.css')}}">
+<script type="text/javascript" src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<div class="row">
+    <div class="col-sm-3" id="watchlist_container">
+        <div class="input-group mb-3">
+            <span class="input-group-text" id="search_section">
+                <span class="material-symbols-outlined">search</span>
+                <input class="form-control" id="search-box" type="text" placeholder="Search Company"
+                    aria-label="Search" required>
+                <button type="submit" onclick="add_company_to_watchlist('{{data.user.id}}')">Add</button>
+            </span>
+            <ol type="A" id="suggestions" class="suggestions-list"></ol> <!-- Moved outside of the span -->
         </div>
-        <div class="watchlist-content">
-            <table class="table table-hover">
-                <thead>
-                    <tr>
-                        <th scope="col">Sl NO</th>
-                        <th scope="col">Company Name</th>
-                        <th scope="col">Symbol</th>
-                        <th scope="col">Share Price</th>
-                    </tr>
-                </thead>
-                <tbody id="watchlist-table-body">
-                    {% if data.watchlist|length > 0 %}
-                        {% for company in data.watchlist %}
-                            <tr>
-                                <td>{{ loop.index }}</td>
-                                <td>{{ company.c_name }}</td>
-                                <td>{{ company.c_symbol }}</td>
-                                <td>{{ company.share_price }}</td>
-                            </tr>
-                        {% endfor %}
-                    {% else %}
-                        <tr>
-                            <td colspan="4" class="text-center">Add company</td> <!-- Message centered in the table -->
-                        </tr>
-                    {% endif %}
-                </tbody>
-            </table>
+        <button id="watchlist_clear" type="button" onclick="clear_watchlist('{{data.user.id}}')">Clear watchlist</button>
+        <div class="row" id="watchlist_header">
+            <h2>Watchlist</h2>
+        </div>
+        <div class="row" id="watchlist">
+            <div id="watchlist_items">
+                {% if data.watchlist|length > 0 %}
+                {% for company in data.watchlist %}
+                <div class="watchlist-row">
+                    <div class="company-name">
+                        <p>{{ company.c_symbol }}</p>
+                    </div>
+                    <div class="share-price">
+                        <p>{{ company.share_price }}</p>
+                    </div>
+                    <button id="del_item" onclick="delete_company('{{company.c_symbol}}', '{{data.user.id}}')">
+                        <span class="material-symbols-outlined">
+                            delete
+                            </span>
+                    </button>
+                </div>
+                {% endfor %}
+                {% else %}
+                <div>
+                    <p class="text-center">Add company</p> <!-- Message centered -->
+                </div>
+                {% endif %}
+            </div>
         </div>
     </div>
+    <div class="col-sm-8" id="chart_section">
+        <div class="row">
+            <div id="company_section">
+                <div>
+                    <div>
+                        <h1 id="company_symbol">company symbol</h1>
+                        <h1 id="share_price">share-price</h1>
+                        <h1 id="change">Change</h1>
+                    </div>
+                    <div>
+                        <h1 id="company_name">company name</h1>
+                    </div>
+                </div>
+                <div id="company_button" style="float: left;">
+                    <button class="btn btn-success" type="button" onclick="chart()">Chart</button>
+                    <button class="btn btn-success" type="button" onclick="technical()">Technical</button>
+                    <button class="btn btn-success" type="button" onclick="fundamental()">Fundamental</button>
+                    <button class="btn btn-success" type="button" onclick="details()">Details</button>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div id="chart_container">
+                <h1>Technical chart</h1>
+                <hr>
+                <div id="chart" style="position: relative;">Press a company from watchlist</div>
+            </div>
+        </div>
+        <div class="row" id="finance_charts">
+            <h1>Financical Charts</h1>
+            <hr>
+            <div class="col" id="revenue_chart">
+                <h4>Revenue Chart</h4>
+                <hr>
+                <div id="bar-chart"></div>
+            </div>
+            <div class="col" id="balence_chart">
+                <h4>Balence Chart</h4>
+                <hr>
+            </div>
+            <div class="col" id="shareholding_chart">
+                <h4>Shareholding Chart</h4>
+                <hr>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- <script src="{{url_for('static', filename='chart.js')}}"></script> -->
 {% endblock body %}

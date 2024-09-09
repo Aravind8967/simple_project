@@ -1,0 +1,117 @@
+========== Summary details ========== 
+
+RECOMMENDATION  :  BUY
+BUY  :  15
+SELL  :  1
+NEUTRAL  :  10  
+
+========== Oscillator details ========== 
+
+RECOMMENDATION  :  NEUTRAL
+BUY  :  1
+SELL  :  1
+NEUTRAL  :  9
+COMPUTE  :  {'RSI': 'NEUTRAL', 
+'STOCH.K': 'NEUTRAL', 
+'CCI': 'NEUTRAL', 
+'ADX': 'NEUTRAL', 
+'AO': 'NEUTRAL', 
+'Mom': 'SELL', 
+'MACD': 'BUY', 
+'Stoch.RSI': 'NEUTRAL', 
+'W%R': 'NEUTRAL', 
+'BBP': 'NEUTRAL', 
+'UO': 'NEUTRAL'}
+
+========== indicators details ========== 
+Recommend.Other  :  0
+Recommend.All  :  0.46666667
+Recommend.MA  :  0.93333333
+RSI  :  74.88940823
+RSI[1]  :  74.81966048
+Stoch.K  :  73.65652663
+Stoch.D  :  69.02450263
+Stoch.K[1]  :  67.80221951
+Stoch.D[1]  :  67.45013973
+CCI20  :  92.96816777
+CCI20[1]  :  88.09485841
+ADX  :  57.99134115
+ADX+DI  :  39.55737428
+ADX-DI  :  7.49949027
+ADX+DI[1]  :  38.28123194
+ADX-DI[1]  :  7.90227853
+AO  :  127.73985024
+AO[1]  :  131.61132253
+Mom  :  79.14999
+Mom[1]  :  85.4
+MACD.macd  :  51.89909793
+MACD.signal  :  50.08277551
+Rec.Stoch.RSI  :  0
+Stoch.RSI.K  :  22.52576214
+Rec.WR  :  0
+W.R  :  -21.25036995
+Rec.BBPower  :  0
+BBPower  :  98.37163768
+Rec.UO  :  0
+UO  :  42.68829123
+close  :  462.64999
+EMA5  :  450.52094707
+SMA5  :  446.669994
+EMA10  :  433.79945257
+SMA10  :  446.139999
+EMA20  :  393.7553052
+SMA20  :  391.1725005
+EMA30  :  362.69351681
+SMA30  :  338.339999
+EMA50  :  325.37544475
+SMA50  :  282.8729996
+EMA100  :  278.83017751
+SMA100  :  272.94814587
+EMA200  :  209.31654811
+SMA200  :  207.46675186
+Rec.Ichimoku  :  0
+Ichimoku.BLine  :  353.350005
+Rec.VWMA  :  1
+VWMA  :  384.27197075
+Rec.HullMA9  :  1
+HullMA9  :  449.69980841
+Pivot.M.Classic.S3  :  81.86665333
+Pivot.M.Classic.S2  :  255.56666333
+Pivot.M.Classic.S1  :  358.83333667
+Pivot.M.Classic.Middle  :  429.26667333
+Pivot.M.Classic.R1  :  532.53334667
+Pivot.M.Classic.R2  :  602.96668333
+Pivot.M.Classic.R3  :  776.66669333
+Pivot.M.Fibonacci.S3  :  255.56666333
+Pivot.M.Fibonacci.S2  :  321.92006715
+Pivot.M.Fibonacci.S1  :  362.91326951
+Pivot.M.Fibonacci.Middle  :  429.26667333
+Pivot.M.Fibonacci.R1  :  495.62007715
+Pivot.M.Fibonacci.R2  :  536.61327951
+Pivot.M.Fibonacci.R3  :  602.96668333
+Pivot.M.Camarilla.S3  :  414.33250725
+Pivot.M.Camarilla.S2  :  430.25500817
+Pivot.M.Camarilla.S1  :  446.17750908
+Pivot.M.Camarilla.Middle  :  429.26667333
+Pivot.M.Camarilla.R1  :  478.02251092
+Pivot.M.Camarilla.R2  :  493.94501183
+Pivot.M.Camarilla.R3  :  509.86751275
+Pivot.M.Woodie.S3  :  202.949985
+Pivot.M.Woodie.S2  :  264.4749925
+Pivot.M.Woodie.S1  :  376.649995
+Pivot.M.Woodie.Middle  :  438.1750025
+Pivot.M.Woodie.R1  :  550.350005
+Pivot.M.Woodie.R2  :  611.8750125
+Pivot.M.Woodie.R3  :  724.050015
+Pivot.M.Demark.S1  :  394.050005
+Pivot.M.Demark.Middle  :  446.8750075
+Pivot.M.Demark.R1  :  567.750015
+open  :  463.5
+P.SAR  :  492.54364405
+BB.lower  :  271.27080118
+BB.upper  :  511.07419982
+AO[2]  :  142.88426541
+volume  :  91029279
+change  :  0.11901753
+low  :  460.04999
+high  :  481.45001

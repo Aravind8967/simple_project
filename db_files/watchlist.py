@@ -72,9 +72,9 @@ class watchlist:
         db = self.db_connection()
         if db['status'] == 200:
             con = db['connection']
-            q = "DELETE FROM WATCHLIST WHERE C_NAME = %s AND U_ID = %s"
+            q = "DELETE FROM WATCHLIST WHERE C_SYMBOL = %s AND U_ID = %s"
             cursor = con.cursor(dictionary=True)
-            cursor.execute(q, (data['c_name'], data['u_id']))
+            cursor.execute(q, (data['c_symbol'], data['user_id']))
             db['connection'].commit()
             return {'status':200, 'data':'company removed succesfully'}
         else:
@@ -167,7 +167,7 @@ def all():
 def remove(name, id):
     watch = watchlist()
     data = {
-        'c_name':name,
+        'c_symbol':name,
         'u_id':id
     }
     print(watch.remove_company(data))
@@ -192,4 +192,4 @@ def get_by_name(name, id):
     print(data)
 
 if __name__ == '__main__':
-    get_by_id(7)
+    get_by_id(8)

@@ -6,11 +6,13 @@
     <div>
         <form method="POST">
             <label for="username">Username</label>
-            <input type="text" name="u_name" value="{{data.u_name}}"><br>
+            <input type="text" name="u_name" value="{{data.user.u_name}}"><br>
             <label for="password">password</label>
-            <input type="text" name="u_password" value="{{data.u_password}}"><br>
+            <input type="text" name="u_password" value="{{data.user.u_password}}"><br>
+            <label for="user_id">UserID</label>
+            <input type="text" name="u_password" value="{{data.user.id}}"><br>
             <button type="submit">Update</button>
         </form>
     </div>
-    <button type="button" onclick="home('{{data.id}}')">home</button>
+    <button type="button" onclick="home('{{data.user.id}}')">home</button>
 {% endblock body %}

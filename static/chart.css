@@ -1,0 +1,48 @@
+hr{
+    height: 2px;
+    background-color: rgb(196, 196, 196);
+    border: 1px solid rgb(196, 196, 196);
+}
+
+h4{
+    text-align: center;
+    margin: 10px;
+}
+
+/* ==================== chart container (line chart section)  ==========*/
+#chart_section{
+    margin-top: 3%;
+    margin-left: 1%;
+}
+#chart_section .row #chart_container{
+    margin-top: 3%;
+    background-color: rgb(26, 25, 25);
+    height: 35em;
+    border: 2px solid white;
+    border-radius: 20px;
+}
+
+#chart{
+    margin-left: 20px;
+    width: 75em; 
+    height: 30em;
+}
+
+
+/* ================== financial charts ============================== */
+
+#finance_charts{
+    background-color: rgb(26, 25, 25);
+    margin-top: 1%;
+    border: 2px solid white;
+    border-radius:  20px;
+}
+
+#finance_charts #revenue_chart, #balence_chart, #shareholding_chart{
+    border: 1px solid white;
+    float: left;
+    margin: 3px;
+    height: 20em;
+    width: 26em;
+    border-radius: 20px;
+}
