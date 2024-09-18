@@ -2,7 +2,7 @@ from flask import Flask, jsonify,render_template,flash,request,redirect,session,
 from db_files.Database import Database
 from db_files.watchlist import watchlist
 from db_files.companies import companies
-from analyses.analysis import analysis
+from analyses.analysis import analysis, yfinance
 from flask_cors import CORS
 from tradingview_ta import TA_Handler, Interval, Exchange
 
@@ -84,7 +84,6 @@ def home(id):
             'user':user_data,
             'watchlist' : watchlist_data
         }
-        print(data)
         if user_data:
             return render_template("home.html", data=data)
         else:
@@ -97,6 +96,18 @@ def get_c_data(c_symbol):
     row_data = analysis(c_symbol)
     data = row_data.company_data()
     return jsonify(data)
+
+@app.route('/home/<c_name>/share_price_arr', methods=['GET'])
+def share_price_arr(c_name):
+    analys = analysis(c_name)
+    price_arr = analys.share_price_range()
+    return jsonify(price_arr)
+
+@app.route('/get/<c_name>/yfinance_data', methods=['GET'])
+def test_yfinance(c_name):
+    yf = yfinance(c_name)
+    yf_data = yf.yfinance_data()
+    return jsonify(yf_data)
 
 # ==================== Misulanious route ==================================
 
@@ -152,17 +163,14 @@ def delete_alldata_by_user(u_id):
 def add_company_to_watchlist(user_id, company_name):
     company_data = company.search_by_name(company_name)['data'][0]
     analysis_company = analysis(company_data['c_symbol'])
-    print(analysis_company.share_price())
     input_data = {
         'u_id':user_id,
         'c_name':company_data['c_name'],
         'share_price': analysis_company.share_price(),
         'c_symbol':company_data['c_symbol']
     }
-    print(input_data)
     watch.add_company(input_data)
     data = watch.get_data_by_userID(user_id)['data']
-    print(data)
     return jsonify({"watchlist":data})
 
 @app.route('/<int:user_id>/<c_symbol>/delete_company', methods=['DELETE'])
@@ -184,13 +192,8 @@ def load_watchlist_by_user(user_id):
 
 @app.route('/test')
 def test():
-    return render_template('test.html')
+    return render_template('test_a.html')
 
-@app.route('/home/<c_name>/share_price_arr', methods=['GET'])
-def share_price_arr(c_name):
-    analys = analysis(c_name)
-    price_arr = analys.share_price_range()
-    return jsonify(price_arr)
 
 # =======================================================================
 

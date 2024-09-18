@@ -1,5 +1,7 @@
 google.charts.load('current', { packages: ['corechart'] });
-google.charts.setOnLoadCallback(revenue)
+google.charts.setOnLoadCallback(finance_charts);
+
+
 
 // =================== Line chart function form home page ===============================
 export function chart_function(c_name, data){
@@ -33,7 +35,7 @@ export function chart_function(c_name, data){
             horzLines: { visible: false },
         },
     });
-
+    console.log(data)
     const areaSeries = chart.addAreaSeries({
         topColor: '#2962FF',
         bottomColor: 'rgba(41, 98, 255, 0.28)',
@@ -42,15 +44,39 @@ export function chart_function(c_name, data){
         crossHairMarkerVisible: false,
     });
 
+    const volumeSeries = chart.addHistogramSeries({
+        color: '#26a69a',
+        priceFormat: {
+            type: 'volume',
+        },
+        priceScaleId: '', // set as an overlay by setting a blank priceScaleId
+        // set the positioning of the volume series
+        scaleMargins: {
+            top: 0.7, // highest point of the series will be 70% away from the top
+            bottom: 0,
+        },
+    });
+    volumeSeries.priceScale().applyOptions({
+        scaleMargins: {
+            top: 0.7, // highest point of the series will be 70% away from the top
+            bottom: 0,
+        },
+    });
+
     // Map your data to the format expected by the chart
-    const formattedData = data.map(item => ({
+    const formattedData_line = data.map(item => ({
         time: item.time,         // Ensure time is in 'YYYY-MM-DD' format
         value: item.share_price, // Use 'share_price' for value
     }));
+    const formattedData_volume = data.map(item => ({
+        time: item.time,         // Ensure time is in 'YYYY-MM-DD' format
+        value: item.volume, // Use 'share_price' for value
+        color: 'rgb(0, 179, 179)',
+    }));
 
     // Set the data for the area series
-    areaSeries.setData(formattedData);
-
+    areaSeries.setData(formattedData_line);
+    volumeSeries.setData(formattedData_volume);
     const symbolName = c_name;
 
     // Create legend
@@ -86,28 +112,334 @@ export function chart_function(c_name, data){
 
 // ======================== finance chart in home page ============================
 
-export function revenue() {
-    const data = google.visualization.arrayToDataTable([
-        ['Year', 'Sales', 'Expenses'],
-        ['2018', 1000, 400],
-        ['2019', 1170, 460],
-        ['2020', 660, 1120],
-        ['2021', 1030, 540]
-    ]);
+export async function finance_charts(company_symbol){
+    let url = `/get/${company_symbol}/yfinance_data`;
+    let responce = await fetch(url, {method:'GET'});
+    console.log(company_symbol);
+    if (responce.ok){
+        let yfinance_data = await responce.json();
+        let dates = yfinance_data.dates;
+        let revenue = yfinance_data.revenue;
+        let net_income = yfinance_data.net_income;
 
-    const options = {
-        title: 'Company Performance',
-        chartArea: { width: '50%' },
-        hAxis: {
-            title: 'Total Amount',
-            minValue: 0
+        let total_assets = yfinance_data.total_assets;
+        let total_liabilities = yfinance_data.total_liabilities;
+        let total_debt = yfinance_data.total_debt;
+
+        let cash_equivalents = yfinance_data.cash_equivalents;
+        let free_cashflow = yfinance_data.free_cashflow;
+
+        let eps = yfinance_data.eps;
+        let roe = yfinance_data.roe;
+
+        let holding = yfinance_data.holding;
+
+
+        console.log({'holding':holding})
+
+        revenue_chart(company_symbol,dates, revenue, net_income);
+        asset_liability(company_symbol, dates, total_assets, total_liabilities, total_debt);
+        cashflow(company_symbol, dates, cash_equivalents, free_cashflow, total_debt);
+        eps_pm(company_symbol, dates, eps, roe)
+        share_holding(company_symbol, holding)
+    }
+    else{
+        console.log('data not found')
+    }
+}
+
+export function share_holding(company_symbol, holding){
+    let ownership = ['Promotor', 'FII/DII', 'Public'];
+    let data = new google.visualization.DataTable();
+    data.addColumn('string', 'Ownership');
+    data.addColumn('number', 'Holding');
+
+    for (let i = 0; i < ownership.length; i++){
+        data.addRow([
+            ownership[i],
+            holding[i]
+        ]);
+    };
+
+    let options = {
+        title: `${company_symbol}'s Ownership`,
+        titleTextStyle: {
+            color: 'white',  // Change the axis title color (red here)
+            fontSize: 15
+        },
+        legend: { 
+            position: 'bottom',
+            textStyle: {
+                color: 'white'
+            }
+        },
+        backgroundColor: 'transparent',
+        chartArea: {
+            left: 50,         // Reduces space on the left (adjust value as needed)
+            right: 10,        // Reduces space on the right (adjust value as needed)
+            top: 50,          // Adjust the top margin (for title)
+            bottom: 50,       // Adjust space at the bottom
+            width: '100%',     // Adjust the chart width within the container
+            height: '100%'     // Adjust the chart height within the container
+        }
+    }
+    var chart = new google.visualization.PieChart(document.getElementById('shareholding_chart'));
+    chart.draw(data, options)
+}
+
+
+export function eps_pm(company_symbol, dates, eps, roe){
+    let data = new google.visualization.DataTable();
+    data.addColumn('string', 'Date');    // X-axis: Dates
+    data.addColumn('number', 'EPS'); // Y-axis: Revenue
+    data.addColumn('number', 'ROE');
+    data.addColumn({role: 'style'});
+
+    for (let i = 0; i < dates.length; i++) {
+        data.addRow([
+            dates[i], 
+            eps[i], 
+            roe[i],
+            'opacity: 0.7'                              // bar's transparency
+        ]);
+    }
+    let options = {
+        title: `${company_symbol}'s EPS And ROE`,
+        titleTextStyle: {
+            color: 'white',  // Change the axis title color (red here)
+            fontSize: 15
         },
         vAxis: {
-            title: 'Year'
+            gridlines: { color: 'none' },
+            format: 'short',
+            textStyle: {
+                color: 'white'
+            }
         },
-        legend: { position: 'top' },
-        bars: 'vertical' // Use 'horizontal' for horizontal bars
+        hAxis: {
+            gridlines: { color: 'white' },
+            textStyle: {
+                color: 'white'
+            }
+        },
+        colors: ['rgb(50, 70, 184)', 'rgb(62, 178, 36)'],
+        curveType: 'function',
+        legend: { 
+            position: 'bottom',
+            textStyle: {
+                color: 'white'
+            }
+        },
+        backgroundColor: 'transparent',
+        chartArea: {
+            left: 50,         // Reduces space on the left (adjust value as needed)
+            right: 10,        // Reduces space on the right (adjust value as needed)
+            top: 50,          // Adjust the top margin (for title)
+            bottom: 50,       // Adjust space at the bottom
+            width: '80%',     // Adjust the chart width within the container
+            height: '70%'     // Adjust the chart height within the container
+        }
     };
-    const chart = new google.visualization.BarChart(document.getElementById('bar-chart'));
-    chart.draw(data, options);
+    var chart_anual = new google.visualization.LineChart(document.getElementById("eps_pm_chart_annual"));
+    chart_anual.draw(data, options);
+}
+
+export function cashflow(company_symbol, dates, cash_equivalents, free_cashflow, total_debt){
+    let data = new google.visualization.DataTable();
+    data.addColumn('string', 'Date');    // X-axis: Dates
+    data.addColumn('number', 'Debt'); // Y-axis: Revenue
+    data.addColumn('number', 'Free Cashflow');
+    data.addColumn('number', 'Cash Equivalents');
+    data.addColumn('number', 'Debt/Free Cash Ratio');
+    data.addColumn({role: 'style'});
+
+    // Populate the data table with your arrays
+    for (let i = 0; i < dates.length; i++) {
+        data.addRow([
+            dates[i], 
+            total_debt[i],
+            free_cashflow[i],
+            cash_equivalents[i],
+            ((100 * free_cashflow[i]) / total_debt[i]),
+            'opacity: 0.7'
+        ]);
+    }
+
+    console.log(data);
+    let options = {
+        title: `${company_symbol} Cashflow`,
+        titleTextStyle: {
+            color: 'white',
+            fontSize: 15
+        },
+        vAxis: {
+            gridlines: { color: 'none' },
+            format: 'short',
+            textStyle: {
+                color: 'white'
+            }
+        },
+        hAxis: {
+            gridlines: { color: 'white' },
+            textStyle: {
+                color: 'white'
+            }
+        },
+        colors: ['rgb(50, 70, 184)', 'rgb(62, 178, 36)', 'rgb(255, 255, 0)', 'rgb(255, 0, 0)'],
+        curveType: 'function',
+        legend: { 
+            position: 'bottom',
+            textStyle: {
+                color: 'white'
+            }
+        },
+        seriesType: 'bars',
+        series: {
+            3: {type: 'line', targetAxisIndex: 1}
+        },
+        backgroundColor: 'transparent',
+        chartArea: {
+            left: 50,         // Reduces space on the left (adjust value as needed)
+            right: 10,        // Reduces space on the right (adjust value as needed)
+            top: 50,          // Adjust the top margin (for title)
+            bottom: 50,       // Adjust space at the bottom
+            width: '80%',     // Adjust the chart width within the container
+            height: '70%'     // Adjust the chart height within the container
+        }
+    };
+    var chart_annual = new google.visualization.ComboChart(document.getElementById("cashflow_chart_annual"));
+    chart_annual.draw(data, options);
+}
+
+export function revenue_chart(company_symbol, dates, revenue, net_income){
+    let data = new google.visualization.DataTable();
+    data.addColumn('string', 'Date');    // X-axis: Dates
+    data.addColumn('number', 'Revenue'); // Y-axis: Revenue
+    data.addColumn('number', 'Net income');
+    data.addColumn('number', 'Revenue/Net-income Ratio');
+    data.addColumn({role: 'style'});
+    // Populate the data table with your arrays
+    for (let i = 0; i < dates.length; i++) {
+        data.addRow([
+            dates[i], 
+            revenue[i], 
+            net_income[i], 
+            ((100 * net_income[i]) / revenue[i]),       // profitability ratio
+            'opacity: 0.7'                              // bar's transparency
+        ]);
+    }
+
+    // Set chart options
+    let options = {
+        title: `${company_symbol} Revenue / Net Income`,
+        titleTextStyle: {
+            color: 'white',  // Change the axis title color (red here)
+            fontSize: 15
+        },
+        vAxis: {
+            gridlines: { color: 'none' },
+            format: 'short',
+            textStyle: {
+                color: 'white'
+            }
+        },
+        hAxis: {
+            gridlines: { color: 'white' },
+            textStyle: {
+                color: 'white'
+            }
+        },
+        colors: ['rgb(50, 70, 184)', 'rgb(62, 178, 36)', 'rgb(255, 255, 0)'],
+        curveType: 'function',
+        legend: { 
+            position: 'bottom',
+            textStyle: {
+                color: 'white'
+            }
+        },
+        seriesType: 'bars',
+        series: {
+            2: {type: 'line', targetAxisIndex: 1}
+        },
+        backgroundColor: 'transparent',
+        chartArea: {
+            left: 50,         // Reduces space on the left (adjust value as needed)
+            right: 10,        // Reduces space on the right (adjust value as needed)
+            top: 50,          // Adjust the top margin (for title)
+            bottom: 50,       // Adjust space at the bottom
+            width: '80%',     // Adjust the chart width within the container
+            height: '70%'     // Adjust the chart height within the container
+        }
+    };
+    var chart_anual = new google.visualization.ComboChart(document.getElementById("revenue_chart_anual"));
+    chart_anual.draw(data, options);
+}
+
+export function asset_liability(company_symbol, dates, total_assets, total_liabilities, total_debt){
+    let data = new google.visualization.DataTable();
+    data.addColumn('string', 'Date');    // X-axis: Dates
+    data.addColumn('number', 'Total Assets'); // Y-axis: Revenue
+    data.addColumn('number', 'Total Liabilities');
+    data.addColumn('number', 'Total Debt');
+    data.addColumn('number', 'Asset/Liability Ratio');
+    data.addColumn('number', 'Asset/debt Ratio');
+    data.addColumn({role: 'style'});
+
+    for (let i = 0; i < dates.length; i++) {
+        data.addRow([
+            dates[i], 
+            total_assets[i], 
+            total_liabilities[i],
+            total_debt[i],
+            ((100 * total_liabilities[i]) / total_assets[i]),       // profitability ratio
+            ((100 * total_debt[i]) / total_assets[i]),       // profitability ratio
+            'opacity: 0.7'                              // bar's transparency
+        ]);
+    };
+
+    let options = {
+        title: `${company_symbol} Assets And Liabilities`,
+        titleTextStyle: {
+            color: 'white',  // Change the axis title color (red here)
+            fontSize: 15
+        },
+        vAxis: {
+            gridlines: { color: 'none' },
+            format: 'short',
+            textStyle: {
+                color: 'white'
+            }
+        },
+        hAxis: {
+            gridlines: { color: 'white' },
+            textStyle: {
+                color: 'white'
+            }
+        },
+        // colors: [ Assets      |      Liabilities    |        Debt      |   Asset/liabilities  | Assets/debt]
+        colors: ['rgb(50, 70, 184)', 'rgb(62, 178, 36)', 'rgb(165, 14, 14)', 'rgb(255, 255, 0)', 'rgb(255, 0, 0)'],
+        curveType: 'function',
+        legend: { 
+            position: 'bottom',
+            textStyle: {
+                color: 'white'
+            }
+        },
+        seriesType: 'bars',
+        series: {
+            3: {type: 'line', targetAxisIndex: 1},
+            4: {type: 'line', targetAxisIndex: 1}
+        },
+        backgroundColor: 'transparent',
+        chartArea: {
+            left: 50,         // Reduces space on the left (adjust value as needed)
+            right: 10,        // Reduces space on the right (adjust value as needed)
+            top: 50,          // Adjust the top margin (for title)
+            bottom: 50,       // Adjust space at the bottom
+            width: '80%',     // Adjust the chart width within the container
+            height: '70%'     // Adjust the chart height within the container
+        }
+    };
+    var chart_anual = new google.visualization.ComboChart(document.getElementById("assets_liability_chart_annual"));
+    chart_anual.draw(data, options);
 }

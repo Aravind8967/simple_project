@@ -1,3 +1,8 @@
+google.charts.load('current', { packages: ['corechart'] });
+import { chart_function, finance_charts } from "./chart.js";
+import { share_price_arr } from "./j_query.js";
+
+window.share_price_arr = share_price_arr;
 window.logout = logout;
 window.delete_profile = delete_profile;
 window.home = home;
@@ -7,34 +12,66 @@ window.add_company_to_watchlist = add_company_to_watchlist;
 window.clear_watchlist = clear_watchlist;
 window.delete_company = delete_company;
 window.load_watchlist = load_watchlist;
-window.hide_all_section = hide_all_section;
-window.chart = chart;
-window.technical = technical;
+window.section_selection = section_selection;
+window.finance_charts = finance_charts;
+window.toggleButtons_revenue = toggleButtons_revenue;
 
-window.addEventListener('DOMContentLoaded', function () {
-    // Hide sections by default
-    document.getElementById('company_section').style.display = 'none';
-    document.getElementById('chart_container').style.display = 'none';
-    document.getElementById('finance_charts').style.display = 'none';
 
-    // Check if the watchlist is empty
-    const watchlistItems = document.getElementById('watchlist_items');
-    const hasCompanies = watchlistItems.querySelectorAll('.watchlist-row').length > 0;
+$(document).ready(function () {
+    // Function to handle the display of company data and sections
+    function showCompanyData(company_symbol) {
+        $('.watchlist-row').css({'border': 'none'}); // Reset styles
+        $(`.watchlist-row:contains(${company_symbol})`).css({'border': '2px solid white', 'border-radius': '10px'}); // Highlight selected
 
-    // If the watchlist is not empty, select the first row
-    if (hasCompanies) {
-        const firstRow = watchlistItems.querySelector('.watchlist-row');
-        firstRow.style.border = '2px solid white';
-        firstRow.style.borderRadius = '10px';
+        // Fetch and display data
+        get_c_data(company_symbol);
 
-        // Trigger click event for the first company
-        $(firstRow).trigger('click');
-        console.log("first row clicked")
-    } else {
-        // If the watchlist is empty, set default view
+        // Ensure data fetching is successful before calling the chart function
+        share_price_arr(company_symbol).then((data) => {
+            // Check if data is defined and is an array
+            if (!data || typeof data.map !== 'function') {
+                console.error("Invalid data received for chart_function:", data);
+                return;
+            }
+            chart_function(company_symbol, data); // Ensure data is passed correctly
+        }).catch((error) => {
+            console.error("Error fetching data:", error);
+        });
         document.getElementById('chart_container').style.display = 'block';
+        document.getElementById('fundamental_section').style.display = 'none';
+        document.getElementById('technical_section').style.display = 'none';
+        document.getElementById('empty_watchlist').style.display = 'none';
+    }
+
+    // Initialize watchlist click handlers
+    function initializeWatchlistClickHandler() {
+        $('#watchlist_items').off('click', '.watchlist-row').on('click', '.watchlist-row', async function () {
+            let company_symbol = $(this).find('.company-name p').text();
+            let data = await share_price_arr(company_symbol);
+            if (data === 0) {
+                console.log("Unknown error");
+                return;
+            }
+            showCompanyData(company_symbol);
+        });
+    }
+
+    // Call the function to set up the handlers
+    initializeWatchlistClickHandler();
+
+    // Auto-select the first company in the watchlist on page load
+    if ($('#watchlist_items .watchlist-row').length > 0) {
+        let firstCompany = $('#watchlist_items .watchlist-row:first .company-name p').text();
+        showCompanyData(firstCompany);
+    }
+    else{
+        document.getElementById('chart_container').style.display = 'none';
+        document.getElementById('fundamental_section').style.display = 'none';
+        document.getElementById('technical_section').style.display = 'none';
+        document.getElementById('empty_watchlist').style.display = 'block';
     }
 });
+
 
 async function truncate () {
     let url = "http://127.0.0.1:300/truncate"
@@ -45,6 +82,7 @@ async function truncate () {
 async function delete_profile(id) {
     let url = `http://127.0.0.1:300/home/${id}/delete_account`
     let responce = await fetch(url, {method:'DELETE'})
+    console.log("you pressed the delete profile button")
     let data = await responce.json()
     if (data["status"] == 200){
         window.location.href = '/login'
@@ -220,25 +258,57 @@ async function load_watchlist(user_id){
     }
 }
 
-function hide_all_section(){
+function section_selection(section_name, company_symbol){
     let chart_container = document.getElementById('chart_container');
-    let finance_charts = document.getElementById('finance_charts');
-    chart_container.style.display = 'none';
-    finance_charts.style.display = 'none';
+    let fundamental_section = document.getElementById('fundamental_section');
+    let technical_section = document.getElementById('technical_section');
+    console.log(section_name)
+
+    if (section_name == 'show_all'){
+        chart_container.style.display = 'block';
+        fundamental_section.style.display = 'block';
+        technical_section.style.display = 'block';
+    }
+    else if(section_name == 'hide_all'){
+        chart_container.style.display = 'none';
+        fundamental_section.style.display = 'none';
+        technical_section.style.display = 'none';
+    }
+    else if(section_name == 'chart'){
+        chart_container.style.display = 'block';
+        fundamental_section.style.display = 'none';
+        technical_section.style.display = 'none';
+    }
+    else if(section_name == 'fundamental'){
+        chart_container.style.display = 'none';
+        fundamental_section.style.display = 'block';
+        technical_section.style.display = 'none';
+        finance_charts(company_symbol);
+
+    }
+    else if(section_name == 'technical'){
+        chart_container.style.display = 'none';
+        fundamental_section.style.display = 'none';
+        technical_section.style.display = 'block';
+    }
+    
 }
 
-function chart(){
-    hide_all_section();
-    let chart_container = document.getElementById('chart_container');
-    chart_container.style.display = 'block';
-}
+// Annual and half year button operations
+function toggleButtons_revenue(selected) {
+    const annualBtn = document.getElementById('annualBtn');
+    const halfYearBtn = document.getElementById('halfYearBtn');
 
-function technical(){
-    hide_all_section();
-    let finance_charts = document.getElementById('finance_charts');
-    finance_charts.style.display = 'block';
-}
-
+    if (selected === 'annual') {
+      annualBtn.classList.add('active');
+      halfYearBtn.classList.remove('active');
+      console.log('clicked annual btn');
+    } else {
+        halfYearBtn.classList.add('active');
+        annualBtn.classList.remove('active');
+        console.log('clicked half year btn');
+    }
+  }
 
 function home(id){
     window.location.href = `/home/${id}`

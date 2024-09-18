@@ -419,27 +419,34 @@ button:hover{
 /* ================= company_section =============== */
 
 #company_section{
+    margin-top: 5px;
     border: 2px solid white;
-    margin-top: 1%;
-    border-radius: 20px;
+    border-radius: 1rem;
 }
 
 #company_section #company_symbol{
-    text-align: left;
-    color: green;
-    font-size: 60px;
-    float: left;
-}
-#company_section #company_name{
-    margin-top: 20px;
-    color: green;
-    font-size: 30px;
-}
-#company_section #share_price{
-    color: green;
+    font-family: "Audiowide", sans-serif;
+    font-size: 2rem;
+    padding: 2;
+    margin-right: 30px;
 }
 
-#company_section #company_button{
-    margin-bottom: 20px;
-    margin-top: 20px;
+#company_section #company_name{
+    font-family: "Audiowide", sans-serif;
+    font-size: 1rem;
 }
+#company_section #price_section{
+    font-family: "Audiowide", sans-serif;
+    font-size: 1.5rem;    
+}
+
+#company_section #share_price, #change{
+    font-size: 1.5rem;
+}
+#company_section #company_button{
+    margin-left: 5rem;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+

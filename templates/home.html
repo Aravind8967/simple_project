@@ -47,51 +47,102 @@
         </div>
     </div>
     <div class="col-sm-8" id="chart_section">
+        <!-- ====================== chart head section ======================== -->
         <div class="row">
             <div id="company_section">
                 <div>
-                    <div>
-                        <h1 id="company_symbol">company symbol</h1>
-                        <h1 id="share_price">share-price</h1>
-                        <h1 id="change">Change</h1>
-                    </div>
-                    <div>
-                        <h1 id="company_name">company name</h1>
-                    </div>
+                    <div id="company_symbol" style="float: left;">Company Symbol</div>
+                    <div id="price_section">
+                        <div id="share_price">Shareprice</div>
+                        <div id="change">change</div>
+                    <!-- </div> -->
+                    <div id="company_name">Company Name</div>
                 </div>
-                <div id="company_button" style="float: left;">
-                    <button class="btn btn-success" type="button" onclick="chart()">Chart</button>
-                    <button class="btn btn-success" type="button" onclick="technical()">Technical</button>
-                    <button class="btn btn-success" type="button" onclick="fundamental()">Fundamental</button>
-                    <button class="btn btn-success" type="button" onclick="details()">Details</button>
+                <div id="company_button">
+                    <button class="btn btn-success" type="button" onclick="section_selection('chart', document.getElementById('company_symbol').textContent)">Chart</button>
+                    <button class="btn btn-success" type="button" onclick="section_selection('fundamental', document.getElementById('company_symbol').textContent)">Fundamental</button>
+                    <button class="btn btn-success" type="button" onclick="section_selection('technical', document.getElementById('company_symbol').textContent)">Technical</button>
+                    <button class="btn btn-success" type="button" onclick="section_selection('show_all', document.getElementById('company_symbol').textContent)">Show</button>
+                    <button class="btn btn-success" type="button" onclick="section_selection('hide_all', document.getElementById('company_symbol').textContent)">Hide</button>
                 </div>
             </div>
         </div>
+
+        <!-- ========================= Chart section ============================ -->
         <div class="row">
+            <!-- ================ Technical chart section ============ -->
             <div id="chart_container">
                 <h1>Technical chart</h1>
                 <hr>
                 <div id="chart" style="position: relative;">Press a company from watchlist</div>
             </div>
+            <!-- ================ Fundametal chart section ============ -->
+            <div id="fundamental_section">
+                <h1>Company Fundamental Analyses</h1>
+                <hr>
+                <div class="row" id="revenue_chart_section">
+                    <!-- Revenue Chart -->
+                    <div class="col">
+                        <div class="row">
+                            <div class="col">
+                                <button id="annualBtn" type="button" class="btn btn-primary active" onclick="toggleButtons_revenue('annual')">Annual</button>
+                                <button id="halfYearBtn" type="button" class="btn btn-primary" onclick="toggleButtons_revenue('halfYear')">Half Year</button>
+                            </div>
+                        </div>    
+                        <div id="revenue_chart_anual"></div>                
+                    </div>
+                    
+                    <!-- EPS And Profit Margin Chart -->
+                    <div class="col">
+                        <div class="row">
+                            <div class="col">
+                                <button id="annualBtn" type="button" class="btn btn-primary active" onclick="toggleButtons_revenue('annual')">Annual</button>
+                                <button id="halfYearBtn" type="button" class="btn btn-primary" onclick="toggleButtons_revenue('halfYear')">Half Year</button>
+                            </div>
+                        </div>    
+                        <div id="eps_pm_chart_annual"></div>                
+                    </div>
+                </div>
+
+                <div class="row" id="assets_liability_section">
+                    <!-- Asset Liabilities chart -->
+                    <div class="col">
+                        <div class="row">
+                            <div class="col">
+                                <button id="annualBtn" type="button" class="btn btn-primary active" onclick="toggleButtons_revenue('annual')">Annual</button>
+                                <button id="halfYearBtn" type="button" class="btn btn-primary" onclick="toggleButtons_revenue('halfYear')">Half Year</button>
+                            </div>
+                        </div>    
+                        <div id="assets_liability_chart_annual"></div>                
+                    </div>
+                    
+                    <!-- Shareholding pattern -->
+                    <div class="col">    
+                        <div id="shareholding_chart"></div>                
+                    </div>
+                </div>
+
+                <div class="row" id="cashflow_section">
+                    <div class="col">
+                        <div class="row">
+                            <div class="col">
+                                <button id="annualBtn" type="button" class="btn btn-primary active" onclick="toggleButtons_revenue('annual')">Annual</button>
+                                <button id="halfYearBtn" type="button" class="btn btn-primary" onclick="toggleButtons_revenue('halfYear')">Half Year</button>
+                            </div>
+                        </div>    
+                        <div id="cashflow_chart_annual"></div>                
+                    </div>
+                </div>
+            </div>
+            <!-- ================ Technical chart section ============ -->
+            <div id="technical_section">
+                <h1>Company Technical Analyses</h1>
+
+            </div>
         </div>
-        <div class="row" id="finance_charts">
-            <h1>Financical Charts</h1>
-            <hr>
-            <div class="col" id="revenue_chart">
-                <h4>Revenue Chart</h4>
-                <hr>
-                <div id="bar-chart"></div>
-            </div>
-            <div class="col" id="balence_chart">
-                <h4>Balence Chart</h4>
-                <hr>
-            </div>
-            <div class="col" id="shareholding_chart">
-                <h4>Shareholding Chart</h4>
-                <hr>
-            </div>
+        <div class="row" id="empty_watchlist">
+            <h1>Add company to watchlist</h1>
         </div>
     </div>
 </div>
-<!-- <script src="{{url_for('static', filename='chart.js')}}"></script> -->
 {% endblock body %}

@@ -9,15 +9,15 @@ h4{
     margin: 10px;
 }
 
-/* ==================== chart container (line chart section)  ==========*/
+/* ==================== chart container (line chart section)  ===============*/
 #chart_section{
     margin-top: 3%;
     margin-left: 1%;
 }
-#chart_section .row #chart_container{
-    margin-top: 3%;
+#chart_section .row #chart_container, #fundamental_section, #technical_section{
+    margin-top: 1%;
     background-color: rgb(26, 25, 25);
-    height: 35em;
+    height: auto;
     border: 2px solid white;
     border-radius: 20px;
 }
@@ -25,24 +25,58 @@ h4{
 #chart{
     margin-left: 20px;
     width: 75em; 
-    height: 30em;
+    height: 35em;
+    margin-bottom: 20px;
 }
 
+/* ==================== fundamental_section ========================*/
 
-/* ================== financial charts ============================== */
-
-#finance_charts{
-    background-color: rgb(26, 25, 25);
-    margin-top: 1%;
-    border: 2px solid white;
-    border-radius:  20px;
-}
-
-#finance_charts #revenue_chart, #balence_chart, #shareholding_chart{
+#fundamental_section #revenue_chart_anual{
+    width: 35rem;
+    height: 20rem;
+    margin-bottom: 30px;
     border: 1px solid white;
-    float: left;
-    margin: 3px;
-    height: 20em;
-    width: 26em;
     border-radius: 20px;
+}
+
+#fundamental_section #assets_liability_chart_annual{
+    width: 35rem;
+    height: 20rem;
+    margin-bottom: 30px;
+    border: 1px solid white;
+    border-radius: 20px;
+}
+
+#fundamental_section #cashflow_chart_annual{
+    width: 35rem;
+    height: 20rem;
+    margin-bottom: 30px;
+    border: 1px solid white;
+    border-radius: 20px;
+}
+
+#fundamental_section #eps_pm_chart_annual{
+    width: 35rem;
+    height: 20rem;
+    margin-bottom: 30px;
+    border: 1px solid white;
+    border-radius: 20px;
+}
+
+#fundamental_section #shareholding_chart{
+    width: 35rem;
+    height: 20rem;
+    margin-top: 50px;
+    margin-bottom: 30px;
+    border: 1px solid white;
+    border-radius: 20px;
+}
+
+#test_color{
+    color: rgb(50, 70, 184, 0.2); /* Revenue bar color */
+    color: rgb(62, 178, 36); /* netincome bar color */
+    color: rgb(255, 255, 0); /* profitability line color */
+    color: rgb(165, 14, 14); /* debt bar color */
+    color: rgb(255, 0, 0); /* assets/debt line color */
+    color: rgb(0, 255, 204); /* volume bar color */
 }

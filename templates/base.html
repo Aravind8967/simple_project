@@ -11,6 +11,7 @@
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Audiowide">
     <title>{% block title %} {% endblock title%}</title>
 </head>
 
@@ -73,8 +74,9 @@
     {% block body%}
 
     {% endblock body %}
-    <script type="module" src="{{url_for('static', filename='index.js')}}"></script>
     <script type="module" src="{{url_for('static', filename='j_query.js')}}"></script>
+    <script type="module" src="{{url_for('static', filename='index.js')}}"></script>
+    <script type="module" src="{{url_for('static', filename='chart.js')}}"></script>
 </body>
 
 </html>
