@@ -304,10 +304,10 @@ export async function finance_charts(company_symbol){
         let holding = yfinance_data.holding;
 
         revenue_chart(company_symbol,dates, revenue, net_income);
-        // asset_liability(company_symbol, dates, total_assets, total_liabilities, total_debt);
-        // cashflow(company_symbol, dates, cash_equivalents, free_cashflow, total_debt);
-        // eps_pm(company_symbol, dates, eps, roe)
-        // share_holding(company_symbol, holding)
+        asset_liability(company_symbol, dates, total_assets, total_liabilities, total_debt);
+        cashflow(company_symbol, dates, cash_equivalents, free_cashflow, total_debt);
+        eps_pm(company_symbol, dates, eps, roe)
+        share_holding(company_symbol, holding)
     }
     else{
         console.log('data not found')
@@ -528,14 +528,14 @@ export function revenue_chart(company_symbol, dates, revenue, net_income){
             2: {type: 'line', targetAxisIndex: 1}
         },
         backgroundColor: 'transparent',
-        // chartArea: {
-        //     left: 50,         // Reduces space on the left (adjust value as needed)
-        //     right: 10,        // Reduces space on the right (adjust value as needed)
-        //     top: 50,          // Adjust the top margin (for title)
-        //     bottom: 50,       // Adjust space at the bottom
-        //     width: '80%',     // Adjust the chart width within the container
-        //     height: '70%'     // Adjust the chart height within the container
-        // }
+        chartArea: {
+            left: 50,         // Reduces space on the left (adjust value as needed)
+            right: 10,        // Reduces space on the right (adjust value as needed)
+            top: 50,          // Adjust the top margin (for title)
+            bottom: 50,       // Adjust space at the bottom
+            width: '80%',     // Adjust the chart width within the container
+            height: '70%'     // Adjust the chart height within the container
+        }
     };
     var chart_anual = new google.visualization.ComboChart(document.getElementById("revenue_chart_anual"));
     chart_anual.draw(data, options);

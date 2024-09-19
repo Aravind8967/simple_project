@@ -32,43 +32,45 @@ h4{
 /* ==================== fundamental_section ========================*/
 
 #fundamental_section #revenue_chart_anual{
+    width: 35rem;
+    height: 20rem;
     margin-bottom: 30px;
     border: 1px solid white;
     border-radius: 20px;
 }
 
-/* #fundamental_section #assets_liability_chart_annual{
+#fundamental_section #eps_pm_chart_annual{
     width: 35rem;
     height: 20rem;
     margin-bottom: 30px;
     border: 1px solid white;
     border-radius: 20px;
-} */
+}
 
-/* #fundamental_section #cashflow_chart_annual{
+#fundamental_section #assets_liability_chart_annual{
     width: 35rem;
     height: 20rem;
     margin-bottom: 30px;
     border: 1px solid white;
     border-radius: 20px;
-} */
+}
 
-/* #fundamental_section #eps_pm_chart_annual{
-    width: 35rem;
-    height: 20rem;
-    margin-bottom: 30px;
-    border: 1px solid white;
-    border-radius: 20px;
-} */
 
-/* #fundamental_section #shareholding_chart{
+#fundamental_section #shareholding_chart{
     width: 35rem;
     height: 20rem;
-    margin-top: 50px;
     margin-bottom: 30px;
     border: 1px solid white;
     border-radius: 20px;
-} */
+}
+
+#fundamental_section #cashflow_chart_annual{
+    width: 35rem;
+    height: 20rem;
+    margin-bottom: 30px;
+    border: 1px solid white;
+    border-radius: 20px;
+}
 
 /* =================== technical chart section ================================ */
 #technical_section #technical_chart{

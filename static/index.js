@@ -272,7 +272,7 @@ async function tradingview_data(c_symbol) {
     }
 }
 
-async function section_selection(section_name, company_symbol){
+export async function section_selection(section_name, company_symbol){
     let chart_container = document.getElementById('chart_container');
     let fundamental_section = document.getElementById('fundamental_section');
     let technical_section = document.getElementById('technical_section');
@@ -283,23 +283,25 @@ async function section_selection(section_name, company_symbol){
         fundamental_section.style.display = 'block';
         technical_section.style.display = 'block';
     }
-    else if(section_name == 'hide_all'){
+    if(section_name == 'hide_all'){
         chart_container.style.display = 'none';
         fundamental_section.style.display = 'none';
         technical_section.style.display = 'none';
     }
-    else if(section_name == 'chart'){
+    if(section_name == 'chart'){
         chart_container.style.display = 'block';
         fundamental_section.style.display = 'none';
         technical_section.style.display = 'none';
+        let shares_arr = await share_price_arr(company_symbol, 'max');
+        chart_function(company_symbol, shares_arr);
     }
-    else if(section_name == 'fundamental'){
+    if(section_name == 'fundamental'){
         chart_container.style.display = 'none';
         technical_section.style.display = 'none';
-        await finance_charts(company_symbol);
         fundamental_section.style.display = 'block';
+        finance_charts(company_symbol);
     }
-    else if(section_name == 'technical'){
+    if(section_name == 'technical'){
         chart_container.style.display = 'none';
         fundamental_section.style.display = 'none';
         technical_section.style.display = 'block';
@@ -310,7 +312,6 @@ async function section_selection(section_name, company_symbol){
         }
 
         let line_data = await tradingview_data(company_symbol);
-        console.log({'Index.js file : ' : {'line_data : ' : line_data}})
         technical_chart(company_symbol, shares_arr, line_data);
     }
     

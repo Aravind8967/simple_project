@@ -1,4 +1,5 @@
 import { chart_function, finance_charts } from "./chart.js";
+import { section_selection } from "./index.js";
 
 window.chart_function = chart_function;
 window.get_c_data = get_c_data;   
@@ -6,6 +7,7 @@ window.chart_function = chart_function;
 window.share_price_arr = share_price_arr;
 window.get_c_data = get_c_data;  
 window.finance_charts = finance_charts;
+window.section_selection = section_selection;
 
 // =============== finding compan which is pressed ============================
 
@@ -17,20 +19,14 @@ $(document).ready(function() {
             $(this).css({'border':'none'});
         });
 
+        
         // Set border on the clicked row
         $(this).css({'border':'2px solid white','border-radius':'10px'});
 
         // Extract the company symbol
         let company_symbol = $(this).find('.company-name p').text();
 
-        // Fetch data and display sections
-        let data = await share_price_arr(company_symbol);
-        get_c_data(company_symbol);
-        chart_function(company_symbol, data);
-
-        // Display the sections
-        document.getElementById('company_section').style.display = 'block';
-        document.getElementById('chart_container').style.display = 'block';
+        section_selection('chart', company_symbol)
 
         if(data === 0) {
             console.log("Unknown error");

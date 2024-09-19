@@ -83,39 +83,19 @@
                 <div class="row" id="revenue_chart_section">
                     <!-- Revenue Chart -->
                     <div class="col">
-                        <div class="row">
-                            <div class="col">
-                                <button id="annualBtn" type="button" class="btn btn-primary active" onclick="toggleButtons_revenue('annual')">Annual</button>
-                                <button id="halfYearBtn" type="button" class="btn btn-primary" onclick="toggleButtons_revenue('halfYear')">Half Year</button>
-                            </div>
-                        </div>    
                         <div id="revenue_chart_anual"></div>                
                     </div>
-                    
                     <!-- EPS And Profit Margin Chart -->
                     <div class="col">
-                        <div class="row">
-                            <div class="col">
-                                <button id="annualBtn" type="button" class="btn btn-primary active" onclick="toggleButtons_revenue('annual')">Annual</button>
-                                <button id="halfYearBtn" type="button" class="btn btn-primary" onclick="toggleButtons_revenue('halfYear')">Half Year</button>
-                            </div>
-                        </div>    
                         <div id="eps_pm_chart_annual"></div>                
                     </div>
                 </div>
 
                 <div class="row" id="assets_liability_section">
                     <!-- Asset Liabilities chart -->
-                    <div class="col">
-                        <div class="row">
-                            <div class="col">
-                                <button id="annualBtn" type="button" class="btn btn-primary active" onclick="toggleButtons_revenue('annual')">Annual</button>
-                                <button id="halfYearBtn" type="button" class="btn btn-primary" onclick="toggleButtons_revenue('halfYear')">Half Year</button>
-                            </div>
-                        </div>    
+                    <div class="col">   
                         <div id="assets_liability_chart_annual"></div>                
                     </div>
-                    
                     <!-- Shareholding pattern -->
                     <div class="col">    
                         <div id="shareholding_chart"></div>                
@@ -124,20 +104,16 @@
 
                 <div class="row" id="cashflow_section">
                     <div class="col">
-                        <div class="row">
-                            <div class="col">
-                                <button id="annualBtn" type="button" class="btn btn-primary active" onclick="toggleButtons_revenue('annual')">Annual</button>
-                                <button id="halfYearBtn" type="button" class="btn btn-primary" onclick="toggleButtons_revenue('halfYear')">Half Year</button>
-                            </div>
-                        </div>    
-                        <div id="cashflow_chart_annual"></div>                
+                        <!-- Cashflow chart -->
+                        <div id="cashflow_chart_annual"></div>    
                     </div>
                 </div>
             </div>
             <!-- ================ Technical chart section ============ -->
             <div id="technical_section">
                 <h1>Company Technical Analyses</h1>
-                <div id="technical_chart" style="position: relative;">Select a company from watchlist</div>
+                <hr>
+                <div id="technical_chart" style="position: relative;">Press a company from watchlist</div>
             </div>
         </div>
         <div class="row" id="empty_watchlist">
