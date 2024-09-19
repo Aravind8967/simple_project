@@ -2,7 +2,7 @@ from flask import Flask, jsonify,render_template,flash,request,redirect,session,
 from db_files.Database import Database
 from db_files.watchlist import watchlist
 from db_files.companies import companies
-from analyses.analysis import analysis, yfinance
+from analyses.analysis import analysis, tradingview, yfinance
 from flask_cors import CORS
 from tradingview_ta import TA_Handler, Interval, Exchange
 
@@ -104,10 +104,16 @@ def share_price_arr(c_name):
     return jsonify(price_arr)
 
 @app.route('/get/<c_name>/yfinance_data', methods=['GET'])
-def test_yfinance(c_name):
+def yfinance_data(c_name):
     yf = yfinance(c_name)
     yf_data = yf.yfinance_data()
     return jsonify(yf_data)
+
+@app.route('/get/<c_symbol>/tradingview_data', methods=['GET'])
+def tradingview_data(c_symbol):
+    tv_connect = tradingview(c_symbol)
+    tv_data = tv_connect.tradingview_data()
+    return jsonify(tv_data)
 
 # ==================== Misulanious route ==================================
 

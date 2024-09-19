@@ -1,5 +1,5 @@
 google.charts.load('current', { packages: ['corechart'] });
-import { chart_function, finance_charts } from "./chart.js";
+import { chart_function, finance_charts, share_holding, technical_chart } from "./chart.js";
 import { share_price_arr } from "./j_query.js";
 
 window.share_price_arr = share_price_arr;
@@ -14,20 +14,22 @@ window.delete_company = delete_company;
 window.load_watchlist = load_watchlist;
 window.section_selection = section_selection;
 window.finance_charts = finance_charts;
+window.technical_chart = technical_chart;
 window.toggleButtons_revenue = toggleButtons_revenue;
+window.tradingview_data = tradingview_data;
 
 
 $(document).ready(function () {
     // Function to handle the display of company data and sections
-    function showCompanyData(company_symbol) {
+    async function showCompanyData(company_symbol) {
         $('.watchlist-row').css({'border': 'none'}); // Reset styles
         $(`.watchlist-row:contains(${company_symbol})`).css({'border': '2px solid white', 'border-radius': '10px'}); // Highlight selected
 
         // Fetch and display data
-        get_c_data(company_symbol);
+        await get_c_data(company_symbol);
 
         // Ensure data fetching is successful before calling the chart function
-        share_price_arr(company_symbol).then((data) => {
+        await share_price_arr(company_symbol, 'max').then((data) => {
             // Check if data is defined and is an array
             if (!data || typeof data.map !== 'function') {
                 console.error("Invalid data received for chart_function:", data);
@@ -258,7 +260,19 @@ async function load_watchlist(user_id){
     }
 }
 
-function section_selection(section_name, company_symbol){
+async function tradingview_data(c_symbol) {
+    let url = `/get/${c_symbol}/tradingview_data`;
+    let response = await fetch(url);
+    if (response.ok){
+        let data = await response.json();
+        return data
+    }
+    else{
+        console.log('data not found')
+    }
+}
+
+async function section_selection(section_name, company_symbol){
     let chart_container = document.getElementById('chart_container');
     let fundamental_section = document.getElementById('fundamental_section');
     let technical_section = document.getElementById('technical_section');
@@ -281,15 +295,23 @@ function section_selection(section_name, company_symbol){
     }
     else if(section_name == 'fundamental'){
         chart_container.style.display = 'none';
-        fundamental_section.style.display = 'block';
         technical_section.style.display = 'none';
-        finance_charts(company_symbol);
-
+        await finance_charts(company_symbol);
+        fundamental_section.style.display = 'block';
     }
     else if(section_name == 'technical'){
         chart_container.style.display = 'none';
         fundamental_section.style.display = 'none';
         technical_section.style.display = 'block';
+        let shares_arr = await share_price_arr(company_symbol, '5y');
+        if (!shares_arr || typeof shares_arr.map !== 'function') {
+            console.error("Invalid data received for chart_function:", shares_arr);
+            return;
+        }
+
+        let line_data = await tradingview_data(company_symbol);
+        console.log({'Index.js file : ' : {'line_data : ' : line_data}})
+        technical_chart(company_symbol, shares_arr, line_data);
     }
     
 }

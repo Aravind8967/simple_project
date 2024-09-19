@@ -2,8 +2,177 @@ google.charts.load('current', { packages: ['corechart'] });
 google.charts.setOnLoadCallback(finance_charts);
 
 
+export function technical_chart(c_name, share_price_arr, line_data){
+    console.log({'data from chart.js' : {'share' : share_price_arr, 'line_data' : line_data}})
+    const chartOptions = {
+        layout: {
+            textColor: 'white',
+            background: { type: 'solid', color: 'black' },
+        },
+    };
+
+    const chart_id = document.getElementById('technical_chart');
+    chart_id.innerHTML = ''; // Clear previous chart
+
+    const chart = LightweightCharts.createChart(chart_id, chartOptions);
+
+    chart.applyOptions({
+        rightPriceScale: {
+            scaleMargins: {
+                top: 0.4, // leave some space for the legend
+                bottom: 0.15,
+            },
+        },
+        crosshair: {
+            horzLine: {
+                visible: true,
+                labelVisible: false,
+            },
+        },
+        grid: {
+            vertLines: { visible: false },
+            horzLines: { visible: false },
+        },
+    });
+
+    const areaSeries = chart.addLineSeries({
+        color: '#2962FF',
+        lineWidth: 2,
+        lastValueVisible: false,
+        priceLineVisible: false,
+    }); 
+
+    // Map your data to the format expected by the chart
+    const formattedData_line = share_price_arr.map(item => ({
+        time: item.time,         // Ensure time is in 'YYYY-MM-DD' format
+        value: item.share_price, // Use 'share_price' for value
+    }));
+
+    let fifty2_low = line_data['52week_low'];
+    let fifty2_high = line_data['52week_high'];
+    let support1 = line_data['support1'];
+    let support2 = line_data['support2'];
+    let support3 = line_data['support3'];
+    let resistance1 = line_data['resistance1'];
+    let resistance2 = line_data['resistance2'];
+    let resistance3 = line_data['resistance3'];
+
+    // Set the data for the area series
+    areaSeries.setData(formattedData_line);
+    const symbolName = c_name;
+
+    const fifty2_low_line = {
+        price: fifty2_low,
+        color: 'rgb(153, 51, 255)',
+        lineWidth: 2,
+        lineStyle: 0, 
+        axisLabelVisible: true,
+        title: '52 weeks Low'
+    };
+
+    const fifty2_high_line = {
+        price: fifty2_high,
+        color: 'rgb(0, 0, 255)',
+        lineWidth: 2,
+        lineStyle: 0, 
+        axisLabelVisible: true,
+        title: '52 weeks High'
+    };
+
+    const support1_line = {
+        price: support1,
+        color: 'rgb(0, 255, 00)',
+        lineWidth: 2,
+        lineStyle: 4, 
+        axisLabelVisible: true,
+        title: '1st Support'
+    }
+
+    const support2_line = {
+        price: support2,
+        color: 'rgb(0, 255, 00)',
+        lineWidth: 2,
+        lineStyle: 2, 
+        axisLabelVisible: true,
+        title: '2nd Support'
+    }
+    const support3_line = {
+        price: support3,
+        color: 'rgb(0, 255, 00)',
+        lineWidth: 2,
+        lineStyle: 3, 
+        axisLabelVisible: true,
+        title: '3nd Support'
+    }
+    
+    const resistance1_line = {
+        price: resistance1,
+        color: 'rgb(255, 0, 00)',
+        lineWidth: 2,
+        lineStyle: 4, 
+        axisLabelVisible: true,
+        title: '1st Resistance'
+    }
+    
+    const resistance2_line = {
+        price: resistance2,
+        color: 'rgb(255, 0, 00)',
+        lineWidth: 2,
+        lineStyle: 2, 
+        axisLabelVisible: true,
+        title: '2nd Resistance'
+    }
+    
+    const resistance3_line = {
+        price: resistance3,
+        color: 'rgb(255, 0, 00)',
+        lineWidth: 2,
+        lineStyle: 3, 
+        axisLabelVisible: true,
+        title: '3nd Resistance'
+    }
+
+    areaSeries.createPriceLine(fifty2_high_line);
+    areaSeries.createPriceLine(fifty2_low_line);
+    areaSeries.createPriceLine(support1_line);
+    areaSeries.createPriceLine(support2_line);
+    areaSeries.createPriceLine(support3_line);
+    areaSeries.createPriceLine(resistance1_line);
+    areaSeries.createPriceLine(resistance2_line);
+    areaSeries.createPriceLine(resistance3_line);
+
+    // Create legend
+    const container = document.getElementById('technical_chart');
+    const legend = document.createElement('div');
+    legend.style = `position: absolute; left: 12px; top: 12px; z-index: 1; font-size: 14px; font-family: sans-serif; line-height: 18px; font-weight: 300; color: white;`;
+    container.appendChild(legend);
+
+    const formatPrice = price => (Math.round(price * 100) / 100).toFixed(2);
+    
+    const setTooltipHtml = (name, date, price) => {
+        legend.innerHTML = `<div style="font-size: 24px; margin: 4px 0px;">${name}</div><div style="font-size: 22px; margin: 4px 0px;">${price}</div><div>${date}</div>`;
+    };
+
+    const updateLegend = param => {
+        const validCrosshairPoint = param && param.time !== undefined && param.point.x >= 0 && param.point.y >= 0;
+        const bar = validCrosshairPoint ? param.seriesData.get(areaSeries) : areaSeries.dataByIndex(areaSeries.data().length - 1);
+
+        if (bar) {
+            const time = bar.time; // Ensure 'time' is in 'YYYY-MM-DD'
+            const price = bar.value; // Use 'value' directly from formatted data
+            const formattedPrice = formatPrice(price);
+            setTooltipHtml(symbolName, time, formattedPrice);
+        }
+    };
+
+    chart.subscribeCrosshairMove(updateLegend);
+    updateLegend(undefined);
+
+    chart.timeScale().fitContent();
+}
 
 // =================== Line chart function form home page ===============================
+
 export function chart_function(c_name, data){
     const chartOptions = {
         layout: {
@@ -35,7 +204,7 @@ export function chart_function(c_name, data){
             horzLines: { visible: false },
         },
     });
-    console.log(data)
+
     const areaSeries = chart.addAreaSeries({
         topColor: '#2962FF',
         bottomColor: 'rgba(41, 98, 255, 0.28)',
@@ -134,14 +303,11 @@ export async function finance_charts(company_symbol){
 
         let holding = yfinance_data.holding;
 
-
-        console.log({'holding':holding})
-
         revenue_chart(company_symbol,dates, revenue, net_income);
-        asset_liability(company_symbol, dates, total_assets, total_liabilities, total_debt);
-        cashflow(company_symbol, dates, cash_equivalents, free_cashflow, total_debt);
-        eps_pm(company_symbol, dates, eps, roe)
-        share_holding(company_symbol, holding)
+        // asset_liability(company_symbol, dates, total_assets, total_liabilities, total_debt);
+        // cashflow(company_symbol, dates, cash_equivalents, free_cashflow, total_debt);
+        // eps_pm(company_symbol, dates, eps, roe)
+        // share_holding(company_symbol, holding)
     }
     else{
         console.log('data not found')
@@ -362,14 +528,14 @@ export function revenue_chart(company_symbol, dates, revenue, net_income){
             2: {type: 'line', targetAxisIndex: 1}
         },
         backgroundColor: 'transparent',
-        chartArea: {
-            left: 50,         // Reduces space on the left (adjust value as needed)
-            right: 10,        // Reduces space on the right (adjust value as needed)
-            top: 50,          // Adjust the top margin (for title)
-            bottom: 50,       // Adjust space at the bottom
-            width: '80%',     // Adjust the chart width within the container
-            height: '70%'     // Adjust the chart height within the container
-        }
+        // chartArea: {
+        //     left: 50,         // Reduces space on the left (adjust value as needed)
+        //     right: 10,        // Reduces space on the right (adjust value as needed)
+        //     top: 50,          // Adjust the top margin (for title)
+        //     bottom: 50,       // Adjust space at the bottom
+        //     width: '80%',     // Adjust the chart width within the container
+        //     height: '70%'     // Adjust the chart height within the container
+        // }
     };
     var chart_anual = new google.visualization.ComboChart(document.getElementById("revenue_chart_anual"));
     chart_anual.draw(data, options);

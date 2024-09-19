@@ -244,16 +244,14 @@ class yfinance:
         return [insider, instituation, public]
     
 class tradingview:
-    def __init__(self, name) -> None:
-        self.company_name = f'{name}.NS'
-        self.yf_api_fetch = yf.Ticker(self.company_name)
-        self.company_info = self.yf_api_fetch.info
-        self.company_symbol = name
-        self.tradingview_data = self.tradingview_connect(name)
+    def __init__(self, symbol) -> None:
+        self.c_symbol = symbol
+        self.tv_fetch_data = self.tradingview_connect()
+        
 
-    def tradingview_connect(self, symbol):
+    def tradingview_connect(self):
         handler = TA_Handler(
-            symbol=symbol,
+            symbol=self.c_symbol,
             screener="india",
             exchange="NSE",
             interval='1d'
@@ -270,13 +268,29 @@ class tradingview:
         }
         return data       
 
+    def tradingview_data(self):
+        yf_connect = yfinance(self.c_symbol)
+        yf_data = yf_connect.company_info
+        tv_indicater_data = self.tv_fetch_data['indicators']
+        data = {
+            '52week_high' : yf_data['fiftyTwoWeekHigh'],
+            '52week_low' : yf_data['fiftyTwoWeekLow'],
+            'support1': round(tv_indicater_data['Pivot.M.Classic.S1'], 2),
+            'support2': round(tv_indicater_data['Pivot.M.Classic.S2'], 2),
+            'support3': round(tv_indicater_data['Pivot.M.Classic.S3'], 2),
+            'resistance1': round(tv_indicater_data['Pivot.M.Classic.R1'], 2),
+            'resistance2': round(tv_indicater_data['Pivot.M.Classic.R2'], 2),
+            'resistance3': round(tv_indicater_data['Pivot.M.Classic.R3'], 2),
+        }
+        return data
 
 
 if __name__ == "__main__":
     # Example usage
     company_symbol = 'PFC'                             #RELIANCE
-    data = yfinance(company_symbol)
-    income_stmt = data.yfinance_data()    
+    data = tradingview(company_symbol)
+    income_stmt = data.tradingview_data()    
+    print(income_stmt)
     # print("=================== income ========================")
     # print(income_stmt['dates'])
     # print("revenue : ", income_stmt['revenue'])
