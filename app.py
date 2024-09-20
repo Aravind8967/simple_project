@@ -198,7 +198,7 @@ def load_watchlist_by_user(user_id):
 
 @app.route('/test')
 def test():
-    return render_template('test_a.html')
+    return render_template('test.html')
 
 
 # =======================================================================

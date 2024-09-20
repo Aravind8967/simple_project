@@ -113,12 +113,55 @@
             <div id="technical_section">
                 <h1>Company Technical Analyses</h1>
                 <hr>
-                <div id="technical_chart" style="position: relative;">Press a company from watchlist</div>
+                <!-- Technical indicator signals -->
+                <div class="row">
+                    <div class="col" id="img_container">
+                        <h1>Overall Summary</h1>
+                        <hr>
+                        <img id="summary" alt="summary.img">
+                    </div>
+                    <div class="col" id="img_container">
+                        <h1>RSI Indication</h1>
+                        <hr>
+                        <img id="rsi" alt="rsi.img">
+                    </div>
+                    <div class="col" id="img_container">
+                        <h1>ADX Indication</h1>
+                        <hr>
+                        <img id="adx" alt="adx.img">
+                    </div>
+                </div>
+                <!-- Technical line chart -->
+                <div class="row">
+                    <div id="technical_chart" style="position: relative;">Press a company from watchlist</div>
+                </div>
+                <div class="row">
+                    <div class="col" id="img_container">
+                        <h1>Stock Momentum</h1>
+                        <hr>
+                        <img id="momentum" alt="momentumimg">
+                    </div>
+                    <div class="col" id="img_container">
+                        <h1>MACD Indication</h1>
+                        <hr>
+                        <img id="macd" alt="macd.img">
+                    </div>
+                    <div class="col" id="img_container">
+                        <h1>Bear Bull Power</h1>
+                        <hr>
+                        <img id="bbp" alt="bbp.img">
+                    </div>
+                </div>
             </div>
         </div>
         <div class="row" id="empty_watchlist">
             <h1>Add company to watchlist</h1>
         </div>
     </div>
+    <script>
+        const bull = "{{ url_for('static', filename='images/bull.jpg') }}";
+        const bear = "{{ url_for('static', filename='images/bear.jpg') }}";
+        const nutral = "{{ url_for('static', filename='images/nutral.jpg') }}";
+    </script>
 </div>
 {% endblock body %}

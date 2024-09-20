@@ -1,5 +1,5 @@
 google.charts.load('current', { packages: ['corechart'] });
-import { chart_function, finance_charts, share_holding, technical_chart } from "./chart.js";
+import { chart_function, finance_charts, technical_chart, technical_indicator } from "./chart.js";
 import { share_price_arr } from "./j_query.js";
 
 window.share_price_arr = share_price_arr;
@@ -17,6 +17,7 @@ window.finance_charts = finance_charts;
 window.technical_chart = technical_chart;
 window.toggleButtons_revenue = toggleButtons_revenue;
 window.tradingview_data = tradingview_data;
+window.technical_indicator = technical_indicator;
 
 
 $(document).ready(function () {
@@ -311,8 +312,13 @@ export async function section_selection(section_name, company_symbol){
             return;
         }
 
-        let line_data = await tradingview_data(company_symbol);
+        let tradingview = await tradingview_data(company_symbol);
+        let line_data = tradingview['line_data'];
+        let indicator_data = tradingview['indicator_data']
+        console.log({'line_data' : line_data});
+        console.log({'indicator_data' : indicator_data})
         technical_chart(company_symbol, shares_arr, line_data);
+        technical_indicator(indicator_data);
     }
     
 }

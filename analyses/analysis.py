@@ -271,23 +271,33 @@ class tradingview:
     def tradingview_data(self):
         yf_connect = yfinance(self.c_symbol)
         yf_data = yf_connect.company_info
-        tv_indicater_data = self.tv_fetch_data['indicators']
+        tv_indicater_data = self.tv_fetch_data
         data = {
-            '52week_high' : yf_data['fiftyTwoWeekHigh'],
-            '52week_low' : yf_data['fiftyTwoWeekLow'],
-            'support1': round(tv_indicater_data['Pivot.M.Classic.S1'], 2),
-            'support2': round(tv_indicater_data['Pivot.M.Classic.S2'], 2),
-            'support3': round(tv_indicater_data['Pivot.M.Classic.S3'], 2),
-            'resistance1': round(tv_indicater_data['Pivot.M.Classic.R1'], 2),
-            'resistance2': round(tv_indicater_data['Pivot.M.Classic.R2'], 2),
-            'resistance3': round(tv_indicater_data['Pivot.M.Classic.R3'], 2),
+            'line_data' : {
+                '52week_high' : yf_data['fiftyTwoWeekHigh'],
+                '52week_low' : yf_data['fiftyTwoWeekLow'],
+                'support1': round(tv_indicater_data['indicators']['Pivot.M.Classic.S1'], 2),
+                'support2': round(tv_indicater_data['indicators']['Pivot.M.Classic.S2'], 2),
+                'support3': round(tv_indicater_data['indicators']['Pivot.M.Classic.S3'], 2),
+                'resistance1': round(tv_indicater_data['indicators']['Pivot.M.Classic.R1'], 2),
+                'resistance2': round(tv_indicater_data['indicators']['Pivot.M.Classic.R2'], 2),
+                'resistance3': round(tv_indicater_data['indicators']['Pivot.M.Classic.R3'], 2)
+            },
+            'indicator_data' : {
+            'summary': tv_indicater_data['oscillator']['RECOMMENDATION'],
+            'rsi': tv_indicater_data['oscillator']['COMPUTE']['RSI'],
+            'adx': tv_indicater_data['oscillator']['COMPUTE']['ADX'],
+            'momentum': tv_indicater_data['oscillator']['COMPUTE']['Mom'],
+            'macd': tv_indicater_data['oscillator']['COMPUTE']['MACD'],
+            'bbp': tv_indicater_data['oscillator']['COMPUTE']['BBP']
+            }
         }
         return data
 
 
 if __name__ == "__main__":
     # Example usage
-    company_symbol = 'PFC'                             #RELIANCE
+    company_symbol = 'TATAMOTORS'                             #RELIANCE
     data = tradingview(company_symbol)
     income_stmt = data.tradingview_data()    
     print(income_stmt)

@@ -80,6 +80,25 @@ h4{
     margin-bottom: 20px;
 }
 
+#technical_section #img_container{
+    border: 2px solid white;
+    height: 23rem;
+    margin: 30px;
+    border-radius: 20px;
+}
+
+#technical_section #img_container img{
+    height: 15rem;
+    width: 20rem;
+    object-fit: contain; /* Ensure the image fits without stretching */
+    display: block; /* Ensures the image takes up only the required space */
+}
+
+#technical_section #img_container h1{
+    margin-top: 15px;
+    margin-bottom: 0px;
+}
+
 #test_color{
     color: rgb(50, 70, 184, 0.2); /* Revenue bar color */
     color: rgb(62, 178, 36); /* netincome bar color */

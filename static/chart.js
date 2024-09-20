@@ -1,6 +1,80 @@
 google.charts.load('current', { packages: ['corechart'] });
 google.charts.setOnLoadCallback(finance_charts);
 
+export function technical_indicator(indicator_data){
+    let summary = document.getElementById('summary');
+    let rsi = document.getElementById('rsi');
+    let adx = document.getElementById('adx');
+    let momentum = document.getElementById('momentum');
+    let macd = document.getElementById('macd');
+    let bbp = document.getElementById('bbp');
+    
+    // let summary = indicator_data['summary'];
+    // let rsi = indicator_data['rsi'];
+    // let adx = indicator_data['adx'];
+    // let momentum = indicator_data['momentum'];
+    // let macd = indicator_data['macd'];
+    // let bbp = indicator_data['bbp'];
+    if (indicator_data['summary'] == 'BUY'){
+        summary.src = bull;
+    }
+    else if(indicator_data['summary'] == 'SELL'){
+        summary.src = bear;
+    }
+    else{
+        summary.src = nutral;
+    }
+
+    if (indicator_data['rsi'] == 'BUY'){
+        rsi.src = bull;
+    }
+    else if(indicator_data['rsi'] == 'SELL'){
+        rsi.src = bear;
+    }
+    else{
+        rsi.src = nutral;
+    }
+
+    if (indicator_data['adx'] == 'BUY'){
+        adx.src = bull;
+    }
+    else if(indicator_data['adx'] == 'SELL'){
+        adx.src = bear;
+    }
+    else{
+        adx.src = nutral;
+    }
+
+    if (indicator_data['momentum'] == 'BUY'){
+        momentum.src = bull;
+    }
+    else if(indicator_data['momentum'] == 'SELL'){
+        momentum.src = bear;
+    }
+    else{
+        momentum.src = nutral;
+    }
+
+    if (indicator_data['macd'] == 'BUY'){
+        macd.src = bull;
+    }
+    else if(indicator_data['macd'] == 'SELL'){
+        macd.src = bear;
+    }
+    else{
+        macd.src = nutral;
+    }
+
+    if (indicator_data['bbp'] == 'BUY'){
+        bbp.src = bull;
+    }
+    else if(indicator_data['bbp'] == 'SELL'){
+        bbp.src = bear;
+    }
+    else{
+        bbp.src = nutral;
+    }
+}
 
 export function technical_chart(c_name, share_price_arr, line_data){
     console.log({'data from chart.js' : {'share' : share_price_arr, 'line_data' : line_data}})
