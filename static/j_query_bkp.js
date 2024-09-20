@@ -1,30 +1,40 @@
-import { chart_function, revenue } from "./chart.js";
+import { chart_function, finance_charts } from "./chart.js";
+import { section_selection } from "./index.js";
 
 window.chart_function = chart_function;
-window.revenue = revenue;
-window.get_c_data = get_c_data;     
+window.get_c_data = get_c_data;   
+window.chart_function = chart_function;
+window.share_price_arr = share_price_arr;
+window.get_c_data = get_c_data;  
+window.finance_charts = finance_charts;
+window.section_selection = section_selection;
 
 // =============== finding compan which is pressed ============================
 
-
 $(document).ready(function() {
     $('#watchlist_items').on('click', '.watchlist-row', async function() {
-        $('.watchlist-row').css({'border':'none'})
-        $('.watchlist-row').hover({'border':'2px solid white','border-radius':'10px'})
-        $(this).css({'border':'2px solid white','border-radius':'10px'})
+        $('.watchlist-row').css({'border':'none'}).hover(function() {
+            $(this).css({'border':'2px solid white','border-radius':'10px'});
+        }, function() {
+            $(this).css({'border':'none'});
+        });
+
+        
+        // Set border on the clicked row
+        $(this).css({'border':'2px solid white','border-radius':'10px'});
+
+        // Extract the company symbol
         let company_symbol = $(this).find('.company-name p').text();
-        let data = await share_price_arr(company_symbol);
-        get_c_data(company_symbol)
-        chart_function(company_symbol, data)
-        document.getElementById('company_section').style.display = 'block'
-        document.getElementById('chart_container').style.display = 'block'
-        if(data == 0){
+
+        section_selection('chart', company_symbol)
+
+        if(data === 0) {
             console.log("Unknown error");
         }
     });
 });
 
-async function share_price_arr(c_name) {
+export async function share_price_arr(c_name) {
     let share_price_arr_url = `http://127.0.0.1:300/home/${c_name}/share_price_arr`;
     let responce = await fetch(share_price_arr_url, {method:'GET'})
     if (responce.ok){
@@ -35,25 +45,55 @@ async function share_price_arr(c_name) {
         return 0
     }
 }
-
-async function get_c_data(c_symbol) {
+export async function get_c_data(c_symbol) {
     let url = `http://127.0.0.1:300/${c_symbol}/get_data`;
-    let responce = await fetch(url);
-    if (responce.ok){
-        let data = await responce.json();
+    let response = await fetch(url);
+    
+    if (response.ok) {
+        let data = await response.json();
+        
+        // Select elements
         let c_name = document.getElementById('company_name');
-        let c_symbol = document.getElementById('company_symbol');
+        let c_symbol_elem = document.getElementById('company_symbol');
         let share_price = document.getElementById('share_price');
         let change = document.getElementById('change');
+
+        // Update elements with fetched data
         c_name.innerHTML = data.c_name;
-        c_symbol.innerHTML = data.c_symbol;
+        c_symbol_elem.innerHTML = data.c_symbol;
         share_price.innerHTML = data.share_price;
-        change.innerHTML = data.change
-        return
-    }
-    else{
-        console.log('unknown error')
-        return
+        change.innerHTML = data.change;
+
+        // Create and configure the arrow icon
+        let arrowIcon = document.createElement('span');
+        arrowIcon.className = 'material-symbols-outlined';
+        
+        // Check the change value to update styles and add the arrow
+        if (data.change <= 0) {
+            share_price.style.color = 'red';
+            change.style.color = 'red';
+            arrowIcon.textContent = 'keyboard_double_arrow_down';
+            arrowIcon.style.color = 'red';
+        } else {
+            share_price.style.color = 'rgb(29, 233, 29)';
+            change.style.color = 'rgb(29, 233, 29)';
+            arrowIcon.textContent = 'keyboard_double_arrow_up'; // Changed to up arrow if the change is positive
+            arrowIcon.style.color = 'rgb(29, 233, 29)';
+        }
+
+        // Ensure there's no duplicate arrow by removing any existing arrow
+        const existingArrow = change.querySelector('.material-symbols-outlined');
+        if (existingArrow) {
+            existingArrow.remove();
+        }
+
+        // Append the arrow icon beside the change value
+        change.appendChild(arrowIcon);
+
+        return;
+    } else {
+        console.log('Unknown error');
+        return;
     }
 }
 

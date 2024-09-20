@@ -45,28 +45,35 @@ export async function share_price_arr(c_name) {
         return 0
     }
 }
+
 export async function get_c_data(c_symbol) {
     let url = `http://127.0.0.1:300/${c_symbol}/get_data`;
     let response = await fetch(url);
     
     if (response.ok) {
         let data = await response.json();
-        
+        let val = (data.share_price * data.change)/100
+        let change_num = val.toFixed(2);
         // Select elements
         let c_name = document.getElementById('company_name');
         let c_symbol_elem = document.getElementById('company_symbol');
         let share_price = document.getElementById('share_price');
+        let change_num_tag = document.getElementById('change_num');
         let change = document.getElementById('change');
 
         // Update elements with fetched data
         c_name.innerHTML = data.c_name;
         c_symbol_elem.innerHTML = data.c_symbol;
         share_price.innerHTML = data.share_price;
-        change.innerHTML = data.change;
+        change_num_tag.innerHTML = change_num;
+        change.innerHTML = `${data.change} % `;
 
         // Create and configure the arrow icon
         let arrowIcon = document.createElement('span');
         arrowIcon.className = 'material-symbols-outlined';
+
+        let change_num_sign = document.createElement('span');
+        change_num_sign.className = 'material-symbols-outlined';
         
         // Check the change value to update styles and add the arrow
         if (data.change <= 0) {
@@ -74,11 +81,19 @@ export async function get_c_data(c_symbol) {
             change.style.color = 'red';
             arrowIcon.textContent = 'keyboard_double_arrow_down';
             arrowIcon.style.color = 'red';
+
+            change_num_tag.style.color = 'red';
+            change_num_sign.textContent = 'remove';
+            change_num_sign.style.color = 'red';
         } else {
             share_price.style.color = 'rgb(29, 233, 29)';
             change.style.color = 'rgb(29, 233, 29)';
             arrowIcon.textContent = 'keyboard_double_arrow_up'; // Changed to up arrow if the change is positive
             arrowIcon.style.color = 'rgb(29, 233, 29)';
+
+            change_num_tag.style.color = 'rgb(29, 233, 29)';
+            change_num_sign.textContent = 'add';
+            change_num_sign.style.color = 'rgb(29, 233, 29)';
         }
 
         // Ensure there's no duplicate arrow by removing any existing arrow

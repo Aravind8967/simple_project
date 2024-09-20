@@ -59,6 +59,7 @@ class analysis:
         data = {
             'share_price': row_data_yfinance['currentPrice'],
             'change':round(row_data_tradingview['change'], 2),
+
             'c_name':row_data_yfinance['shortName'],
             'c_symbol':row_data_yfinance['symbol'].split('.')[0]
         }
