@@ -1,13 +1,17 @@
-function add_img() {
-    // Use the URLs passed from the HTML page
-    document.getElementById('summary').src = summaryImageURL;
-    document.getElementById('rsi').src = rsiImageURL;
-    document.getElementById('adx').src = adxImageURL;
-}
+function toggleContent() {
+    let dots = document.getElementById("dots");
+    let moreText = document.getElementById("more");
+    let btnText = document.getElementById("toggle-btn");
 
-function remove_img() {
-    // Remove the image sources to hide them
-    document.getElementById('summary').src = "";
-    document.getElementById('rsi').src = "";
-    document.getElementById('adx').src = "";
+    if (dots.style.display === "none") {
+        // Show less (collapse content)
+        dots.style.display = "inline";
+        btnText.innerHTML = "Read More";
+        moreText.style.display = "none";
+    } else {
+        // Show more (expand content)
+        dots.style.display = "none";
+        btnText.innerHTML = "Read Less";
+        moreText.style.display = "inline";
+    }
 }

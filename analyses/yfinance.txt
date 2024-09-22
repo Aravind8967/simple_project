@@ -1,3 +1,209 @@
+auditRisk : 4
+boardRisk : 6
+compensationRisk : 8
+shareHolderRightsRisk : 5
+overallRisk : 7
+governanceEpochDate : 1726617600
+compensationAsOfEpochDate : 1735603200
+maxAge : 86400
+priceHint : 2
+previousClose : 967.0
+open : 967.0
+dayLow : 949.2
+dayHigh : 977.5
+regularMarketPreviousClose : 967.0
+regularMarketOpen : 967.0
+regularMarketDayLow : 949.2
+regularMarketDayHigh : 977.5
+dividendRate : 3.0
+dividendYield : 0.0031
+exDividendDate : 1718064000
+payoutRatio : 0.056799997
+fiveYearAvgDividendYield : 1.11
+beta : 1.779
+trailingPE : 11.024869
+volume : 16763435
+regularMarketVolume : 16763435
+averageVolume : 13282277
+averageVolume10days : 18177428
+averageDailyVolume10Day : 18177428
+bid : 970.85
+marketCap : 3964446441472
+fiftyTwoWeekLow : 608.3
+fiftyTwoWeekHigh : 1179.0
+priceToSalesTrailing12Months : 0.893417
+fiftyDayAverage : 1053.687
+twoHundredDayAverage : 964.103
+currency : INR
+enterpriseValue : 4356047372288
+profitMargins : 0.07609
+floatShares : 2279800705
+sharesOutstanding : 3680880128
+heldPercentInsiders : 0.43289003
+heldPercentInstitutions : 0.24893999
+impliedSharesOutstanding : 4083480064
+bookValue : 221.588
+priceToBook : 4.381329
+lastFiscalYearEnd : 1711843200
+nextFiscalYearEnd : 1743379200
+mostRecentQuarter : 1719705600
+earningsQuarterlyGrowth : 0.738
+netIncomeToCommon : 337620893696
+trailingEps : 88.06
+lastSplitFactor : 5:1
+lastSplitDate : 1315785600
+enterpriseToRevenue : 0.982
+enterpriseToEbitda : 8.524
+52WeekChange : 0.56917727
+SandP52WeekChange : 0.31472707
+lastDividendValue : 3.0
+lastDividendDate : 1718064000
+exchange : NSI
+quoteType : EQUITY
+symbol : TATAMOTORS.NS
+underlyingSymbol : TATAMOTORS.NS
+shortName : TATA MOTORS LIMITED
+longName : Tata Motors Limited
+firstTradeDateEpochUtc : 662787900
+timeZoneFullName : Asia/Kolkata
+timeZoneShortName : IST
+uuid : ddba5579-685b-35a6-8ca9-fdc0ae8f12f6
+messageBoardId : finmb_874652
+gmtOffSetMilliseconds : 19800000
+currentPrice : 970.85
+recommendationKey : none
+totalCash : 592166387712
+totalCashPerShare : 154.522
+ebitda : 511051988992
+totalDebt : 1120443695104
+totalRevenue : 4437397471232
+debtToEquity : 117.15
+revenuePerShare : 1157.912
+revenueGrowth : 0.057
+grossMargins : 0.44472998
+ebitdaMargins : 0.11517
+operatingMargins : 0.097270004
+financialCurrency : INR
+trailingPegRatio : None
+
+================================================================
+
+{'address1': 'Urjanidhi', 
+'address2': '1, Barakhamba Lane Connaught Place', 
+'city': 'New Delhi', 
+'zip': '110001', 
+'country': 'India', 
+'phone': '91 11 2345 6740', 
+'fax': '91 11 2351 2545', 
+! 'website': 'https://www.pfcindia.com', 
+'industry': 'Credit Services', 
+'industryKey': 'credit-services', 
+'industryDisp': 'Credit Services', 
+! 'sector': 'Financial Services', 
+'sectorKey': 'financial-services', 
+'sectorDisp': 'Financial Services', 
+'longBusinessSummary': "Power Finance Corporation Limited, a non-banking finance company, engages in the provision of financial products and related advisory, and other services to the power, logistics, and infrastructure sectors in India. The company offers fund-based financial policies/products, including project term and corporate loans, debt refinancing, lease financing for the purchase of equipment and for wind power projects, line of credit for import of coal, credit facility for the purchase of power through power exchanges, short/medium-term loans, buyer's line of credit, debt 
+underwriting, financial assistance, and grants. It also provides non-fund-based products, such as guarantee for performance of contract/obligations in power purchase agreements and letter of comfort; policy for guarantee for credit enhancement; non-fund-based consultancy services; transaction advisory services; project development and management; and strategy, regulatory, tariff support, fund mobilization, and other services for power sector. The company was incorporated in 1986 and is headquartered in New Delhi, India.", 
+'fullTimeEmployees': 545, 
+'companyOfficers': [{'maxAge': 1, 
+                     'name': 'Ms. Parminder  Chopra', 'age': 56, 'title': 'Chairman & MD', 'yearBorn': 1967, 'fiscalYear': 2024, 'totalPay': 10183350, 'exercisedValue': 0, 'unexercisedValue': 0}, {'maxAge': 1, 'name': 'Mr. Rajiv Ranjan Jha', 'age': 57, 'title': 'Director of Projects & Executive Director', 'yearBorn': 1966, 'fiscalYear': 2024, 'totalPay': 10388650, 'exercisedValue': 0, 'unexercisedValue': 0}, {'maxAge': 1, 'name': 'Mr. Manoj  Sharma', 
+'age': 57, 'title': 'Director of Commercial & Director', 'yearBorn': 1966, 'fiscalYear': 2024, 'totalPay': 9615375, 'exercisedValue': 0, 'unexercisedValue': 0}, {'maxAge': 1, 'name': 'Mr. Sandeep  Kumar', 'age': 57, 'title': 'CFO & Executive Director', 'yearBorn': 1966, 'fiscalYear': 2024, 'exercisedValue': 0, 'unexercisedValue': 0}, {'maxAge': 1, 'name': 'S. S. Rao', 'title': 'Head of The Public Relations Department', 'fiscalYear': 2024, 'exercisedValue': 0, 'unexercisedValue': 0}, {'maxAge': 1, 'name': 'Ms. Simmi R. Nakra', 'title': 'Chief Vigilance Officer', 'fiscalYear': 2024, 'exercisedValue': 0, 'unexercisedValue': 0}, {'maxAge': 1, 'name': 'Ms. Ankit  Bansal', 'title': 'GM & Chief Risk Officer', 'fiscalYear': 2024, 'exercisedValue': 0, 'unexercisedValue': 0}, {'maxAge': 1, 'name': 'Mr. Manish Kumar Agarwal', 'title': 'GM, Company Secretary & Compliance Officer', 'fiscalYear': 2024, 'exercisedValue': 0, 'unexercisedValue': 0}], 
+'auditRisk': 8, 'boardRisk': 6, 
+'compensationRisk': 3, 
+'shareHolderRightsRisk': 4, 
+'overallRisk': 4, 
+'governanceEpochDate': 1726617600, 
+'compensationAsOfEpochDate': 1735603200, 
+'maxAge': 86400, 'priceHint': 2, 
+'previousClose': 480.7, 
+'open': 483.7, 
+! 'dayLow': 476.75, 
+! 'dayHigh': 488.3, 
+'regularMarketPreviousClose': 480.7, 
+'regularMarketOpen': 483.7, 
+'regularMarketDayLow': 476.75, 
+'regularMarketDayHigh': 488.3, 
+'dividendRate': 16.75, 
+! 'dividendYield': 0.0348, 
+'exDividendDate': 1724976000, 
+'payoutRatio': 0.1751, 
+'fiveYearAvgDividendYield': 5.0, 
+'beta': 0.844, 
+! 'trailingPE': 7.674789, 
+'forwardPE': 9.087309, 
+'volume': 13889739, 
+'regularMarketVolume': 13889739, 
+'averageVolume': 12712737, 
+'averageVolume10days': 12975154, 
+'averageDailyVolume10Day': 12975154, 
+! 'marketCap': 1590318202880, 
+! 'fiftyTwoWeekLow': 225.5, 
+! 'fiftyTwoWeekHigh': 580.0, 
+'priceToSalesTrailing12Months': 4.1289487, 
+'fiftyDayAverage': 520.842, 
+'twoHundredDayAverage': 457.6455, 
+'trailingAnnualDividendRate': 12.25, 
+'trailingAnnualDividendYield': 0.02548367, 
+'currency': 'INR', 
+'enterpriseValue': 10421348073472, 
+! 'profitMargins': 0.53816, 
+'floatShares': 1451978772, 
+'sharesOutstanding': 3300100096, 
+! 'heldPercentInsiders': 0.55999, 
+! 'heldPercentInstitutions': 0.23178, 
+'impliedSharesOutstanding': 3377679872, 
+! 'bookValue': 306.496, 
+! 'priceToBook': 1.572288, 
+'lastFiscalYearEnd': 1711843200, 
+'nextFiscalYearEnd': 1743379200, 
+'mostRecentQuarter': 1719705600, 
+'earningsQuarterlyGrowth': 0.211, 
+'netIncomeToCommon': 207279800320, 
+! 'trailingEps': 62.79, 
+'forwardEps': 53.03, 
+'pegRatio': 1.31, 
+'lastSplitFactor': '5:4', 
+'lastSplitDate': 1695254400, 
+'enterpriseToRevenue': 27.057, 
+'52WeekChange': 1.0230899, 
+'SandP52WeekChange': 0.31472707, 
+'lastDividendValue': 3.25, 
+'lastDividendDate': 1724976000, 
+'exchange': 'NSI', 
+'quoteType': 'EQUITY', 
+'symbol': 'PFC.NS', 
+'underlyingSymbol': 'PFC.NS', 
+'shortName': 'POWER FIN CORP LTD.', 
+'longName': 'Power Finance Corporation Limited', 
+'firstTradeDateEpochUtc': 1172202300, 
+'timeZoneFullName': 'Asia/Kolkata', 
+'timeZoneShortName': 'IST', 
+'uuid': '2bd34e88-8a79-31f3-b0ed-01e1cc456ed6', 
+'messageBoardId': 'finmb_8740995', 
+'gmtOffSetMilliseconds': 19800000, 
+'currentPrice': 481.9, 
+! 'targetHighPrice': 620.0, 
+'targetLowPrice': 520.0, 
+'targetMeanPrice': 561.29, 
+'targetMedianPrice': 569.0, 
+'recommendationMean': 1.4, 
+'recommendationKey': 'strong_buy', 
+'numberOfAnalystOpinions': 7, 
+'totalCash': 186655408128, 
+'totalCashPerShare': 56.56, 
+'totalDebt': 8686266220544, 
+'totalRevenue': 385163001856, 
+'debtToEquity': 646.836, 
+'revenuePerShare': 116.712, 
+! 'earningsGrowth': 0.212, 
+! 'revenueGrowth': 0.196, 
+'grossMargins': 0.99547, 
+'operatingMargins': 1.02385, 
+'financialCurrency': 'INR', 
+'trailingPegRatio': None}
+
+
+
 address1  :  Virginia House
 address2  :  37 Jawaharlal Nehru Road
 city  :  Kolkata

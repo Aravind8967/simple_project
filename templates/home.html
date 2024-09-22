@@ -55,7 +55,7 @@
                     <div id="price_section">
                         <div id="share_price">Shareprice</div>
                         <div id="change_num">change_num</div>
-                        <div id="change">change</div>
+                        <div id="change_percent">change</div>
                     <!-- </div> -->
                     <div id="company_name">Company Name</div>
                 </div>
@@ -73,9 +73,90 @@
         <div class="row">
             <!-- ================ Technical chart section ============ -->
             <div id="chart_container">
-                <h1>Technical chart</h1>
-                <hr>
-                <div id="chart" style="position: relative;">Press a company from watchlist</div>
+                <div id="company_detailes_holder">
+                    <h1 style="margin-top: 20px;">Company Details</h1>
+                    <hr>
+                    <div class="row" id="company_detailes_bussiness_row">
+                        <h4>Company Bussiness</h4>
+                        <h5 style="text-align: left;" id="bussiness">company Bussiness</h5>
+                    </div>
+                    <div class="row" id="company_detailes_row">
+                        <div class="col" id="detailes">
+                            <h5 style="float: left;">Market Cap</h5>
+                            <h5 style="text-align: right;" id="marketcap">marketcap</h5>
+                        </div>
+                        <div class="col" id="detailes">
+                            <h5 style="float: left;">Industry</h5>
+                            <h5 style="text-align: right;" id="industry">industry</h5>
+                        </div>
+                        <div class="col" id="detailes">
+                            <h5 style="float: left;">Sector</h5>
+                            <h5 style="text-align: right;" id="sector">sector</h5>
+                        </div>
+                    </div> 
+                    <div class="row" id="company_detailes_row">
+                        <div class="col" id="detailes">
+                            <h5 style="float: left;">PE</h5>
+                            <h5 style="text-align: right;" id="pe">pe</h5>
+                        </div>
+                        <div class="col" id="detailes">
+                            <h5 style="float: left;">PB</h5>
+                            <h5 style="text-align: right;" id="pb">pb</h5>
+                        </div>
+                        <div class="col" id="detailes">
+                            <h5 style="float: left;">EPS</h5>
+                            <h5 style="text-align: right;" id="eps">eps</h5>
+                        </div>
+                    </div> 
+                    <div class="row" id="company_detailes_row">
+                        <div class="col" id="detailes">
+                            <h5 style="float: left;">Target Price</h5>
+                            <h5 style="text-align: right;" id="targetprice">targetprice</h5>
+                        </div>
+                        <div class="col" id="detailes">
+                            <h5 style="float: left;">52 Week (high/Low)</h5>
+                            <h5 style="text-align: right;" id="fifty2_high_low">fifty2_high_low</h5>
+                        </div>
+                        <div class="col" id="detailes">
+                            <h5 style="float: left;">Dividend Yield</h5>
+                            <h5 style="text-align: right;" id="dividentyield">dividentyield</h5>
+                        </div>
+                    </div> 
+                    <div class="row" id="company_detailes_row">
+                        <div class="col" id="detailes">
+                            <h5 style="float: left;">Book Value</h5>
+                            <h5 style="text-align: right;" id="bookvalue">bookvalue</h5>
+                        </div>
+                        <div class="col" id="detailes">
+                            <h5 style="float: left;">Earning Growth</h5>
+                            <h5 style="text-align: right;" id="earninggrowth">earninggrowth</h5>
+                        </div>
+                        <div class="col" id="detailes">
+                            <h5 style="float: left;">Revenue Growth</h5>
+                            <h5 style="text-align: right;" id="revenuegrowth">revenuegrowth</h5>
+                        </div>
+                    </div> 
+                    <div class="row" id="company_detailes_row">
+                        <div class="col" id="detailes">
+                            <h5 style="float: left;">Total Revenue</h5>
+                            <h5 style="text-align: right;" id="totalrevenue">totalrevenue</h5>
+                        </div>
+                        <div class="col" id="detailes">
+                            <h5 style="float: left;">Total Cash</h5>
+                            <h5 style="text-align: right;" id="totalcash">totalcash</h5>
+                        </div>
+                        <div class="col" id="detailes">
+                            <h5 style="float: left;">Total Debt</h5>
+                            <h5 style="text-align: right;" id="totaldebt">totaldebt</h5>
+                        </div>
+                    </div> 
+                </div>
+                <div class="row">
+                    <h1 style="margin-left: 10px; width: 77rem; padding-top: 15px; padding-bottom: 15px; border-top: 2px solid rgb(76, 72, 72); border-bottom: 2px solid rgb(76, 72, 72);">
+                        Share Price Chart
+                    </h1>
+                    <div id="chart" style="position: relative;">Press a company from watchlist</div>
+                </div>
             </div>
             <!-- ================ Fundametal chart section ============ -->
             <div id="fundamental_section">

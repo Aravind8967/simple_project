@@ -273,6 +273,7 @@ async function tradingview_data(c_symbol) {
     }
 }
 
+
 export async function section_selection(section_name, company_symbol){
     let chart_container = document.getElementById('chart_container');
     let fundamental_section = document.getElementById('fundamental_section');

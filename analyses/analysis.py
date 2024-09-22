@@ -59,7 +59,6 @@ class analysis:
         data = {
             'share_price': row_data_yfinance['currentPrice'],
             'change':round(row_data_tradingview['change'], 2),
-
             'c_name':row_data_yfinance['shortName'],
             'c_symbol':row_data_yfinance['symbol'].split('.')[0]
         }
@@ -85,6 +84,42 @@ class yfinance:
         shareprice = self.yf_api_fetch.history(start=start_date, end=end_date)
         return round((shareprice['Close'].iloc[0]), 2)
 
+    def company_details(self):
+        company_info = self.company_info
+        def helper(key):
+            if key in company_info:
+                return company_info[key]
+            else:
+                return None
+        data = {
+            'bussiness': helper('longBusinessSummary'),
+            'share_price': helper('currentPrice'),
+            'change_num': round(helper('currentPrice') - helper('previousClose'), 2),
+            'change_percent': round((100 * (helper('currentPrice')-helper('previousClose'))) / helper('currentPrice'), 2),
+            'c_name': helper('shortName'),
+            'c_symbol': self.company_symbol, 
+            'website': helper('website'),
+            'marketcap':round(helper('marketCap')/10000000),
+            'industry' : helper('industry'),
+            'sector':helper('sector'),
+            'pe' : round(helper('trailingPE'), 2),
+            'pb' : round(helper('priceToBook'), 2),
+            'eps' : helper('trailingEps'),
+            'targetprice' : helper('targetHighPrice'),
+            'fifty2_week_low' : helper('fiftyTwoWeekLow'),
+            'fifty2_week_high' : helper('fiftyTwoWeekHigh'),
+            'divident_yield' : round(helper('dividendYield')*100, 2) if helper('dividendYield') else 0,
+            'bookvalue' : round(helper('bookValue'), 2),
+            'earning_growth' : round(helper('earningsGrowth')*100, 2) if helper('earningsGrowth') else 0,
+            'revenue_growth' : round((helper('revenueGrowth') * 100), 2) if helper('earningsGrowth') else 0,
+            'total_cash' : round(helper('totalCash')/1000000),
+            'total_debt': round(helper('totalDebt')/1000000),
+            'total_revenue':round(helper('totalRevenue')/1000000),
+            'day_low' : helper('dayLow'),
+            'day_high' : helper('dayHigh'),
+            'profit_margin' : round((helper('profitMargins')*100),2),
+        }
+        return data
     # operating profit margin
     def opm(self, revenue, net_income):
         opm = []
@@ -298,10 +333,11 @@ class tradingview:
 
 if __name__ == "__main__":
     # Example usage
-    company_symbol = 'TATAMOTORS'                             #RELIANCE
-    data = tradingview(company_symbol)
-    income_stmt = data.tradingview_data()    
-    print(income_stmt)
+    company_symbol = 'PFC'                             #RELIANCE
+    data = yfinance(company_symbol)
+    income_stmt = data.company_details()    
+    for key, val in income_stmt.items():
+        print(f'{key} : {val}')
     # print("=================== income ========================")
     # print(income_stmt['dates'])
     # print("revenue : ", income_stmt['revenue'])

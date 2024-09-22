@@ -93,8 +93,8 @@ def home(id):
 
 @app.route('/<c_symbol>/get_data', methods=['GET'])
 def get_c_data(c_symbol):
-    row_data = analysis(c_symbol)
-    data = row_data.company_data()
+    row_data = yfinance(c_symbol)
+    data = row_data.company_details()
     return jsonify(data)
 
 @app.route('/home/<c_name>/share_price_arr', methods=['GET'])

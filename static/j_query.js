@@ -8,6 +8,7 @@ window.share_price_arr = share_price_arr;
 window.get_c_data = get_c_data;  
 window.finance_charts = finance_charts;
 window.section_selection = section_selection;
+window.company_details = company_details;
 
 // =============== finding compan which is pressed ============================
 
@@ -52,64 +53,92 @@ export async function get_c_data(c_symbol) {
     
     if (response.ok) {
         let data = await response.json();
-        let val = (data.share_price * data.change)/100
-        let change_num = val.toFixed(2);
+        console.log(data)
         // Select elements
         let c_name = document.getElementById('company_name');
         let c_symbol_elem = document.getElementById('company_symbol');
         let share_price = document.getElementById('share_price');
         let change_num_tag = document.getElementById('change_num');
-        let change = document.getElementById('change');
+        let change_percent = document.getElementById('change_percent');
 
         // Update elements with fetched data
         c_name.innerHTML = data.c_name;
         c_symbol_elem.innerHTML = data.c_symbol;
         share_price.innerHTML = data.share_price;
-        change_num_tag.innerHTML = change_num;
-        change.innerHTML = `${data.change} % `;
+        change_percent.innerHTML = `${data.change_percent} %`;
 
-        // Create and configure the arrow icon
-        let arrowIcon = document.createElement('span');
-        arrowIcon.className = 'material-symbols-outlined';
-
-        let change_num_sign = document.createElement('span');
-        change_num_sign.className = 'material-symbols-outlined';
-        
-        // Check the change value to update styles and add the arrow
-        if (data.change <= 0) {
-            share_price.style.color = 'red';
-            change.style.color = 'red';
-            arrowIcon.textContent = 'keyboard_double_arrow_down';
-            arrowIcon.style.color = 'red';
-
-            change_num_tag.style.color = 'red';
-            change_num_sign.textContent = 'remove';
-            change_num_sign.style.color = 'red';
-        } else {
-            share_price.style.color = 'rgb(29, 233, 29)';
-            change.style.color = 'rgb(29, 233, 29)';
-            arrowIcon.textContent = 'keyboard_double_arrow_up'; // Changed to up arrow if the change is positive
-            arrowIcon.style.color = 'rgb(29, 233, 29)';
-
-            change_num_tag.style.color = 'rgb(29, 233, 29)';
-            change_num_sign.textContent = 'add';
-            change_num_sign.style.color = 'rgb(29, 233, 29)';
-        }
-
-        // Ensure there's no duplicate arrow by removing any existing arrow
-        const existingArrow = change.querySelector('.material-symbols-outlined');
+        // Remove any existing arrow icons to avoid duplicates
+        let existingArrow = change_num_tag.querySelector('.material-symbols-outlined');
         if (existingArrow) {
             existingArrow.remove();
         }
 
-        // Append the arrow icon beside the change value
-        change.appendChild(arrowIcon);
+        // Create and configure the arrow icon
+        let arrowIcon = document.createElement('span');
+        arrowIcon.className = 'material-symbols-outlined';
+        
+        // Check the change value to update styles and add the arrow
+        if (data.change_percent <= 0) {
+            share_price.style.color = 'red';
+            change_percent.style.color = 'red';
+            change_num_tag.innerHTML = `${data.change_num}`;
+            arrowIcon.textContent = 'keyboard_double_arrow_down'; // Down arrow for negative change
+            arrowIcon.style.color = 'red';
+            change_num_tag.style.color = 'red';
+        } else {
+            share_price.style.color = 'rgb(29, 233, 29)';
+            change_percent.style.color = 'rgb(29, 233, 29)';
+            change_num_tag.innerHTML = `+ ${data.change_num}`;
+            arrowIcon.textContent = 'keyboard_double_arrow_up'; // Up arrow for positive change
+            arrowIcon.style.color = 'rgb(29, 233, 29)';
+            change_num_tag.style.color = 'rgb(29, 233, 29)';
+        }
 
+        // Append the arrow icon to the change_num_tag (or change_percent if needed)
+        change_num_tag.appendChild(arrowIcon); // Adjust this based on your design
+        company_details(data);
         return;
     } else {
         console.log('Unknown error');
         return;
     }
+}
+
+function company_details(data){
+    let bussiness = document.getElementById('bussiness')
+    let marketcap = document.getElementById('marketcap');
+    let industry = document.getElementById('industry');
+    let sector = document.getElementById('sector');
+    let pe = document.getElementById('pe');
+    let pb = document.getElementById('pb');
+    let eps = document.getElementById('eps');
+    let targetprice = document.getElementById('targetprice');
+    let fifty2_high_low = document.getElementById('fifty2_high_low');
+    let divident_yield = document.getElementById('dividentyield');
+    let bookvalue = document.getElementById('bookvalue');
+    let earning_growth = document.getElementById('earninggrowth');
+    let revenue_growth = document.getElementById('revenuegrowth');
+    let total_revenue = document.getElementById('totalrevenue');
+    let total_cash = document.getElementById('totalcash');
+    let total_debt = document.getElementById('totaldebt')
+
+    bussiness.innerHTML = data.bussiness;
+    marketcap.innerHTML = `${data.marketcap} Cr`;
+    industry.innerHTML = data.industry;
+    industry.innerHTML = data.industry;
+    sector.innerHTML = data.sector;
+    pe.innerHTML = data.pe;
+    pb.innerHTML = data.pb;
+    eps.innerHTML = data.eps;
+    targetprice.innerHTML = data.targetprice;
+    fifty2_high_low.innerHTML = `${data.fifty2_week_high} / ${data.fifty2_week_low}`;
+    divident_yield.innerHTML = data.divident_yield;
+    bookvalue.innerHTML = data.bookvalue;
+    earning_growth.innerHTML = data.earning_growth;
+    revenue_growth.innerHTML = data.revenue_growth;
+    total_revenue.innerHTML = `${data.total_revenue} Cr`;
+    total_cash.innerHTML = `${data.total_cash} Cr`;
+    total_debt.innerHTML = `${data.total_debt} Cr`;
 }
 
 // ======================== finding the company name in database ================

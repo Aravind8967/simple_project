@@ -22,6 +22,30 @@ h4{
     border-radius: 20px;
 }
 
+#chart_container #company_detailes_holder #company_detailes_row #detailes{
+    margin: 5px 10px; 
+    padding: 10px;
+    border: 1px solid white;
+    border-radius: 10px;
+    background-color: rgb(31, 41, 49);
+}
+#chart_container #company_detailes_holder #company_detailes_bussiness_row{
+    margin: 5px 10px; 
+    padding: 10px;
+    border: 1px solid white;
+    border-radius: 10px;
+    background-color: rgb(31, 41, 49);
+}
+
+#chart_container #company_detailes_holder #company_detailes_row #detailes h5{
+margin-top: 7px;
+}
+
+#chart_container #company_detailes_holder{
+    margin-top: 20px; 
+    margin-bottom: 40px; 
+}
+
 #chart{
     margin-left: 20px;
     width: 75em; 
