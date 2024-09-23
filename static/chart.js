@@ -137,7 +137,7 @@ export function technical_chart(c_name, share_price_arr, line_data){
 
     const fifty2_low_line = {
         price: fifty2_low,
-        color: 'rgb(153, 51, 255)',
+        color: 'rgb(0, 255, 255)',
         lineWidth: 2,
         lineStyle: 0, 
         axisLabelVisible: true,
@@ -146,7 +146,7 @@ export function technical_chart(c_name, share_price_arr, line_data){
 
     const fifty2_high_line = {
         price: fifty2_high,
-        color: 'rgb(0, 0, 255)',
+        color: 'rgb(237, 235, 97)',
         lineWidth: 2,
         lineStyle: 0, 
         axisLabelVisible: true,
@@ -462,7 +462,8 @@ export function eps_pm(company_symbol, dates, eps, roe){
                 color: 'white'
             }
         },
-        colors: ['rgb(50, 70, 184)', 'rgb(62, 178, 36)'],
+        lineWidth:5,
+        colors: ['rgb(255, 163, 26)', 'rgb(62, 178, 36)'],
         curveType: 'function',
         legend: { 
             position: 'bottom',
@@ -525,7 +526,7 @@ export function cashflow(company_symbol, dates, cash_equivalents, free_cashflow,
                 color: 'white'
             }
         },
-        colors: ['rgb(50, 70, 184)', 'rgb(62, 178, 36)', 'rgb(255, 255, 0)', 'rgb(255, 0, 0)'],
+        colors: ['rgb(255, 51, 0)', 'rgb(62, 178, 36)', 'rgb(255, 255, 0)', 'rgb(255, 163, 26)'],
         curveType: 'function',
         legend: { 
             position: 'bottom',
@@ -535,7 +536,7 @@ export function cashflow(company_symbol, dates, cash_equivalents, free_cashflow,
         },
         seriesType: 'bars',
         series: {
-            3: {type: 'line', targetAxisIndex: 1}
+            3: {type: 'line', targetAxisIndex: 1, lineWidth:5}
         },
         backgroundColor: 'transparent',
         chartArea: {
@@ -599,7 +600,7 @@ export function revenue_chart(company_symbol, dates, revenue, net_income){
         },
         seriesType: 'bars',
         series: {
-            2: {type: 'line', targetAxisIndex: 1}
+            2: {type: 'line', targetAxisIndex: 1, lineWidth:5}
         },
         backgroundColor: 'transparent',
         chartArea: {
@@ -657,7 +658,7 @@ export function asset_liability(company_symbol, dates, total_assets, total_liabi
             }
         },
         // colors: [ Assets      |      Liabilities    |        Debt      |   Asset/liabilities  | Assets/debt]
-        colors: ['rgb(50, 70, 184)', 'rgb(62, 178, 36)', 'rgb(165, 14, 14)', 'rgb(255, 255, 0)', 'rgb(255, 0, 0)'],
+        colors: ['rgb(0, 128, 0)', 'rgb(255, 255, 51)', 'rgb(255, 51, 0)', 'rgb(255, 255, 0)', 'rgb(255, 0, 0)'],
         curveType: 'function',
         legend: { 
             position: 'bottom',
@@ -667,8 +668,8 @@ export function asset_liability(company_symbol, dates, total_assets, total_liabi
         },
         seriesType: 'bars',
         series: {
-            3: {type: 'line', targetAxisIndex: 1},
-            4: {type: 'line', targetAxisIndex: 1}
+            3: {type: 'line', targetAxisIndex: 1, lineWidth:5},
+            4: {type: 'line', targetAxisIndex: 1, lineWidth:5}
         },
         backgroundColor: 'transparent',
         chartArea: {

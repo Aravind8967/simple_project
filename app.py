@@ -2,6 +2,7 @@ from flask import Flask, jsonify,render_template,flash,request,redirect,session,
 from db_files.Database import Database
 from db_files.watchlist import watchlist
 from db_files.companies import companies
+from db_files.portfolio import portfolio
 from analyses.analysis import analysis, tradingview, yfinance
 from flask_cors import CORS
 from tradingview_ta import TA_Handler, Interval, Exchange
@@ -19,6 +20,7 @@ app.secret_key = "Aru.8967"
 db = Database()     
 watch = watchlist()
 company = companies()
+port_folio = portfolio()
 
 # ========================= Registration =====================================
 
@@ -194,6 +196,47 @@ def load_watchlist_by_user(user_id):
     watchlist_data = watch.get_data_by_userID(user_id)
     return jsonify(watchlist_data)
 
+# =================== Portfolio roughts ===============================
+@app.route('/<int:u_id>/portfolio')
+def portfolio_page(u_id):
+    if session.get("user_data"):
+        user_data = session.get("user_data")
+        holdings = port_folio.get_data_by_userID(u_id)['data']
+        data = {
+            'user':user_data,
+            'holdings': holdings
+        }
+        if user_data:
+            return render_template("portfolio.html", data=data)
+        else:
+            return redirect("/login")
+    else:
+        return redirect("/login")
+    
+@app.route('/<int:u_id>/add_to_portfolio', methods=['POST'])
+def add_company_to_portfolio(u_id):
+    frountend_data = request.get_json()
+    c_symbol = company.search_by_name(frountend_data['c_name'])['data'][0]['c_symbol']
+    insert_data = {
+        'u_id' : u_id,
+        'c_symbol' : c_symbol,
+        'quantity' : frountend_data['quantity'],
+        'bought_price' : frountend_data['bought_price']
+    }
+    insert_data_to_portfolio = port_folio.add_company(insert_data)
+    val = {
+        'status' : 'data added sussecfully',
+        'inserted_data': insert_data_to_portfolio
+    }
+    return jsonify(val)
+
+@app.route('/<int:u_id>/load_holding', methods=['GET'])
+def load_holding(u_id):
+    holding = port_folio.get_data_by_userID(u_id)['data']
+    data = {
+        'holding' :holding
+    }
+    return jsonify(data)
 # =================== testing routes ==================================
 
 @app.route('/test')

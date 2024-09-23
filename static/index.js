@@ -2,6 +2,7 @@ google.charts.load('current', { packages: ['corechart'] });
 import { chart_function, finance_charts, technical_chart, technical_indicator } from "./chart.js";
 import { share_price_arr } from "./j_query.js";
 
+
 window.share_price_arr = share_price_arr;
 window.logout = logout;
 window.delete_profile = delete_profile;
@@ -18,6 +19,7 @@ window.technical_chart = technical_chart;
 window.toggleButtons_revenue = toggleButtons_revenue;
 window.tradingview_data = tradingview_data;
 window.technical_indicator = technical_indicator;
+window.portfoilo_page = portfoilo_page;
 
 
 $(document).ready(function () {
@@ -85,12 +87,10 @@ async function truncate () {
 async function delete_profile(id) {
     let url = `http://127.0.0.1:300/home/${id}/delete_account`
     let responce = await fetch(url, {method:'DELETE'})
-    console.log("you pressed the delete profile button")
     let data = await responce.json()
     if (data["status"] == 200){
         window.location.href = '/login'
     }
-    console.log(data)
 }
 
 
@@ -198,7 +198,6 @@ async function load_watchlist(user_id){
     if (responce.ok){
         let db_data = await responce.json();
         let watchlist_items = document.getElementById('watchlist_items');
-        console.log("all data length: ",db_data.data.length);
         watchlist_items.innerHTML = '';
         if (db_data.data.length > 0) {
             db_data.data.forEach((company) => {
@@ -316,8 +315,6 @@ export async function section_selection(section_name, company_symbol){
         let tradingview = await tradingview_data(company_symbol);
         let line_data = tradingview['line_data'];
         let indicator_data = tradingview['indicator_data']
-        console.log({'line_data' : line_data});
-        console.log({'indicator_data' : indicator_data})
         technical_chart(company_symbol, shares_arr, line_data);
         technical_indicator(indicator_data);
     }
@@ -332,14 +329,17 @@ function toggleButtons_revenue(selected) {
     if (selected === 'annual') {
       annualBtn.classList.add('active');
       halfYearBtn.classList.remove('active');
-      console.log('clicked annual btn');
     } else {
         halfYearBtn.classList.add('active');
         annualBtn.classList.remove('active');
-        console.log('clicked half year btn');
     }
   }
 
 function home(id){
     window.location.href = `/home/${id}`
+}
+
+function portfoilo_page(u_id) {
+    window.location.href = `/${u_id}/portfolio`
+    return
 }

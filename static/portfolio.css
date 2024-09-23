@@ -1,0 +1,171 @@
+#portfolio_section #portfoilo_heading h1{
+    position: relative;
+    margin-top: 60px;
+    font-size: 50px;
+}
+
+
+#portfolio_section #holding_section h1{
+    text-align: left;
+}
+/* Form container to arrange all items in a row */
+.portfolio-search-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px; /* Space between input fields */
+    align-items: center; /* Align vertically */
+    justify-content: flex-start;
+    position: relative; /* Important for suggestions to appear below search */
+}
+
+/* Styling for the search box */
+#portfolio_search-box {
+    width: 300px;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+/* Styling for the quantity and bought price inputs */
+#portfolio_quantity, #portfolio_bought-price {
+    width: 150px;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+/* Button styling */
+button {
+    padding: 10px 15px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #218838;
+}
+
+/* Suggestion box styling */
+#portfolio_suggestions {
+    position: absolute; /* Position it absolutely within the input group */
+    margin-top: 0%;
+    top: 100%; /* Position it just below the input field */
+    left: 0;
+    right: 0;
+    background: gray; /* Light background for visibility */
+    border: 1px solid #ddd;
+    width: 25%;
+    font-size: 20px;
+    max-height: 300px; /* Limit the height */
+    overflow-y: auto; /* Add scrolling if too many suggestions */
+    margin: 0;
+    margin-left: 150px;
+    display: none;
+    border-radius: 10px;
+    padding: 5px;
+    list-style-type: none; /* Remove default list styling */
+    z-index: 1000; /* Ensure it appears above other elements */
+}
+
+#portfolio_suggestions li {
+    padding: 5px 10px;
+    cursor: pointer;
+    color: black;
+}
+
+#portfolio_suggestions li:hover {
+    background-color: white;
+}
+
+/* Styling for the labels */
+label {
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+/* Overall section styling for consistent layout */
+#portfolio_section {
+    margin: 20px;
+    color: white;
+}
+
+/* Style for the whole form's layout */
+.portfolio-search-container form {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+/* ========================== Holding section ========================= */
+
+#holding_header h2{
+    border: 1px solid white;
+    font-family: "Times New Roman", Times, serif;
+    padding: 10px;
+    font-size: 40px;
+    text-align: center;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    background-color: gray;
+    margin-bottom: 0%;
+}
+
+#holding{
+    height: 500px;
+    color: white;
+    border: 1px solid white;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    scroll-behavior: smooth;
+    overflow-y: auto;
+}
+
+#holding #holding_items #holding_quantity, #bought_price{ 
+    background-color: gray;
+    color: white;
+    width: 60px;
+    border: 1 solid white;
+    border-radius: 4px;
+    margin: 0px;
+}
+
+#holding #holding_items #holding_quantity::-webkit-inner-spin-button, #bought_price::-webkit-inner-spin-button{ 
+    -webkit-appearance: none;
+}
+
+#holding #holding_items .holding_row{ 
+    border: 1px solid white;
+    margin: 10px;
+    border-radius: 10px;
+}
+
+#holding #holding_items p{ 
+    font-size: 30px;
+    margin: 0px 0px 0px 20px;
+}
+
+#holding #holding_items #holding_quantity_label, #bought_price_label{ 
+    margin: 0px;
+}
+
+#holding_analyse {
+    background-color: transparent;
+    align-items: center;
+}
+
+#holding_analyse button{
+    border: 1px solid white;
+    background-color: transparent;
+    border-radius: 20px;
+    width: 200px;
+    margin-left: 120px;
+    margin-bottom: 20px;
+    font-size: 20px;
+}
+
+#holding_analyse button:hover{
+    background-color: gray;
+}
