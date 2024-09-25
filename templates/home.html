@@ -2,8 +2,6 @@
 {% block title %} welcome {{data.user.u_name}} {% endblock title%}
 
 {% block body %}
-<link rel="stylesheet" href="{{url_for('static', filename='chart.css')}}">
-<script type="text/javascript" src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <div class="row">
     <div class="col-sm-3" id="watchlist_container">

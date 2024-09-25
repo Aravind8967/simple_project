@@ -68,6 +68,7 @@ async function add_company_to_portfolio(u_id) {
         'quantity' : quantity_val,
         'bought_price' : bought_price_val
     }
+    console.log(data);
     let url = `http://127.0.0.1:300/${u_id}/add_to_portfolio`
     let response = await fetch(url, {
         method: 'POST',
@@ -179,7 +180,6 @@ async function updateSharePrices() {
             priceElement.textContent = 'Error';
         }
     }
-    await Promise.all(portfoilo_charts())
 }
 
 async function share_price(c_symbol) {
@@ -246,18 +246,18 @@ async function analysis_btn(u_id) {
 
         // Await the update for each company
         let update_status = await update_company(u_id, update_data);
+        console.log({ 'update_status': update_status });
         return update_status;  // Return the status or result from update_company
     });
     await Promise.all(updatePromises);
-    let load_updated_data = await load_holding(u_id)
-    .then(console.log("loading done"))
-    .then(portfoilo_charts(u_id));
+    let load_updated_data = await load_holding(u_id);
+    console.log(load_updated_data);
 }
 
 
 // =============================== portfolio chart ==================================================
 
-function portfoilo_charts() {
+function portfoilo_charts(u_id) {
     const holdings = document.querySelectorAll('.holding_row');
     let data = []
     for (let holding of holdings) {
@@ -280,7 +280,7 @@ function portfoilo_charts() {
     }
     total_holdings(data);
     current_portfolio(data);
-    portfolio_contribution(data);
+    portfoilo_contribution(data);
 }
 
 function total_holdings(input_data){
@@ -326,6 +326,7 @@ function current_portfolio (input_data) {
     let data = new google.visualization.DataTable();
     data.addColumn('string', 'Company');
     data.addColumn('number', 'Investment');
+    let test = []
     for(let holding_data of input_data){
         data.addRow([
             holding_data.symbol,
@@ -360,61 +361,31 @@ function current_portfolio (input_data) {
     chart.draw(data, options)
 }
 
+function portfoilo_contribution(input_data){
+    var data = google.visualization.arrayToDataTable([
+    ["Element", "Density", { role: "style" } ],
+    ["Copper", 8.94, "#b87333"],
+    ["Silver", 10.49, "silver"],
+    ["Gold", 19.30, "gold"],
+    ["Platinum", 21.45, "color: #e5e4e2"]
+    ]);
 
-function portfolio_contribution(input_data) {
-    var data = new google.visualization.DataTable();
-    data.addColumn('string', 'Company');
-    data.addColumn('number', 'Profit Percent');
-    data.addColumn({ role: 'style' });
+    var view = new google.visualization.DataView(data);
+    view.setColumns([0, 1,
+                    { calc: "stringify",
+                        sourceColumn: 1,
+                        type: "string",
+                        role: "annotation" },
+                    2]);
 
-    for (let company_data of input_data) {
-        let profit_percent = (((company_data.current_investment - company_data.investment) / company_data.investment) * 100).toFixed(2);
-        data.addRow([
-            company_data.symbol,
-            parseFloat(profit_percent),  // Convert back to number for the chart
-            'opacity: 0.7'
-        ]);
-    }
-
-    // Set chart options
-    let options = {
-        title: `Profit Contribution by Each Company`,
-        titleTextStyle: {
-            color: 'white',
-            fontSize: 15
-        },
-        vAxis: {
-            gridlines: { color: 'none' },
-            format: 'short',
-            textStyle: {
-                color: 'white'
-            }
-        },
-        hAxis: {
-            gridlines: { color: 'white' },
-            textStyle: {
-                color: 'white'
-            }
-        },
-        colors: ['rgb(50, 70, 184)'],
-        curveType: 'function',
-        legend: {
-            position: 'bottom',
-            textStyle: {
-                color: 'white'
-            }
-        },
-        backgroundColor: 'transparent',
-        chartArea: {
-            left: 50,
-            right: 10,
-            top: 50,
-            bottom: 50,
-            width: '80%',
-            height: '70%'
-        }
+    var options = {
+    title: "Density of Precious Metals, in g/cm^3",
+    width: 600,
+    height: 400,
+    bar: {groupWidth: "95%"},
+    legend: { position: "none" },
     };
-
     var chart = new google.visualization.ColumnChart(document.getElementById("profit_contribution_chart"));
-    chart.draw(data, options);
+    chart.draw(view, options);
+
 }

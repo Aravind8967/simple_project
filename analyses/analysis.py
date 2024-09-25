@@ -70,7 +70,13 @@ class yfinance:
         self.yf_api_fetch = yf.Ticker(self.company_name)
         self.company_info = self.yf_api_fetch.info
         self.company_symbol = name
-    
+
+    def share_price(self):
+        data = self.company_info
+        if 'currentPrice' in data:
+            return data['currentPrice']
+        else:
+            return None
     # need to work on it detailes saved on notes.
     def calender(self):
         data = self.yf_api_fetch
@@ -333,11 +339,10 @@ class tradingview:
 
 if __name__ == "__main__":
     # Example usage
-    company_symbol = 'PFC'                             #RELIANCE
+    company_symbol = 'INDUSTOWER'                             #RELIANCE
     data = yfinance(company_symbol)
-    income_stmt = data.company_details()    
-    for key, val in income_stmt.items():
-        print(f'{key} : {val}')
+    income_stmt = data.share_price()    
+    print(income_stmt)
     # print("=================== income ========================")
     # print(income_stmt['dates'])
     # print("revenue : ", income_stmt['revenue'])

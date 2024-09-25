@@ -5,7 +5,6 @@ from db_files.companies import companies
 from db_files.portfolio import portfolio
 from analyses.analysis import analysis, tradingview, yfinance
 from flask_cors import CORS
-from tradingview_ta import TA_Handler, Interval, Exchange
 
 
 d = {
@@ -119,6 +118,15 @@ def tradingview_data(c_symbol):
 
 # ==================== Misulanious route ==================================
 
+@app.route('/<c_symbol>/get/share_price', methods=['GET'])
+def share_price(c_symbol):
+    yf = yfinance(c_symbol)
+    s_price = yf.share_price()
+    data = {
+        'share_price':s_price
+    }
+    return jsonify(data)
+
 @app.route('/home/<int:id>/delete_account')
 def delete_account(id):
     row_data = db.get_userid(id)["data"][0]
@@ -197,6 +205,7 @@ def load_watchlist_by_user(user_id):
     return jsonify(watchlist_data)
 
 # =================== Portfolio roughts ===============================
+
 @app.route('/<int:u_id>/portfolio')
 def portfolio_page(u_id):
     if session.get("user_data"):
@@ -230,6 +239,15 @@ def add_company_to_portfolio(u_id):
     }
     return jsonify(val)
 
+@app.route('/<int:u_id>/<c_symbol>/remove_from_portfolio', methods=['DELETE'])
+def remove_company_from_portfolio(u_id, c_symbol):
+    data = {
+        'u_id' : u_id,
+        'c_symbol' : c_symbol
+    }
+    remove_data = port_folio.remove_company(data)
+    return jsonify(remove_data)
+
 @app.route('/<int:u_id>/load_holding', methods=['GET'])
 def load_holding(u_id):
     holding = port_folio.get_data_by_userID(u_id)['data']
@@ -237,6 +255,20 @@ def load_holding(u_id):
         'holding' :holding
     }
     return jsonify(data)
+
+@app.route('/<int:u_id>/update_holding', methods=['PUT'])
+def update_company(u_id):
+    frountend_data = request.get_json()
+    update_data = {
+        'u_id' : u_id,
+        'c_symbol' : frountend_data['c_symbol'],
+        'quantity' : frountend_data['quantity'],
+        'bought_price' : frountend_data['bought_price']
+    }
+    response = port_folio.update_company(update_data)
+    return jsonify(response)
+
+
 # =================== testing routes ==================================
 
 @app.route('/test')

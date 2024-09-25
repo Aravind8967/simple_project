@@ -123,6 +123,18 @@ label {
     overflow-y: auto;
 }
 
+#holding::-webkit-scrollbar{
+    width: 2px;
+}
+
+#holding::-webkit-scrollbar-track{
+    background-color: transparent;
+}
+
+#holding::-webkit-scrollbar-thumb{
+    background-color: white;
+}
+
 #holding #holding_items #holding_quantity, #bought_price{ 
     background-color: gray;
     color: white;
@@ -142,9 +154,21 @@ label {
     border-radius: 10px;
 }
 
+#holding #holding_items .holding_row:hover{
+    background-color: rgb(37, 37, 37);
+}
+
+
 #holding #holding_items p{ 
-    font-size: 30px;
+    font-size: 25px;
     margin: 0px 0px 0px 20px;
+}
+
+#holding #holding_items #share_price{ 
+    font-size: 30px;
+    text-align: right;
+    color: rgb(15, 89, 227);
+    margin-right: 10px;
 }
 
 #holding #holding_items #holding_quantity_label, #bought_price_label{ 
@@ -168,4 +192,62 @@ label {
 
 #holding_analyse button:hover{
     background-color: gray;
+}
+
+/* ===================== holding delete button ======================= */
+
+#holding #holding_items .holding_row .holding_del_btn {
+    color: white;
+    align-items: center;
+    background-color: transparent;
+    width: 12%;
+    height: 5%;
+    border: none;
+    display: none;
+    z-index: 1000;
+}
+
+
+#holding #holding_items .holding_row .holding_del_btn:hover {
+    color: rgb(160, 27, 27);
+}
+
+#holding #holding_items .holding_row .holding_del_btn {
+    margin-left: 15px;
+    margin-top: 12px;
+    padding: 0%;
+}
+
+/* ==================== portfolio analysis charts section ================================== */
+
+#holding_chart_section{
+    border: 2px solid white;
+    background-color: rgb(28, 28, 28);
+    border-radius: 20px;
+    margin-left: 25px;
+}
+
+#holding_chart_section #portfoilo_heading{
+    margin-top: 10px;
+    font-size: 40px;
+}
+
+#holding_chart_section #holdings_bought_chart, #holdings_current_chart{
+    border: 1px solid white;
+    border-radius: 20px;
+    width: 35rem;
+    height: 35rem;
+    margin: 15px;
+}
+
+#holding_chart_section #profit_contribution_chart{
+    border: 1px solid white;
+    border-radius: 20px;
+    height: 35rem;
+    margin: 15px;
+}
+
+
+#holding_chart_section #portfolio_chart h1{
+    margin-top: 10px;
 }

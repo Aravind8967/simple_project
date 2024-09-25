@@ -2,7 +2,6 @@
 {% block title %} Portfolio {% endblock title%}
 
 {% block body %}
-<link rel="stylesheet" href="{{url_for('static', filename='portfolio.css')}}">
 <div id="portfolio_section">
     <div class="row" id="portfoilo_heading">
         <h1>Portfolio</h1>
@@ -29,7 +28,7 @@
     <div class="row">
         <div class="col-sm-3">
             <div class="row" id="holding_analyse">
-                <button>Analyses</button>
+                <button type="button" onclick="analysis_btn('{{data.user.id}}')">Analyses</button>
             </div>
             <div class="row" id="holding_header">
                 <h2>Holding</h1>
@@ -41,7 +40,14 @@
                     <div class="holding_row">
                         <div class="row">
                             <div class="holding_company">
-                                <p>{{ company.c_symbol }}</p><br>
+                                <div class="row">
+                                    <div class="col-sm-6" id="c_symbol">
+                                        <p>{{ company.c_symbol }}</p>
+                                    </div>
+                                    <div class="col-sm-5" id="share_price">
+                                        <p>12345</p>
+                                    </div>
+                                </div>
                             </div>
                             <div class="row">
                                 <div class="col-sm-5">
@@ -52,13 +58,13 @@
                                     <label id="bought_price_label" for="bought_price">Bought : </label>
                                     <input id="bought_price" name="bought_price" type="number" value="{{ company.bought_price }}">.Rs
                                 </div>
+                                <button class="holding_del_btn" onclick="delete_holding_company('{{company.c_symbol}}', '{{data.user.id}}')">
+                                    <span class="material-symbols-outlined">
+                                        delete
+                                    </span>
+                                </button>
                             </div>
                         </div>
-                        <button id="del_item" onclick="delete_company('{{company.c_symbol}}', '{{data.user.id}}')">
-                            <span class="material-symbols-outlined">
-                                delete
-                            </span>
-                        </button>
                     </div>
                     {% endfor %}
                     {% else %}
@@ -69,7 +75,41 @@
                 </div>
             </div>
         </div>
+        <div class="col-sm-8" id="holding_chart_section">
+            <h1 id="portfoilo_heading">Portfolio Analyses</h1>
+            <hr>
+            <div class="row">
+                <div class="col">
+                    <div>
+                        <h1>Total Holdings</h1>
+                        <hr>
+                        <div id="holdings_bought_chart"></div>                        
+                    </div> 
+                </div>
+                <div class="col">
+                    <div>
+                        <h1>Current Portfolio</h1>
+                        <hr>
+                        <div id="holdings_current_chart"></div>                        
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col">
+                    <div>
+                        <h1>Profit Contribution per Company</h1>
+                        <hr>
+                        <div id="profit_contribution_chart"></div>                        
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+    google.charts.load('current', { 'packages': ['corechart'] });
+</script>
 <script src="{{url_for('static', filename='portfolio.js')}}"></script>
 {% endblock body %}

@@ -32,7 +32,7 @@ $(document).ready(function () {
         await get_c_data(company_symbol);
 
         // Ensure data fetching is successful before calling the chart function
-        await share_price_arr(company_symbol, 'max').then((data) => {
+        await share_price_arr(company_symbol, '1y').then((data) => {
             // Check if data is defined and is an array
             if (!data || typeof data.map !== 'function') {
                 console.error("Invalid data received for chart_function:", data);

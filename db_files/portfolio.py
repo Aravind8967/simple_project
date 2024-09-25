@@ -92,6 +92,20 @@ class portfolio:
         else:
             return {'status':404, 'data':'database connection error'}
         
+    def update_company(self, data):
+        db = self.db_connection()
+        if db["status"] == 200:
+            con = db["connection"]
+            cursor = con.cursor()
+            q = "UPDATE PORTFOLIO SET QUANTITY = %s, BOUGHT_PRICE = %s WHERE U_ID = %s AND C_SYMBOL = %s"
+            cursor.execute(q, (data['quantity'], data['bought_price'], data['u_id'], data['c_symbol']))
+            con.commit()
+            return {'status':200, 'data':'Company data updated'}
+        else:
+            return {'status':404, 'data':'Not able to'}
+
+
+        
     def delete_all_data_by_user(self, u_id):
         db = self.db_connection()
         try:
@@ -143,6 +157,11 @@ def get_data_by_user(u_id):
     for val in data['data']:
         print(val)
 
+def update(data):
+    pf = portfolio()
+    data = pf.update_company(data)
+    print(data)
+
 def clear_table():
     pf = portfolio()
     print(pf.clear_portfolio())
@@ -156,14 +175,14 @@ def del_by_u_id(u_id):
 if __name__ == '__main__':
     data = {
         'u_id': 11,
-        'c_symbol' : 'ITC',
+        'c_symbol' : 'JIOFIN',
         'quantity' : 10,
-        'bought_price' : 500
+        'bought_price' : 4567
     }
 
     rm_data = {
-        'c_symbol' : 'TCS',
-        'u_id' : 12
+        'c_symbol' : 'PFC',
+        'u_id' : 11
     }
-    insert_data(data)
+    remove_data(rm_data)
     

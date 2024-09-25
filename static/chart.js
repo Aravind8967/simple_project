@@ -424,7 +424,7 @@ export function share_holding(company_symbol, holding){
         }
     }
     var chart = new google.visualization.PieChart(document.getElementById('shareholding_chart'));
-    chart.draw(data, options)
+    chart.draw(data, options);
 }
 
 
