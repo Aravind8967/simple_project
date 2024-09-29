@@ -20,7 +20,7 @@ window.toggleButtons_revenue = toggleButtons_revenue;
 window.tradingview_data = tradingview_data;
 window.technical_indicator = technical_indicator;
 window.portfoilo_page = portfoilo_page;
-
+window.compare_page = compare_page;
 
 $(document).ready(function () {
     // Function to handle the display of company data and sections
@@ -32,7 +32,7 @@ $(document).ready(function () {
         await get_c_data(company_symbol);
 
         // Ensure data fetching is successful before calling the chart function
-        await share_price_arr(company_symbol, '1y').then((data) => {
+        await share_price_arr(company_symbol).then((data) => {
             // Check if data is defined and is an array
             if (!data || typeof data.map !== 'function') {
                 console.error("Invalid data received for chart_function:", data);
@@ -341,5 +341,10 @@ function home(id){
 
 function portfoilo_page(u_id) {
     window.location.href = `/${u_id}/portfolio`
+    return
+}
+
+function compare_page(u_id) {
+    window.location.href = `/${u_id}/compare`
     return
 }

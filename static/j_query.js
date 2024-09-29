@@ -29,9 +29,9 @@ $(document).ready(function() {
 
         section_selection('chart', company_symbol)
 
-        if(data === 0) {
-            console.log("Unknown error");
-        }
+        // if(data === 0) {
+        //     console.log("Unknown error");
+        // }
     });
 });
 

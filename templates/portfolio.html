@@ -20,6 +20,7 @@
                 <input type="number" id="portfolio_bought-price" required>
                 
                 <button type="button" id="portfoilo_add_btn" onclick="add_company_to_portfolio('{{data.user.id}}')">Add</button>
+                <button class="btn btn-success" type="button" onclick="compare_page('{{data.user.id}}')">Compare</button>
                 <ol id="portfolio_suggestions" class="portfolio-suggestion-box"></ol>
             </form>            
         </div>

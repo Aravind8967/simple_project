@@ -3,6 +3,7 @@ from db_files.Database import Database
 from db_files.watchlist import watchlist
 from db_files.companies import companies
 from db_files.portfolio import portfolio
+from db_files.compare import compare
 from analyses.analysis import analysis, tradingview, yfinance
 from flask_cors import CORS
 
@@ -20,7 +21,7 @@ db = Database()
 watch = watchlist()
 company = companies()
 port_folio = portfolio()
-
+compare_company = compare()
 # ========================= Registration =====================================
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -126,6 +127,14 @@ def share_price(c_symbol):
         'share_price':s_price
     }
     return jsonify(data)
+
+@app.route('/get/<c_symbol>/<period>/share_price_period_arr', methods=['GET'])
+def share_price_period_arr(c_symbol,period):
+    analys = analysis(c_symbol)
+    price_arr = analys.share_price_range(period=period)
+    if len(price_arr) == 0:
+        price_arr = analys.share_price_range(period='max')
+    return jsonify({'shareprice_arr' : price_arr})
 
 @app.route('/home/<int:id>/delete_account')
 def delete_account(id):
@@ -267,6 +276,58 @@ def update_company(u_id):
     }
     response = port_folio.update_company(update_data)
     return jsonify(response)
+
+# =================== Compare page route ============================
+
+@app.route('/<int:u_id>/compare')
+def compare_page(u_id):
+    if session.get("user_data"):
+        user_data = session.get("user_data")
+        compare_companies = compare_company.get_data_by_userID(u_id)['data']
+        data = {
+            'user':user_data,
+            'compare': compare_companies
+        }
+        if user_data:
+            return render_template("compare.html", data=data)
+        else:
+            return redirect("/login")
+    else:
+        return redirect("/login")
+
+
+@app.route('/<int:u_id>/add_to_compare', methods=['POST'])
+def add_company_to_compare(u_id):
+    frountend_data = request.get_json()
+    c_symbol = company.search_by_name(frountend_data['c_name'])['data'][0]['c_symbol']
+    insert_data = {
+        'u_id' : u_id,
+        'c_symbol' : c_symbol
+    }
+    insert_data_to_portfolio = compare_company.add_company(insert_data)
+    val = {
+        'status' : 'data added sussecfully',
+        'inserted_data': insert_data_to_portfolio
+    }
+    return jsonify(val)
+
+@app.route('/<int:u_id>/load_compare', methods=['GET'])
+def load_compare(u_id):
+    compare = compare_company.get_data_by_userID(u_id)['data']
+    data = {
+        'compare' : compare
+    }
+    return jsonify(data)
+
+
+@app.route('/<int:u_id>/<c_symbol>/remove_from_compare', methods=['DELETE'])
+def remove_company_from_compare(u_id, c_symbol):
+    data = {
+        'u_id' : u_id,
+        'c_symbol' : c_symbol
+    }
+    remove_data = compare_company.remove_company(data)
+    return jsonify(remove_data)
 
 
 # =================== testing routes ==================================

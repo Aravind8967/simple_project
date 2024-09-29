@@ -1,0 +1,128 @@
+{% extends 'base.html' %}
+{% block title %} Compare {% endblock title%}
+
+{% block body %}
+<link rel="stylesheet" href="{{url_for('static', filename='compare.css')}}">
+<div id="compare_section">
+    <div class="row" id="portfoilo_heading">
+        <h1>Compare</h1>
+    </div>
+    <div class="row" id="holding_section">
+        <h1>Add company to holding</h1>
+        <div class="row" id="compare_search_section">
+            <form class="portfolio-search-container">
+                <label for="portfolio_search-box">Search Company:</label>
+                <input type="text" id="portfolio_search-box" required autocomplete="off" placeholder="Enter company name">
+                
+                <button type="button" id="portfoilo_add_btn" onclick="add_company_to_compare('{{data.user.id}}')">Add</button>
+                <button class="btn btn-success" type="button" onclick="portfoilo_page('{{data.user.id}}')">Portfolio</button>
+                <ol id="portfolio_suggestions" class="portfolio-suggestion-box"></ol>
+            </form>            
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="row">
+            <div class="row" id="holding_analyse">
+                <button type="button" onclick="compare_btn('{{data.user.id}}')">Compare</button>
+            </div>
+            <div class="row" id="holding_header">
+                <h2>Compare list</h1>
+            </div>
+            <div class="row" id="holding">
+                <div id="holding_items">
+                    {% if data.compare | length > 0 %}
+                    {% for company in data.compare %}
+                    <div class="holding_row" style="width: 25rem; float: left;">
+                        <div class="row">
+                            <div class="holding_company">
+                                <div class="row">
+                                    <div class="col-sm-6" id="c_symbol">
+                                        <p>{{ company.c_symbol }}</p>
+                                    </div>
+                                    <div class="col" id="share_price">
+                                        <p>12345</p>
+                                    </div>
+                                    <div class="col">
+                                        <button class="holding_del_btn" onclick="delete_compare_company('{{company.c_symbol}}', '{{data.user.id}}')">
+                                            <span class="material-symbols-outlined">
+                                                delete
+                                            </span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                    {% else %}
+                    <div>
+                        <p class="text-center">Add company</p> <!-- Message centered -->
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-11" id="compare_chart_section">
+            <h1 id="comparison_heading">Comparison Charts</h1>
+            <hr>
+            <div class="row">
+                <div class="col">
+                    <div>
+                        <h1>Profit growth Comparison Chart</h1>
+                        <hr>
+                        <div id="revenue_compare_chart"></div>                        
+                    </div> 
+                </div>
+                <div class="col">
+                    <div>
+                        <h1>EPS Comparison Chart</h1>
+                        <hr>
+                        <div id="eps_compare_chart"></div>                        
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col">
+                    <div>
+                        <h1>ROE Comparison Chart</h1>
+                        <hr>
+                        <div id="roe_compare_chart"></div>                        
+                    </div> 
+                </div>
+                <div class="col">
+                    <div>
+                        <h1>Assets / Liability Comparison Chart</h1>
+                        <hr>
+                        <div id="asset_compare_chart"></div>                        
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col">
+                    <div>
+                        <h1>Cashflow Comparison Chart</h1>
+                        <hr>
+                        <div id="cashflow_compare_chart"></div>                        
+                    </div> 
+                </div>
+                <div class="col">
+                    <div>
+                        <h1>PE Comparison Chart</h1>
+                        <hr>
+                        <div id="pe_compare_chart"></div>                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+    google.charts.load('current', { 'packages': ['corechart'] });
+</script>
+<script src="{{url_for('static', filename='portfolio.js')}}"></script>
+<script src="{{url_for('static', filename='compare.js')}}"></script>
+{% endblock body %}

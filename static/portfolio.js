@@ -227,7 +227,6 @@ $(document).ready(function(){
 // ================== analysis section ================================
 
 async function analysis_btn(u_id) {
-    console.log('You clicked the analysis button');
     let holding_items = document.getElementById('holding_items');
     let rows = holding_items.getElementsByClassName('holding_row');
 

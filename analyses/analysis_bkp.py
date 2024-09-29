@@ -148,8 +148,11 @@ class yfinance:
     def pe(self, eps):
         dates = self.yf_api_fetch.income_stmt.columns
         dates = [date.strftime('%Y-%m-%d') for date in dates][::-1]
+        dates_quater = self.yf_api_fetch.quarterly_income_stmt.columns
+        dates_quater = [date.strftime('%Y-%m-%d') for date in dates_quater][::-1]
         
         shareprice_arr = [self.get_nearest_shareprice(shareprice) for shareprice in dates]
+        shareprice_arr_quater = [self.get_nearest_shareprice(shareprice) for shareprice in dates_quater]
         pe = []
         for shares, price in zip(shareprice_arr, eps):
             if price != 0:
@@ -159,60 +162,99 @@ class yfinance:
         return pe
 
     def yfinance_data(self):
-        company_info = self.company_info
-        def helper(key):
-            if key in company_info:
-                return company_info[key]
-            else:
-                return 0
         income = self.yf_api_fetch.income_stmt
-        balence = self.yf_api_fetch.balance_sheet
-        cashflow = self.yf_api_fetch.cash_flow
+        income_quater = self.yf_api_fetch.quarterly_income_stmt
 
-        # =================== extracting required data from income ==================================
+        balence = self.yf_api_fetch.balance_sheet
+        balence_quater = self.yf_api_fetch.quarterly_balancesheet
+
+        cashflow = self.yf_api_fetch.cash_flow
+        cashflow_quater = self.yf_api_fetch.quarterly_cash_flow
+
+        # =================== extracting required data from income and income quater ==================================
         dates = [date.strftime('%Y') for date in income.columns][::-1]
+        dates_quater = [date.strftime('%Y-%m') for date in income_quater.columns][::-1]
         revenue = [data if not pd.isna(data) else 0 for data in income.loc['Total Revenue']][::-1]
+        revenue_quater = [data if not pd.isna(data) else 0 for data in income_quater.loc['Total Revenue']][::-1]
         operating_expence = [data if not pd.isna(data) else 0 for data in income.loc['Operating Expense']][::-1]
+        operating_expence_quater = [data if not pd.isna(data) else 0 for data in income_quater.loc['Operating Expense']][::-1]
         net_income = [data if not pd.isna(data) else 0 for data in income.loc['Net Income']][::-1]
+        net_income_quater = [data if not pd.isna(data) else 0 for data in income_quater.loc['Net Income']][::-1]
         eps = [data if not pd.isna(data) else 0 for data in income.loc['Basic EPS']][::-1]
+        eps_quater = [data if not pd.isna(data) else 0 for data in income_quater.loc['Basic EPS']][::-1]
         
-        # ================== extracting required data from balence =================================
+        # ================== extracting required data from balence and blaence quater =================================
         total_debt = [data if not pd.isna(data) else 0 for data in balence.loc['Total Debt']][::-1]
+        total_debt_quater = [data if not pd.isna(data) else 0 for data in balence_quater.loc['Total Debt']][::-1]
         shareholders_equity = [data if not pd.isna(data) else 0 for data in balence.loc['Stockholders Equity']][::-1]
+        shareholders_equity_quater = [data if not pd.isna(data) else 0 for data in balence_quater.loc['Stockholders Equity']][::-1]
         total_assets = [data if not pd.isna(data) else 0 for data in balence.loc['Total Assets']][::-1]
+        total_assets_quater = [data if not pd.isna(data) else 0 for data in balence_quater.loc['Total Assets']][::-1]
         total_liabilities = [data if not pd.isna(data) else 0 for data in balence.loc['Total Liabilities Net Minority Interest']][::-1]
+        total_liabilities_quater = [data if not pd.isna(data) else 0 for data in balence_quater.loc['Total Liabilities Net Minority Interest']][::-1]
         cash_equivalents = [data if not pd.isna(data) else 0 for data in balence.loc['Cash And Cash Equivalents']][::-1]
+        cash_equivalents_quater = [data if not pd.isna(data) else 0 for data in balence_quater.loc['Cash And Cash Equivalents']][::-1]
   
-        # ================== extracting required data from cashflow =================================
+        # ================== extracting required data from cashflow and cashflow quater =================================
 
         free_cashflow = [data if not pd.isna(data) else 0 for data in cashflow.loc['Free Cash Flow']][::-1]
         operating_cashflow = [data if not pd.isna(data) else 0 for data in cashflow.loc['Operating Cash Flow']][::-1]
         financing_cashflow = [data if not pd.isna(data) else 0 for data in cashflow.loc['Financing Cash Flow']][::-1]
         investing_cashflow = [data if not pd.isna(data) else 0 for data in cashflow.loc['Investing Cash Flow']][::-1]
 
+        cashflow_quater_columns = [date.strftime('%Y-%m') for date in cashflow_quater.columns][::-1]
+        if len(cashflow_quater) > 0:
+            free_cashflow_quater = [data if not pd.isna(data) else 0 for data in cashflow_quater.loc['Free Cash Flow']][::-1]
+            operating_cashflow_quater = [data if not pd.isna(data) else 0 for data in cashflow_quater.loc['Operating Cash Flow']][::-1]
+            financing_cashflow_quater = [data if not pd.isna(data) else 0 for data in cashflow_quater.loc['Financing Cash Flow']][::-1]
+            investing_cashflow_quater = [data if not pd.isna(data) else 0 for data in cashflow_quater.loc['Investing Cash Flow']][::-1]
+        else:
+            free_cashflow_quater = [None] * 5
+            operating_cashflow_quater = [None] * 5
+            financing_cashflow_quater = [None] * 5
+            investing_cashflow_quater = [None] * 5
+
         profit_margin = self.opm(revenue, net_income)
+        profit_margin_quater = self.opm(revenue_quater, net_income_quater)
         
         roe = self.roe(net_income, shareholders_equity)
+        roe_quater = self.roe(net_income_quater, shareholders_equity_quater)
 
         holding = self.holding()
         data = {
             'dates' : dates,
+            'dates_quater' : dates_quater,
             'revenue' : revenue,
+            'revenue_quater' : revenue_quater,
             'operating_expence' : operating_expence,
+            'operating_expence_quater' : operating_expence_quater,
             'net_income' : net_income,
+            'net_income_quater' : net_income_quater,
             'eps' : eps,
-            'pe' : round(helper('trailingPE'), 2),
+            'eps_quater' : eps_quater,
             'profit_margin' : profit_margin,
+            'profit_margin_quater' : profit_margin_quater,
             'total_debt' : total_debt,
+            'total_debt_quater' : total_debt_quater,
             'shareholders_equity' : shareholders_equity,
+            'shareholders_equity_quater' : shareholders_equity_quater,
             'total_assets' : total_assets,
+            'total_assets_quater' : total_assets_quater,
             'total_liabilities' : total_liabilities,
+            'total_liabilities_quater' : total_liabilities_quater,
             'cash_equivalents': cash_equivalents,
+            'cash_equivalents_quater': cash_equivalents_quater,
             'roe' : roe,
+            'roe_quater' : roe_quater,
+            'cashflow_quater_columns' : cashflow_quater_columns,
             'free_cashflow' : free_cashflow,
+            'free_cashflow_quater' : free_cashflow_quater,
             'operating_cashflow' : operating_cashflow,
+            'operating_cashflow_quater' : operating_cashflow_quater,
             'investing_cashflow' : investing_cashflow,
+            'investing_cashflow_quater' : investing_cashflow_quater,
             'financing_cashflow' : financing_cashflow,
+            'financing_cashflow_quater' : financing_cashflow_quater,
             'holding' : holding
         }
         return data
@@ -269,12 +311,6 @@ class tradingview:
         return data       
 
     def tradingview_data(self):
-        def check(indicator):
-            if indicator in tv_indicater_data['oscillator']['COMPUTE']:
-                return tv_indicater_data['oscillator']['COMPUTE'][indicator]
-            else:
-                return 'NEUTRAL'
-                
         yf_connect = yfinance(self.c_symbol)
         yf_data = yf_connect.company_info
         tv_indicater_data = self.tv_fetch_data
@@ -291,11 +327,11 @@ class tradingview:
             },
             'indicator_data' : {
             'summary': tv_indicater_data['oscillator']['RECOMMENDATION'],
-            'rsi': check('RSI'),
-            'adx': check('ADX'),
-            'momentum': check('Mom'),
-            'macd': check('MACD'),
-            'bbp': check('BBP')
+            'rsi': tv_indicater_data['oscillator']['COMPUTE']['RSI'],
+            'adx': tv_indicater_data['oscillator']['COMPUTE']['ADX'],
+            'momentum': tv_indicater_data['oscillator']['COMPUTE']['Mom'],
+            'macd': tv_indicater_data['oscillator']['COMPUTE']['MACD'],
+            'bbp': tv_indicater_data['oscillator']['COMPUTE']['BBP']
             }
         }
         return data
@@ -303,9 +339,9 @@ class tradingview:
 
 if __name__ == "__main__":
     # Example usage
-    company_symbol = 'RPOWER'                     #RELIANCE
+    company_symbol = 'INDUSTOWER'                             #RELIANCE
     data = yfinance(company_symbol)
-    income_stmt = data.yfinance_data()   
+    income_stmt = data.share_price()    
     print(income_stmt)
     # print("=================== income ========================")
     # print(income_stmt['dates'])
@@ -325,3 +361,21 @@ if __name__ == "__main__":
     # print("investing_cashflow : " , income_stmt['investing_cashflow'])
     # print("cash_equivalents : " , income_stmt['cash_equivalents'])
     # print()
+    # print("================ income quater ====================")
+    # print(income_stmt['dates_quater'])
+    # print("revenue_quater : ", income_stmt['revenue_quater'])
+    # print("operating_expence_quater : ", income_stmt['operating_expence_quater'])
+    # print("net_income_quater : ", income_stmt['net_income_quater'])
+    # print("eps_quater : ", income_stmt['eps_quater'])
+    # print("profit_margin_quater : ", income_stmt['profit_margin_quater'])
+    # print("total_debt_quater : ", income_stmt['total_debt_quater'])
+    # print("shareholders_equity_quater : ", income_stmt['shareholders_equity_quater'])
+    # print("total_assets_quater : ", income_stmt['total_assets_quater'])
+    # print("total_liabilities_quater : ", income_stmt['total_liabilities_quater'])
+    # print("roe_quater : " , income_stmt['roe_quater'])
+    # print("free_cashflow_columns : " , income_stmt['cashflow_quater_columns'])
+    # print("free_cashflow_quater : " , income_stmt['free_cashflow_quater'])
+    # print("operating_cashflow_quater : " , income_stmt['operating_cashflow_quater'])
+    # print("financing_cashflow_quater : " , income_stmt['financing_cashflow_quater'])
+    # print("investing_cashflow_quater : " , income_stmt['investing_cashflow_quater'])
+    # print("cash_equivalents_quater : " , income_stmt['cash_equivalents_quater'])

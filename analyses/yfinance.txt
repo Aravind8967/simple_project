@@ -1,4 +1,4 @@
-auditRisk : 4
+fauditRisk : 4
 boardRisk : 6
 compensationRisk : 8
 shareHolderRightsRisk : 5
