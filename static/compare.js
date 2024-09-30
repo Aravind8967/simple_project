@@ -199,12 +199,12 @@ async function generate_charts(companies_data) {
     } = await prepare_chart_data(companies_data);
 
     // Call the chart functions with the data
-    // revenue_compare_chart(c_symbol_list, year_list, revenue_list, net_income_list);
-    // eps_compare_chart(c_symbol_list, year_list, eps_list);
-    // roe_compare_chart(c_symbol_list, year_list, roe_list);
-    // asset_compare_chart(c_symbol_list, year_list, asset_list, liabilities_list);
-    // cashflow_compare_chart(c_symbol_list, year_list, operating_cashflow_list, revenue_list);
-    // pe_compare_chart(c_symbol_list, pe_list);
+    revenue_compare_chart(c_symbol_list, year_list, revenue_list, net_income_list);
+    eps_compare_chart(c_symbol_list, year_list, eps_list);
+    roe_compare_chart(c_symbol_list, year_list, roe_list);
+    asset_compare_chart(c_symbol_list, year_list, asset_list, liabilities_list);
+    cashflow_compare_chart(c_symbol_list, year_list, operating_cashflow_list, revenue_list);
+    pe_compare_chart(c_symbol_list, pe_list);
     shareprice_comparison_chart(c_symbol_list, share_price_arr_list)
 }
 
@@ -693,24 +693,18 @@ async function pe_compare_chart(c_symbol_list, pe_list) {
     var chart_anual = new google.visualization.ColumnChart(document.getElementById("pe_compare_chart"));
     chart_anual.draw(data, options);
 }
-
 async function shareprice_comparison_chart(c_symbol_list, share_price_arr_list) {
-    // console.log('called shareprice_comparison_chart function');
-    // console.log({ 'c_symbol_list': c_symbol_list, 'share_price_arr_list': share_price_arr_list });
+    console.log(share_price_arr_list);
+    // Clear the chart div for re-rendering
+    const chart_id = document.getElementById('shareprice_compare_chart');
+    chart_id.innerHTML = '';
 
+    // Chart options
     const chartOptions = {
         layout: {
             textColor: 'white',
             background: { type: 'solid', color: 'black' }
-        }
-    };
-
-    const chart_id = document.getElementById('shareprice_compare_chart');
-    chart_id.innerHTML = ''; // Clear the chart div for re-rendering
-
-    const chart = LightweightCharts.createChart(chart_id, chartOptions);
-
-    chart.applyOptions({
+        },
         rightPriceScale: {
             scaleMargins: {
                 top: 0.4,
@@ -719,15 +713,24 @@ async function shareprice_comparison_chart(c_symbol_list, share_price_arr_list) 
         },
         crosshair: {
             horzLine: {
-                visible: true,
+                visible: false,
                 labelVisible: false,
             },
+            vertLine: {
+                visible: true,
+                style: 0,
+                width: 2,
+                color: 'rgba(32, 38, 46, 0.1)',
+                labelVisible: false,
+            }
         },
         grid: {
             vertLines: { visible: false },
             horzLines: { visible: false },
         },
-    });
+    };
+
+    const chart = LightweightCharts.createChart(chart_id, chartOptions);
 
     // Function to normalize data (convert to percentage)
     function normalizeData(data) {
@@ -740,6 +743,12 @@ async function shareprice_comparison_chart(c_symbol_list, share_price_arr_list) 
 
     // Store all the series for multiple companies
     let seriesList = [];
+
+    // Function to assign a color to each series
+    function getColor(index) {
+        const colors = ['#2962FF', '#1DE9B6', '#F44336', '#FFC107'];
+        return colors[index % colors.length]; // Reuse colors if there are more than 4 companies
+    }
 
     // Iterate through each company's symbol and data
     for (let i = 0; i < c_symbol_list.length; i++) {
@@ -758,50 +767,73 @@ async function shareprice_comparison_chart(c_symbol_list, share_price_arr_list) 
 
         // Set the data for each line series
         lineSeries.setData(formattedData);
-        seriesList.push({ series: lineSeries, symbol: symbolName });
+
+        // Add price line with the company symbol as label
+        const lastPrice = formattedData[formattedData.length - 1].value;
+        lineSeries.createPriceLine({
+            price: lastPrice,
+            color: getColor(i),
+            lineWidth: 2,
+            lineStyle: LightweightCharts.LineStyle.Dotted,
+            axisLabelVisible: true,
+            title: symbolName,
+        });
+
+        // Push the series and symbol to the list
+        seriesList.push({ series: lineSeries, symbol: symbolName, color: getColor(i) }); // Store color in seriesList
     }
 
-    // Function to assign a color to each series
-    function getColor(index) {
-        const colors = ['#2962FF', '#1DE9B6', '#F44336', '#FFC107'];
-        return colors[index % colors.length]; // Reuse colors if there are more than 4 companies
-    }
+    // Create and style the tooltip html element
+    const toolTipWidth = 150; // Width for tooltip
+    const toolTip = document.createElement('div');
+    toolTip.style = `width: ${toolTipWidth}px; position: absolute; display: none; padding: 8px; box-sizing: border-box; font-size: 12px; text-align: left; z-index: 1000; pointer-events: none; border: 1px solid; border-radius: 4px; font-family: sans-serif;`;
+    toolTip.style.background = `rgba(0, 0, 0, 0.75)`;
+    toolTip.style.color = 'white';
+    chart_id.appendChild(toolTip);
 
-    // Set up legend for each company
-    const container = document.getElementById('shareprice_compare_chart');
-    const legend = document.createElement('div');
-    legend.style = `position: absolute; left: 12px; top: 12px; z-index: 1; font-size: 14px; font-family: sans-serif; line-height: 18px; font-weight: 300; color: white;`;
-    container.appendChild(legend);
+    // Update the tooltip based on crosshair movement
+    chart.subscribeCrosshairMove(param => {
+        if (
+            param.point === undefined ||
+            !param.time ||
+            param.point.x < 0 ||
+            param.point.x > chart_id.clientWidth ||
+            param.point.y < 0 ||
+            param.point.y > chart_id.clientHeight
+        ) {
+            toolTip.style.display = 'none';
+        } else {
+            // Time format is assumed to be YYYY-MM-DD
+            const dateStr = param.time;
+            toolTip.style.display = 'block';
+            let tooltipText = '';
 
-    const formatPrice = price => (Math.round(price * 100) / 100).toFixed(2);
-
-    // Set tooltip content with name, date, and price
-    const setTooltipHtml = (name, date, price) => {
-        legend.innerHTML = `<div style="font-size: 24px; margin: 4px 0px;">${name}</div>
-                            <div style="font-size: 22px; margin: 4px 0px;">${price}%</div>
-                            <div>${date}</div>`;
-    };
-
-    // Update the legend based on crosshair movement
-    const updateLegend = param => {
-        const validCrosshairPoint = param && param.time !== undefined && param.point.x >= 0 && param.point.y >= 0;
-
-        if (validCrosshairPoint) {
-            const time = param.time;
-
-            seriesList.forEach(({ series, symbol }) => {
-                const dataPoint = param.seriesData.get(series);
-                if (dataPoint) {
-                    const price = formatPrice(dataPoint.value);
-                    setTooltipHtml(symbol, time, price);
+            // Iterate over series to get data at crosshair point
+            seriesList.forEach(({ series, symbol, color }) => { // Destructure color from seriesList
+                const data = param.seriesData.get(series);
+                if (data) {
+                    const price = data.value !== undefined ? data.value : data.close;
+                    tooltipText += `<div style="color: ${color};">⬤ ${symbol}</div><div style="font-size: 16px; margin: 4px 0px; color: white;">${Math.round(100 * price) / 100}</div>`;
                 }
             });
-        }
-    };
 
-    // Subscribe to crosshair movement for tooltip updates
-    chart.subscribeCrosshairMove(updateLegend);
-    updateLegend(undefined);
+            toolTip.innerHTML = `${tooltipText}<div style="color: white;">${dateStr}</div>`;
+            
+            // Adjust tooltip position
+            let left = param.point.x;
+            let top = param.point.y;
+
+            if (left > chart_id.clientWidth - toolTipWidth) {
+                left = param.point.x - toolTipWidth;
+            }
+            if (top > chart_id.clientHeight - 80) { // Adjust height if needed
+                top = param.point.y - 80;
+            }
+
+            toolTip.style.left = left + 'px';
+            toolTip.style.top = top + 'px';
+        }
+    });
 
     chart.timeScale().fitContent(); // Fit chart to display all data
 }

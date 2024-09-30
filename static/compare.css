@@ -248,7 +248,9 @@ label {
 }
 
 #compare_chart_section #shareprice_compare_chart{
-    height: 50rem;
+    height: 40rem;
+    margin-left: 2.5%;
+    width: 95%;
     border: 1px solid white;
     border-radius: 20px;
     margin-bottom: 20px;

@@ -217,3 +217,17 @@ async function shareprice_comparison_chart_current(c_symbol_list, share_price_ar
 }
 
 
+
+
+const y = param.point.y;
+let left = param.point.x + toolTipMargin;
+if (left > container.clientWidth - toolTipWidth) {
+    left = param.point.x - toolTipMargin - toolTipWidth;
+}
+
+let top = y + toolTipMargin;
+if (top > container.clientHeight - toolTipHeight) {
+    top = y - toolTipHeight - toolTipMargin;
+}
+toolTip.style.left = left + 'px';
+toolTip.style.top = top + 'px';
