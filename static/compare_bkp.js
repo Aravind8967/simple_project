@@ -1,3 +1,6 @@
+document.addEventListener('DOMContentLoaded', compare_btn);
+
+
 async function add_company_to_compare(u_id) {
     let search_box = document.getElementById('portfolio_search-box');
     let c_name = search_box.value;
@@ -131,15 +134,11 @@ async function compare_share_price_arr(c_symbol, period) {
 async function get_c_details() {
     let c_symbol_list = await companies_list(); // Fetch list of companies
     let company_data_promises = c_symbol_list.map(async (company) => {
-        let company_data = await yfinance_data(company); // Fetch data for each company
+        let company_data = await yfinance_data(company);
         company_data['share_price_arr'] = await compare_share_price_arr(company, '1y');
         return { company, company_data };
     });
-
-    // Use Promise.all to wait for all promises concurrently
     let company_data_array = await Promise.all(company_data_promises);
-
-    // Create a dictionary with the company name as the key
     let companies_data = {};
     for (let { company, company_data } of company_data_array) {
         companies_data[company] = company_data;
@@ -195,9 +194,7 @@ async function generate_charts(companies_data) {
         pe_list,
         asset_list,
         liabilities_list,
-        free_cashflow_list,
         operating_cashflow_list,
-        debt_list,
         share_price_arr_list
     } = await prepare_chart_data(companies_data);
 
@@ -211,7 +208,7 @@ async function generate_charts(companies_data) {
     shareprice_comparison_chart(c_symbol_list, share_price_arr_list)
 }
 
-async function compare_btn(u_id) {
+async function compare_btn() {
     console.log('you clicked compare button');
     let companies_data = await get_c_details();
     console.log('calling generate chart function');
@@ -649,7 +646,7 @@ async function pe_compare_chart(c_symbol_list, pe_list) {
         ]);;
     };
     let options = {
-        title: 'Asset / Liability Ratio',
+        title: 'Price to Earning (PE) Ratio',
         titleTextStyle: {
             color: 'white',
             fontSize: 15
@@ -697,4 +694,114 @@ async function pe_compare_chart(c_symbol_list, pe_list) {
     chart_anual.draw(data, options);
 }
 
+async function shareprice_comparison_chart(c_symbol_list, share_price_arr_list) {
+    console.log('called shareprice_comparison_chart function');
+    console.log({ 'c_symbol_list': c_symbol_list, 'share_price_arr_list': share_price_arr_list });
 
+    const chartOptions = {
+        layout: {
+            textColor: 'white',
+            background: { type: 'solid', color: 'black' }
+        }
+    };
+
+    const chart_id = document.getElementById('shareprice_compare_chart');
+    chart_id.innerHTML = ''; // Clear the chart div for re-rendering
+
+    const chart = LightweightCharts.createChart(chart_id, chartOptions);
+
+    chart.applyOptions({
+        rightPriceScale: {
+            scaleMargins: {
+                top: 0.4,
+                bottom: 0.15,
+            },
+        },
+        crosshair: {
+            horzLine: {
+                visible: true,
+                labelVisible: false,
+            },
+        },
+        grid: {
+            vertLines: { visible: false },
+            horzLines: { visible: false },
+        },
+    });
+
+    // Function to normalize data (convert to percentage)
+    function normalizeData(data) {
+        const firstValue = data[0].share_price;
+        return data.map(item => ({
+            time: item.time,
+            value: ((item.share_price - firstValue) / firstValue) * 100,
+        }));
+    }
+
+    // Store all the series for multiple companies
+    let seriesList = [];
+
+    // Iterate through each company's symbol and data
+    for (let i = 0; i < c_symbol_list.length; i++) {
+        const symbolName = c_symbol_list[i];
+        const sharePriceData = share_price_arr_list[i];
+
+        // Normalize the data for percentage comparison
+        const formattedData = normalizeData(sharePriceData);
+
+        // Create a line series for each company
+        const lineSeries = chart.addLineSeries({
+            lineWidth: 2,
+            color: getColor(i), // Function to assign different colors to each series
+            crossHairMarkerVisible: false,
+        });
+
+        // Set the data for each line series
+        lineSeries.setData(formattedData);
+        seriesList.push({ series: lineSeries, symbol: symbolName });
+    }
+
+    // Function to assign a color to each series
+    function getColor(index) {
+        const colors = ['#2962FF', '#1DE9B6', '#F44336', '#FFC107'];
+        return colors[index % colors.length]; // Reuse colors if there are more than 4 companies
+    }
+
+    // Set up legend for each company
+    const container = document.getElementById('shareprice_compare_chart');
+    const legend = document.createElement('div');
+    legend.style = `position: absolute; left: 12px; top: 12px; z-index: 1; font-size: 14px; font-family: sans-serif; line-height: 18px; font-weight: 300; color: white;`;
+    container.appendChild(legend);
+
+    const formatPrice = price => (Math.round(price * 100) / 100).toFixed(2);
+
+    // Set tooltip content with name, date, and price
+    const setTooltipHtml = (name, date, price) => {
+        legend.innerHTML = `<div style="font-size: 24px; margin: 4px 0px;">${name}</div>
+                            <div style="font-size: 22px; margin: 4px 0px;">${price}%</div>
+                            <div>${date}</div>`;
+    };
+
+    // Update the legend based on crosshair movement
+    const updateLegend = param => {
+        const validCrosshairPoint = param && param.time !== undefined && param.point.x >= 0 && param.point.y >= 0;
+
+        if (validCrosshairPoint) {
+            const time = param.time;
+
+            seriesList.forEach(({ series, symbol }) => {
+                const dataPoint = param.seriesData.get(series);
+                if (dataPoint) {
+                    const price = formatPrice(dataPoint.value);
+                    setTooltipHtml(symbol, time, price);
+                }
+            });
+        }
+    };
+
+    // Subscribe to crosshair movement for tooltip updates
+    chart.subscribeCrosshairMove(updateLegend);
+    updateLegend(undefined);
+
+    chart.timeScale().fitContent(); // Fit chart to display all data
+}

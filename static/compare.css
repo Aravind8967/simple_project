@@ -240,14 +240,17 @@ label {
     border: 1px solid white;
 }
 
-#compare_chart_section, #cashflow_compare_chart, #pe_compare_chart{
-margin-bottom: 30px;
+#compare_chart_section #chart_compare{
+    border: 1px solid white;
+    height: 50rem;
+    border-radius: 20px;
+    margin-bottom: 20px;
 }
-
 
 #compare_chart_section #shareprice_compare_chart{
     height: 50rem;
     border: 1px solid white;
     border-radius: 20px;
     margin-bottom: 20px;
+    overflow: hidden;
 }

@@ -303,9 +303,9 @@ class tradingview:
 
 if __name__ == "__main__":
     # Example usage
-    company_symbol = 'RPOWER'                     #RELIANCE
-    data = yfinance(company_symbol)
-    income_stmt = data.yfinance_data()   
+    company_symbol = 'ITC'                     #RELIANCE
+    data = analysis(company_symbol)
+    income_stmt = data.share_price_range()   
     print(income_stmt)
     # print("=================== income ========================")
     # print(income_stmt['dates'])
