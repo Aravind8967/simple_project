@@ -339,6 +339,11 @@ function home(id){
     window.location.href = `/home/${id}`
 }
 
+async function signup(){
+    let url = '/signup'
+    let responce = await fetch(url, {method:'POST'})
+
+}
 function portfoilo_page(u_id) {
     window.location.href = `/${u_id}/portfolio`
     return

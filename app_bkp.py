@@ -36,12 +36,12 @@ def login():
             if user_data['u_password'] == password:
                 return redirect(f'/home/{user_data["id"]}')
             else:
-                msg = "Incurrect password"
-                return render_template ("login.html", msg = msg)
+                flash("Password is incurrect", 'danger')
+                return render_template("login.html")
         else:
-            msg = "User not Found"
-            return render_template ("login.html", msg = msg)      
-    return render_template ("login.html", msg = None)
+            flash(row_data['data'])
+            return render_template("login.html")
+    return render_template("login.html")
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
@@ -58,19 +58,17 @@ def signup():
                 }
                 new_user = db.set_user(data)
                 if new_user['status'] == 200:
-                    msg = "New User created please login"
-                    return render_template("login.html", msg = msg)
+                    print(new_user['data'])
+                    return redirect('/login')
                 else:
-                    msg = new_user['data'] 
-                    return render_template("login.html", msg = msg)
+                    print(new_user['data'])
             else:
-                msg = "Password and Conform Password not matching"
-                return render_template("login.html", msg = msg)
-
+                print("password is incurrect", " | ", pass1, " | ",pass2)
+                return redirect('/login')
         else:
-            msg = "user already present please login"
-            return render_template("login.html", msg = msg)
-    return render_template("login.html", msg = None)
+            print("user already present please login")
+            return redirect('/login')
+    return render_template("login.html")
 
 
 @app.route('/logout')
