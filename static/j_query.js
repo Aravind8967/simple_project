@@ -35,15 +35,21 @@ $(document).ready(function() {
     });
 });
 
-export async function share_price_arr(c_name) {
-    let share_price_arr_url = `http://127.0.0.1:300/home/${c_name}/share_price_arr`;
-    let responce = await fetch(share_price_arr_url, {method:'GET'})
-    if (responce.ok){
-        let row_data = await responce.json()
-        return row_data
+export async function share_price_arr(c_name, period) {
+    if(c_name == undefined || period == undefined){
+        console.log("undefined error from shareprice arr");
+        return
     }
     else{
-        return 0
+        let share_price_arr_url = `http://127.0.0.1:300/get/${c_name}/${period}/share_price_period_arr`;
+        let responce = await fetch(share_price_arr_url, {method:'GET'})
+        if (responce.ok){
+            let row_data = await responce.json()
+            return row_data['shareprice_arr']
+        }
+        else{
+            return 0
+        }
     }
 }
 
@@ -65,7 +71,7 @@ export async function get_c_data(c_symbol) {
         c_name.innerHTML = data.c_name;
         c_symbol_elem.innerHTML = data.c_symbol;
         share_price.innerHTML = data.share_price;
-        change_percent.innerHTML = `${data.change_percent} %`;
+        change_percent.innerHTML = `(${data.change_percent} %)`;
 
         // Remove any existing arrow icons to avoid duplicates
         let existingArrow = change_num_tag.querySelector('.material-symbols-outlined');

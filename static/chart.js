@@ -356,35 +356,41 @@ export function chart_function(c_name, data){
 // ======================== finance chart in home page ============================
 
 export async function finance_charts(company_symbol){
-    let url = `/get/${company_symbol}/yfinance_data`;
-    let responce = await fetch(url, {method:'GET'});
-    console.log(company_symbol);
-    if (responce.ok){
-        let yfinance_data = await responce.json();
-        let dates = yfinance_data.dates;
-        let revenue = yfinance_data.revenue;
-        let net_income = yfinance_data.net_income;
-
-        let total_assets = yfinance_data.total_assets;
-        let total_liabilities = yfinance_data.total_liabilities;
-        let total_debt = yfinance_data.total_debt;
-
-        let cash_equivalents = yfinance_data.cash_equivalents;
-        let free_cashflow = yfinance_data.free_cashflow;
-
-        let eps = yfinance_data.eps;
-        let roe = yfinance_data.roe;
-
-        let holding = yfinance_data.holding;
-
-        revenue_chart(company_symbol,dates, revenue, net_income);
-        asset_liability(company_symbol, dates, total_assets, total_liabilities, total_debt);
-        cashflow(company_symbol, dates, cash_equivalents, free_cashflow, total_debt);
-        eps_pm(company_symbol, dates, eps, roe)
-        share_holding(company_symbol, holding)
+    if(company_symbol == undefined){
+        console.log('undefined error')
+        return 0
     }
     else{
-        console.log('data not found')
+        let url = `/get/${company_symbol}/yfinance_data`;
+        let responce = await fetch(url, {method:'GET'});
+        console.log(company_symbol);
+        if (responce.ok){
+            let yfinance_data = await responce.json();
+            let dates = yfinance_data.dates;
+            let revenue = yfinance_data.revenue;
+            let net_income = yfinance_data.net_income;
+    
+            let total_assets = yfinance_data.total_assets;
+            let total_liabilities = yfinance_data.total_liabilities;
+            let total_debt = yfinance_data.total_debt;
+    
+            let cash_equivalents = yfinance_data.cash_equivalents;
+            let free_cashflow = yfinance_data.free_cashflow;
+    
+            let eps = yfinance_data.eps;
+            let roe = yfinance_data.roe;
+    
+            let holding = yfinance_data.holding;
+    
+            revenue_chart(company_symbol,dates, revenue, net_income);
+            asset_liability(company_symbol, dates, total_assets, total_liabilities, total_debt);
+            cashflow(company_symbol, dates, cash_equivalents, free_cashflow, total_debt);
+            eps_pm(company_symbol, dates, eps, roe)
+            share_holding(company_symbol, holding)
+        }
+        else{
+            console.log('data not found')
+        }
     }
 }
 

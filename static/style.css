@@ -7,7 +7,8 @@
 }
 
 body{
-    background-color: black;
+    font-family: 'Jost', sans-serif;
+	background: linear-gradient(to bottom, #0f0c29, #302b63, #24243e);
     color: white;
     overflow-x: hidden;
 }
@@ -69,12 +70,13 @@ body{
 }
 
 .navbar-brand {
-    font-size: 1.5rem;
+    font-size: 40px;
+    padding: 0px;
+    margin: 0px;
     font-weight: bold;
 }
 
 .navbar {
-    margin-top:2px;
     width: 100%;
     height: 55px;
     padding: 0.5rem 1rem;
@@ -83,12 +85,12 @@ body{
 }
 
 .nav-item{
-    padding:2px;
+    padding:0px;
 }
 
 .nav-link{
-    padding: 2rm;
-    margin: 2rm;
+    padding: 0px;
+    margin-left: 10px;
 }
 
 #logout_btn{
@@ -210,13 +212,26 @@ body{
     border-radius: 15px;
 }
 
+#watchlist_container #watchlist_add_btn{
+    display: inline-block; /* Ensure it's treated as a block-level element */
+    font-size: 50px;
+    color: white;
+    border-radius: 5px; /* Optional: Add rounded corners */
+    cursor: pointer; /* Show pointer cursor to indicate it's clickable */
+    text-align: center; /* Center the icon text */
+    border: none;
+}
+
+#watchlist_container #watchlist_add_btn:hover{
+    background-color: rgb(38, 11, 64);
+}
+
 .watchlist-row p {
     font-size: 20px !important;
 }
 
 .watchlist-row:hover{
     background-color: rgb(37, 37, 37);
-    border: 1px solid white;
     border-radius: 10px;
 }
 

@@ -96,7 +96,7 @@ class yfinance:
             if key in company_info:
                 return company_info[key]
             else:
-                return None
+                return 1
         data = {
             'bussiness': helper('longBusinessSummary'),
             'share_price': helper('currentPrice'),
@@ -303,9 +303,9 @@ class tradingview:
 
 if __name__ == "__main__":
     # Example usage
-    company_symbol = 'ITC'                     #RELIANCE
-    data = analysis(company_symbol)
-    income_stmt = data.share_price_range()   
+    company_symbol = 'JIOFIN'                     #RELIANCE
+    data = yfinance(company_symbol)
+    income_stmt = data.company_details()   
     print(income_stmt)
     # print("=================== income ========================")
     # print(income_stmt['dates'])

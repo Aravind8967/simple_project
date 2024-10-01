@@ -359,20 +359,27 @@ function current_portfolio (input_data) {
     chart.draw(data, options)
 }
 
-
 function portfolio_contribution(input_data) {
     var data = new google.visualization.DataTable();
     data.addColumn('string', 'Company');
     data.addColumn('number', 'Profit Percent');
-    data.addColumn({ role: 'style' });
+    data.addColumn({ role: 'style' }); // Column for styling
 
     for (let company_data of input_data) {
         let profit_percent = (((company_data.current_investment - company_data.investment) / company_data.investment) * 100).toFixed(2);
-        data.addRow([
-            company_data.symbol,
-            parseFloat(profit_percent),  // Convert back to number for the chart
-            'opacity: 0.7'
-        ]);
+        let data_row = [];
+
+        data_row.push(company_data.symbol);  // Add company symbol
+        data_row.push(parseFloat(profit_percent));  // Add the calculated profit percent as a number
+
+        // Add style based on profit percentage
+        if (profit_percent <= 0) {
+            data_row.push('color: rgb(255, 51, 0); opacity: 0.7'); // Red for loss
+        } else {
+            data_row.push('color: rgb(51, 204, 51); opacity: 0.7'); // Green for profit
+        }
+
+        data.addRow(data_row);  // Add the row to the data table
     }
 
     // Set chart options

@@ -48,6 +48,9 @@ margin-top: 7px;
 
 #chart{
     margin-left: 20px;
+    border: 1px solid white;
+    border-radius: 20px;
+    overflow: hidden;
     width: 75em; 
     height: 35em;
     margin-bottom: 20px;
@@ -98,10 +101,14 @@ margin-top: 7px;
 
 /* =================== technical chart section ================================ */
 #technical_section #technical_chart{
+    border: 1px solid white;
+    border-radius: 20px;
+    overflow: hidden;
     margin-left: 20px;
     width: 75em; 
     height: 35em;
     margin-bottom: 20px;
+
 }
 
 #technical_section #img_container{

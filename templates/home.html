@@ -3,6 +3,23 @@
 
 {% block body %}
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<div id="loading" style="display:none;"></div>
+</div>
+<style>
+    /* Add the loading overlay and spinner styles */
+    #loading {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+        z-index: 9999; /* Ensures it's on top of other elements */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+</style>
 <div class="row">
     <div class="col-sm-3" id="watchlist_container">
         <div class="input-group mb-3">
@@ -10,7 +27,9 @@
                 <span class="material-symbols-outlined">search</span>
                 <input class="form-control" id="search-box" type="text" placeholder="Search Company"
                     aria-label="Search" required>
-                <button type="submit" onclick="add_company_to_watchlist('{{data.user.id}}')">Add</button>
+                <span class="material-symbols-outlined" type="submit" id="watchlist_add_btn" onclick="add_company_to_watchlist('{{data.user.id}}')">
+                    add_circle
+                </span>
             </span>
             <ol type="A" id="suggestions" class="suggestions-list"></ol> <!-- Moved outside of the span -->
         </div>
@@ -24,10 +43,10 @@
                 {% for company in data.watchlist %}
                 <div class="watchlist-row">
                     <div class="company-name">
-                        <p>{{ company.c_symbol }}</p>
+                        <p class="watchlist_c_symbol">{{ company.c_symbol }}</p>
                     </div>
                     <div class="share-price">
-                        <p>{{ company.share_price }}</p>
+                        <p class="watchlist_share_price">{{ company.share_price }}</p>
                     </div>
                     <button id="del_item" onclick="delete_company('{{company.c_symbol}}', '{{data.user.id}}')">
                         <span class="material-symbols-outlined">
@@ -52,8 +71,16 @@
                     <div id="company_symbol" style="float: left;">Company Symbol</div>
                     <div id="price_section">
                         <div id="share_price">Shareprice</div>
-                        <div id="change_num">change_num</div>
-                        <div id="change_percent">change</div>
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div class="row">
+                                    <div class="col">
+                                        <div id="change_num" style="float: left;">change_num</div>
+                                        <div id="change_percent">change</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     <!-- </div> -->
                     <div id="company_name">Company Name</div>
                 </div>
@@ -63,8 +90,8 @@
                     <button class="btn btn-success" type="button" onclick="section_selection('technical', document.getElementById('company_symbol').textContent)">Technical</button>
                     <button class="btn btn-success" type="button" onclick="portfoilo_page('{{data.user.id}}')">Portfolio</button>
                     <button class="btn btn-success" type="button" onclick="compare_page('{{data.user.id}}')">Compare</button>
-                    <button class="btn btn-success" type="button" onclick="section_selection('show_all', document.getElementById('company_symbol').textContent)">Show</button>
-                    <button class="btn btn-success" type="button" onclick="section_selection('hide_all', document.getElementById('company_symbol').textContent)">Hide</button>
+                    <!-- <button class="btn btn-success" type="button" onclick="section_selection('show_all', document.getElementById('company_symbol').textContent)">Show</button>
+                    <button class="btn btn-success" type="button" onclick="section_selection('hide_all', document.getElementById('company_symbol').textContent)">Hide</button> -->
                 </div>
             </div>
         </div>
@@ -160,7 +187,7 @@
             </div>
             <!-- ================ Fundametal chart section ============ -->
             <div id="fundamental_section">
-                <h1>Company Fundamental Analyses</h1>
+                <h1>Company Fundamental Analysis</h1>
                 <hr>
                 <div class="row" id="revenue_chart_section">
                     <!-- Revenue Chart -->
@@ -193,7 +220,7 @@
             </div>
             <!-- ================ Technical chart section ============ -->
             <div id="technical_section">
-                <h1>Company Technical Analyses</h1>
+                <h1>Company Technical Analysis</h1>
                 <hr>
                 <!-- Technical indicator signals -->
                 <div class="row">

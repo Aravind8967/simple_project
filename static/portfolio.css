@@ -1,5 +1,4 @@
 #portfolio_section #portfoilo_heading h1{
-    position: relative;
     margin-top: 60px;
     font-size: 50px;
 }
@@ -88,8 +87,8 @@ label {
 
 /* Overall section styling for consistent layout */
 #portfolio_section {
-    margin: 20px;
-    color: white;
+    margin-top: 0px;
+    margin-left: 20px;
 }
 
 /* Style for the whole form's layout */
