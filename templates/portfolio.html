@@ -7,7 +7,7 @@
         <h1>Portfolio</h1>
     </div>
     <div class="row" id="holding_section">
-        <h1>Add company to holding</h1>
+        <h1>Add company to Portfolio</h1>
         <div class="row" id="portfoilo_search_section">
             <form class="portfolio-search-container">
                 <label for="portfolio_search-box">Search Company:</label>
@@ -26,6 +26,7 @@
         </div>
     </div>
     <hr>
+    
     <div class="row">
         <div class="col-sm-3">
             <div class="row" id="holding_analyse">
@@ -76,6 +77,7 @@
                 </div>
             </div>
         </div>
+        {% if data.holdings | length > 0 %}
         <div class="col-sm-8" id="holding_chart_section">
             <h1 id="portfoilo_heading">Portfolio Analysis</h1>
             <hr>
@@ -106,6 +108,11 @@
                 </div>
             </div>
         </div>
+        {% else %}
+        <div class="col-sm-8" id="holding_empty_chart_section">
+            <h1 style="margin-top: 80px;">Please add your holding company to portfolio</h1>
+        </div>
+        {% endif %}
     </div>
 </div>
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>

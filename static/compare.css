@@ -1,4 +1,4 @@
-#portfolio_section #portfoilo_heading h1{
+#compare_section #compare_heading h1{
     position: relative;
     margin-top: 60px;
     font-size: 50px;
@@ -100,25 +100,14 @@ label {
 }
 
 /* ========================== Holding section ========================= */
-
-#holding_header h2{
-    border: 1px solid white;
-    font-family: "Times New Roman", Times, serif;
-    padding: 10px;
-    font-size: 40px;
-    text-align: center;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-    background-color: gray;
-    margin-bottom: 0%;
-}
-
 #holding{
+    margin-left: 60px;
+    width: 93%;   
+    height: 5%;
     height: 100px;
     color: white;
     border: 1px solid white;
-    border-bottom-left-radius: 10px;
-    border-bottom-right-radius: 10px;
+    border-radius: 10px;
     scroll-behavior: smooth;
     overflow-y: auto;
 }
@@ -150,7 +139,7 @@ label {
 
 #holding #holding_items .holding_row{ 
     border: 1px solid white;
-    margin: 10px;
+    margin-top: 30px;
     border-radius: 10px;
 }
 
@@ -232,6 +221,16 @@ label {
     margin-left: 4rem;
     border-radius: 20px;
     background-color: rgb(34, 33, 33);
+}
+
+#compare_empty_chart_section{
+    margin-top: 30px;
+    border: 2px solid white;
+    width: 91.5%;
+    height: 20rem;
+    margin-left: 4rem;
+    border-radius: 20px;
+    background-color: transparent;
 }
 
 #compare_chart_section #revenue_compare_chart, #eps_compare_chart, #roe_compare_chart, #asset_compare_chart, #cashflow_compare_chart, #pe_compare_chart{

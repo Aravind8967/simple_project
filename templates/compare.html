@@ -3,12 +3,28 @@
 
 {% block body %}
 <link rel="stylesheet" href="{{url_for('static', filename='compare.css')}}">
+<div id="loading" style="display:none;"></div>
+<p id="u_id" style="display: none;">{{data.user.id}}</p>
+<style>
+    /* Add the loading overlay and spinner styles */
+    #loading {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+        z-index: 9999; /* Ensures it's on top of other elements */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+</style>
 <div id="compare_section">
-    <div class="row" id="portfoilo_heading">
+    <div class="row" id="compare_heading">
         <h1>Compare</h1>
     </div>
     <div class="row" id="holding_section">
-        <h1>Add company to holding</h1>
         <div class="row" id="compare_search_section">
             <form class="portfolio-search-container">
                 <label for="portfolio_search-box">Search Company:</label>
@@ -24,10 +40,7 @@
     <div class="row">
         <div class="row">
             <div class="row" id="holding_analyse">
-                <button type="button" onclick="compare_btn('{{data.user.id}}')">Compare</button>
-            </div>
-            <div class="row" id="holding_header">
-                <h2>Compare list</h1>
+                <button type="button" onclick="compare_btn('{{data.user.id}}')">Click to Compare</button>
             </div>
             <div class="row" id="holding">
                 <div id="holding_items">
@@ -63,6 +76,7 @@
                 </div>
             </div>
         </div>
+        {% if data.compare | length > 0 %}
         <div class="col-sm-11" id="compare_chart_section">
             <h1 id="comparison_heading">Comparison Charts</h1>
             <hr>
@@ -125,6 +139,11 @@
                 </div>
             </div>
         </div>
+        {% else %}
+        <div id="compare_empty_chart_section">
+            <h1 style="margin-top: 100px;">Add Company to compare list</h1>
+        </div>
+        {% endif %}
     </div>
 </div>
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>

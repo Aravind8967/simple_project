@@ -245,11 +245,7 @@ def add_company_to_portfolio(u_id):
         'bought_price' : frountend_data['bought_price']
     }
     insert_data_to_portfolio = port_folio.add_company(insert_data)
-    val = {
-        'status' : 'data added sussecfully',
-        'inserted_data': insert_data_to_portfolio
-    }
-    return jsonify(val)
+    return jsonify(insert_data_to_portfolio)
 
 @app.route('/<int:u_id>/<c_symbol>/remove_from_portfolio', methods=['DELETE'])
 def remove_company_from_portfolio(u_id, c_symbol):
@@ -312,7 +308,7 @@ def add_company_to_compare(u_id):
         'status' : 'data added sussecfully',
         'inserted_data': insert_data_to_portfolio
     }
-    return jsonify(val)
+    return jsonify(insert_data_to_portfolio)
 
 @app.route('/<int:u_id>/load_compare', methods=['GET'])
 def load_compare(u_id):

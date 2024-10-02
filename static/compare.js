@@ -1,28 +1,48 @@
-document.addEventListener('DOMContentLoaded', compare_btn);
+document.addEventListener('DOMContentLoaded', function(){
+    const user_id = document.getElementById('u_id').textContent.trim();
+    compare_btn(user_id);
+});
 
 
 async function add_company_to_compare(u_id) {
-    let search_box = document.getElementById('portfolio_search-box');
-    let c_name = search_box.value;
-    search_box.value = '';
-    data = {
-        'c_name' : c_name
+    try{
+        $('#loading').show();
+        let search_box = document.getElementById('portfolio_search-box');
+        let rowCount = $('#holding_items .holding_row').length;
+        if (rowCount <= 3){
+            let c_name = search_box.value;
+            search_box.value = '';
+            data = {
+                'c_name' : c_name
+            }
+            let url = `http://127.0.0.1:300/${u_id}/add_to_compare`
+            let response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+            if(response.ok){
+                let recived_data = await response.json()
+                if(recived_data['status'] == 404){
+                    alert('company already present in compare list')
+                }
+                else{
+                    load_compare(u_id);
+                    location.reload(true);
+                }
+            }
+            else{
+                console.log('unknown error');
+            }
+        }
+        else{
+            alert("Only 4 companies can compare at a time");
+        }
     }
-    let url = `http://127.0.0.1:300/${u_id}/add_to_compare`
-    let response = await fetch(url, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
-    });
-    if(response.ok){
-        recived_data = await response.json()
-        load_compare(u_id);
-        console.log(recived_data);
-    }
-    else{
-        console.log('unknown error');
+    finally{
+        $('#loading').hide();
     }
 }
 
@@ -33,6 +53,7 @@ async function delete_compare_company(c_symbol, u_id) {
         let data = await response.json();
         if (data['status'] == 200){
             load_compare(u_id);
+            location.reload(true);
         }
         else{
             console.log('database connection error');
@@ -98,12 +119,16 @@ async function load_compare(u_id) {
 async function yfinance_data(c_symbol) {
     let url = `/get/${c_symbol}/yfinance_data`;
     let responce = await fetch(url, {method:'GET'});
-    if(responce.ok){
+    if(responce.status == 500){
+        return null
+    }
+    else if(responce.ok){
         let c_data = await responce.json()
         return c_data
     }
     else{
-        return "unknown error"
+        console.log('Unknown error');
+        return null;
     }
 }
 
@@ -131,12 +156,19 @@ async function compare_share_price_arr(c_symbol, period) {
     }
 }
 
-async function get_c_details() {
+async function get_c_details(u_id) {
     let c_symbol_list = await companies_list(); // Fetch list of companies
     let company_data_promises = c_symbol_list.map(async (company) => {
         let company_data = await yfinance_data(company);
-        company_data['share_price_arr'] = await compare_share_price_arr(company, '1y');
-        return { company, company_data };
+        if(company_data == null){
+            await delete_compare_company(company, u_id);
+            alert(`${company}'s Financial data not found so removing from list`);
+            location.reload(true)
+        }
+        else{
+            company_data['share_price_arr'] = await compare_share_price_arr(company, '1y');        
+            return { company, company_data };
+        }
     });
     let company_data_array = await Promise.all(company_data_promises);
     let companies_data = {};
@@ -148,7 +180,6 @@ async function get_c_details() {
 
 
 async function prepare_chart_data(companies_data) {
-    console.log('calling prepare chart data function')
     let c_symbol_list = Object.keys(companies_data);
     let year_list = companies_data[c_symbol_list[0]]['dates']; // Assuming all companies have the same date list
 
@@ -208,24 +239,22 @@ async function generate_charts(companies_data) {
     shareprice_comparison_chart(c_symbol_list, share_price_arr_list)
 }
 
-async function compare_btn() {
-    console.log('you clicked compare button');
-    let companies_data = await get_c_details();
-    console.log('calling generate chart function');
-    let generate_chart = await generate_charts(companies_data);
+async function compare_btn(u_id) {
+    try{
+        $('#loading').show();
+        let companies_data = await get_c_details(u_id);
+        console.log(companies_data);
+        let generate_chart = await generate_charts(companies_data);
+    }
+    finally{
+        $('#loading').hide();
+    }
 }
 
 
 
 // ================================== Compare charts =====================================
 async function revenue_compare_chart(c_symbol_list, year_list, revenue_list, net_income_list){
-    console.log('Calling revenue compare chart function');
-    console.log({
-        'year_list' : year_list,
-        'revenue_list': revenue_list,
-        'net_income_list' : net_income_list
-    })
-
     function adjest_array_length(arr, length){
         while (arr.length < length){
             arr.unshift(0)
@@ -308,13 +337,6 @@ async function revenue_compare_chart(c_symbol_list, year_list, revenue_list, net
 }
 
 async function eps_compare_chart(c_symbol_list, year_list, eps_list) {
-    console.log('calling eps compare chart function');
-    console.log({
-        'c_symbol_list' : c_symbol_list,
-        'year_list' : year_list,
-        'eps_list' : eps_list
-    });
-    
     function adjest_array_length(arr, length){
         while (arr.length < length){
             arr.unshift(0)
@@ -385,11 +407,6 @@ async function eps_compare_chart(c_symbol_list, year_list, eps_list) {
 }
 
 async function roe_compare_chart(c_symbol_list, year_list, roe_list) {
-    console.log('calling roe compare chart function')
-    console.log({'c_symbol_list' : c_symbol_list,
-                'year_list' : year_list, 
-                'roe_list' : roe_list
-            });
     function adjest_array_length(arr, length){
         while (arr.length < length){
             arr.unshift(0)
@@ -461,14 +478,7 @@ async function roe_compare_chart(c_symbol_list, year_list, roe_list) {
 
 }
 
-async function asset_compare_chart(c_symbol_list, year_list, assets_list, liabilities_list) {
-    console.log('calling asset compare chart function')
-    console.log({'c_symbol_list' : c_symbol_list,
-                 'year_list' : year_list, 
-                 'assets_list' : assets_list, 
-                 'liabilities_list' : liabilities_list
-                });
-    
+async function asset_compare_chart(c_symbol_list, year_list, assets_list, liabilities_list) {  
     function adjest_array_length(arr, length){
         while (arr.length < length){
             arr.unshift(0)
@@ -549,12 +559,6 @@ async function asset_compare_chart(c_symbol_list, year_list, assets_list, liabil
 }
 
 async function cashflow_compare_chart(c_symbol_list, year_list, operating_cashflow_list, revenue_list) {
-    console.log('calling cashflow compare chart function');
-    console.log({'c_symbol_list' : c_symbol_list, 
-                 'year_list' : year_list, 
-                 'operating_cashflow_list' : operating_cashflow_list,
-                 'revenue_list' : revenue_list});
-
     function adjest_array_length(arr, length){
         while (arr.length < length){
             arr.unshift(0)
@@ -634,8 +638,6 @@ async function cashflow_compare_chart(c_symbol_list, year_list, operating_cashfl
 }
 
 async function pe_compare_chart(c_symbol_list, pe_list) {
-    console.log('calling debt compare chart function')
-    console.log(c_symbol_list, pe_list)
     let data = new google.visualization.DataTable();
     data.addColumn('string', 'Company');
     data.addColumn('number', 'PE');
@@ -694,8 +696,6 @@ async function pe_compare_chart(c_symbol_list, pe_list) {
     chart_anual.draw(data, options);
 }
 async function shareprice_comparison_chart(c_symbol_list, share_price_arr_list) {
-    console.log(share_price_arr_list);
-    // Clear the chart div for re-rendering
     const chart_id = document.getElementById('shareprice_compare_chart');
     chart_id.innerHTML = '';
 

@@ -226,6 +226,13 @@ label {
     margin-left: 25px;
 }
 
+#holding_empty_chart_section {
+    border: 2px solid white;
+    background-color: transparent;
+    border-radius: 20px;
+    margin-left: 25px;
+}
+
 #holding_chart_section #portfoilo_heading{
     margin-top: 10px;
     font-size: 40px;

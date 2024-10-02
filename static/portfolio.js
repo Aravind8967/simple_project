@@ -78,9 +78,14 @@ async function add_company_to_portfolio(u_id) {
     });
 
     if (response.ok){
-        recived_data = await response.json();
-        load_holding(u_id);
-        console.log(recived_data);
+        let recived_data = await response.json();
+        if (recived_data['status'] == 404){
+            alert(recived_data['data'])
+        }
+        else{
+            load_holding(u_id);
+            location.reload(true);
+        }
     }
     else{
         console.log('unknown error');
@@ -203,6 +208,7 @@ async function delete_holding_company (c_symbol, u_id){
         let data = await response.json();
         if (data['status'] == 200){
             load_holding(u_id);
+            location.reload();
         }
         else{
             console.log('database connection error');
