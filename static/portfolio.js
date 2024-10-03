@@ -380,9 +380,9 @@ function portfolio_contribution(input_data) {
 
         // Add style based on profit percentage
         if (profit_percent <= 0) {
-            data_row.push('color: rgb(255, 51, 0); opacity: 0.7'); // Red for loss
+            data_row.push('color: rgb(255, 0, 0); opacity: 0.8'); // Red for loss
         } else {
-            data_row.push('color: rgb(51, 204, 51); opacity: 0.7'); // Green for profit
+            data_row.push('color: rgb(0, 255, 0); opacity: 0.8'); // Green for profit
         }
 
         data.addRow(data_row);  // Add the row to the data table
@@ -424,7 +424,18 @@ function portfolio_contribution(input_data) {
             bottom: 50,
             width: '80%',
             height: '70%'
-        }
+        },
+        tooltip: {
+            isHtml: true,  // Enable HTML tooltips for more customization
+            trigger: 'focus'  // Show the tooltip for all companies when hovering over a single year
+        },
+
+        // Focus on column data, no crosshair lines
+        focusTarget: 'category', // This shows all data for a year when hovering over that year
+
+        // Column width increase
+        pointSize: 7, // Make points slightly larger
+        interpolateNulls: true
     };
 
     var chart = new google.visualization.ColumnChart(document.getElementById("profit_contribution_chart"));

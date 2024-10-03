@@ -172,7 +172,7 @@ class yfinance:
         # =================== extracting required data from income ==================================
         dates = [date.strftime('%Y') for date in income.columns][::-1]
         revenue = [data if not pd.isna(data) else 0 for data in income.loc['Total Revenue']][::-1]
-        operating_expence = [data if not pd.isna(data) else 0 for data in income.loc['Operating Expense']][::-1]
+        # operating_expence = [data if not pd.isna(data) else 0 for data in income.loc['Operating Expense']][::-1]
         net_income = [data if not pd.isna(data) else 0 for data in income.loc['Net Income']][::-1]
         eps = [data if not pd.isna(data) else 0 for data in income.loc['Basic EPS']][::-1]
         
@@ -198,7 +198,7 @@ class yfinance:
         data = {
             'dates' : dates,
             'revenue' : revenue,
-            'operating_expence' : operating_expence,
+            # 'operating_expence' : operating_expence,
             'net_income' : net_income,
             'eps' : eps,
             'pe' : round(helper('trailingPE'), 2),
@@ -303,9 +303,9 @@ class tradingview:
 
 if __name__ == "__main__":
     # Example usage
-    company_symbol = 'JIOFIN'                     #RELIANCE
+    company_symbol = 'HDFCBANK'                     #RELIANCE
     data = yfinance(company_symbol)
-    income_stmt = data.company_details()   
+    income_stmt = data.yfinance_data()   
     print(income_stmt)
     # print("=================== income ========================")
     # print(income_stmt['dates'])

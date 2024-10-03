@@ -427,7 +427,18 @@ export function share_holding(company_symbol, holding){
             bottom: 50,       // Adjust space at the bottom
             width: '100%',     // Adjust the chart width within the container
             height: '100%'     // Adjust the chart height within the container
-        }
+        },
+        tooltip: {
+            isHtml: true,  // Enable HTML tooltips for more customization
+            trigger: 'focus'  // Show the tooltip for all companies when hovering over a single year
+        },
+
+        // Focus on column data, no crosshair lines
+        focusTarget: 'category', // This shows all data for a year when hovering over that year
+
+        // Column width increase
+        pointSize: 7, // Make points slightly larger
+        interpolateNulls: true
     }
     var chart = new google.visualization.PieChart(document.getElementById('shareholding_chart'));
     chart.draw(data, options);
@@ -485,7 +496,18 @@ export function eps_pm(company_symbol, dates, eps, roe){
             bottom: 50,       // Adjust space at the bottom
             width: '80%',     // Adjust the chart width within the container
             height: '70%'     // Adjust the chart height within the container
-        }
+        },
+        tooltip: {
+            isHtml: true,  // Enable HTML tooltips for more customization
+            trigger: 'focus'  // Show the tooltip for all companies when hovering over a single year
+        },
+
+        // Focus on column data, no crosshair lines
+        focusTarget: 'category', // This shows all data for a year when hovering over that year
+
+        // Column width increase
+        pointSize: 7, // Make points slightly larger
+        interpolateNulls: true
     };
     var chart_anual = new google.visualization.LineChart(document.getElementById("eps_pm_chart_annual"));
     chart_anual.draw(data, options);
@@ -552,7 +574,18 @@ export function cashflow(company_symbol, dates, cash_equivalents, free_cashflow,
             bottom: 50,       // Adjust space at the bottom
             width: '80%',     // Adjust the chart width within the container
             height: '70%'     // Adjust the chart height within the container
-        }
+        },
+        tooltip: {
+            isHtml: true,  // Enable HTML tooltips for more customization
+            trigger: 'focus'  // Show the tooltip for all companies when hovering over a single year
+        },
+
+        // Focus on column data, no crosshair lines
+        focusTarget: 'category', // This shows all data for a year when hovering over that year
+
+        // Column width increase
+        pointSize: 7, // Make points slightly larger
+        interpolateNulls: true
     };
     var chart_annual = new google.visualization.ComboChart(document.getElementById("cashflow_chart_annual"));
     chart_annual.draw(data, options);
@@ -596,7 +629,7 @@ export function revenue_chart(company_symbol, dates, revenue, net_income){
                 color: 'white'
             }
         },
-        colors: ['rgb(50, 70, 184)', 'rgb(62, 178, 36)', 'rgb(255, 255, 0)'],
+        colors: ['rgb(0, 0, 255)', 'rgb(62, 178, 36)', 'rgb(255, 255, 0)'],
         curveType: 'function',
         legend: { 
             position: 'bottom',
@@ -616,7 +649,18 @@ export function revenue_chart(company_symbol, dates, revenue, net_income){
             bottom: 50,       // Adjust space at the bottom
             width: '80%',     // Adjust the chart width within the container
             height: '70%'     // Adjust the chart height within the container
-        }
+        },
+        tooltip: {
+            isHtml: true,  // Enable HTML tooltips for more customization
+            trigger: 'focus'  // Show the tooltip for all companies when hovering over a single year
+        },
+
+        // Focus on column data, no crosshair lines
+        focusTarget: 'category', // This shows all data for a year when hovering over that year
+
+        // Column width increase
+        pointSize: 7, // Make points slightly larger
+        interpolateNulls: true
     };
     var chart_anual = new google.visualization.ComboChart(document.getElementById("revenue_chart_anual"));
     chart_anual.draw(data, options);
@@ -664,7 +708,7 @@ export function asset_liability(company_symbol, dates, total_assets, total_liabi
             }
         },
         // colors: [ Assets      |      Liabilities    |        Debt      |   Asset/liabilities  | Assets/debt]
-        colors: ['rgb(0, 128, 0)', 'rgb(255, 255, 51)', 'rgb(255, 51, 0)', 'rgb(255, 255, 0)', 'rgb(255, 0, 0)'],
+        colors: ['rgb(62, 178, 36)', 'rgb(255, 255, 51)', 'rgb(255, 51, 0)', 'rgb(255, 255, 0)', 'rgb(255, 0, 0)'],
         curveType: 'function',
         legend: { 
             position: 'bottom',
@@ -685,7 +729,18 @@ export function asset_liability(company_symbol, dates, total_assets, total_liabi
             bottom: 50,       // Adjust space at the bottom
             width: '80%',     // Adjust the chart width within the container
             height: '70%'     // Adjust the chart height within the container
-        }
+        },
+        tooltip: {
+            isHtml: true,  // Enable HTML tooltips for more customization
+            trigger: 'focus'  // Show the tooltip for all companies when hovering over a single year
+        },
+
+        // Focus on column data, no crosshair lines
+        focusTarget: 'category', // This shows all data for a year when hovering over that year
+
+        // Column width increase
+        pointSize: 7, // Make points slightly larger
+        interpolateNulls: true
     };
     var chart_anual = new google.visualization.ComboChart(document.getElementById("assets_liability_chart_annual"));
     chart_anual.draw(data, options);
